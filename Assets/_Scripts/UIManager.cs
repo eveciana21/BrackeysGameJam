@@ -15,6 +15,11 @@ public class UIManager : MonoBehaviour
             coreManagersChannel.SetUIManager(this);
     }
 
+    private void Start()
+    {
+        HideGameOverScreen();
+    }
+
     public void ShowPausePopup()
     {
         if (pausePopup != null)
