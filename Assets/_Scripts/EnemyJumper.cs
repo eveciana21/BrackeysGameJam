@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class EnemyJumper : MonoBehaviour
 {
-    [Header("Internal Resources")]
+    [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Collider2D enemyCollider;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
+
+    [Header("Player Bounce")]
+    [SerializeField] private float bounceForce = 10f;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 8f;
@@ -20,8 +23,10 @@ public class EnemyJumper : MonoBehaviour
     [SerializeField] private float wallCheckDistance = 0.5f;
     [SerializeField] private float groundCheckOffset = 1f;
     [SerializeField] private float groundedRayLength = 0.2f;
+    [Space(10)]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask playerLayer;
 
     private bool facingRight;
     private bool isJumping;
@@ -36,7 +41,7 @@ public class EnemyJumper : MonoBehaviour
 
     private void OnEnable()
     {
-        jumpRoutine = StartCoroutine(JumpLoop());
+        jumpRoutine = StartCoroutine(JumpCoroutine());
     }
 
     private void OnDisable()
@@ -80,9 +85,8 @@ public class EnemyJumper : MonoBehaviour
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
-    private bool IsSafeToJump()
+    private bool IsSafeToJump() // Check if there's ground ahead after the jump would land
     {
-        // Check if there's ground ahead after the jump would land
         float dir = facingRight ? 1f : -1f;
 
         // Project forward to where enemy would land (rough estimate)
@@ -98,7 +102,7 @@ public class EnemyJumper : MonoBehaviour
         return groundAtLanding && !wallAhead;
     }
 
-    private IEnumerator JumpLoop()
+    private IEnumerator JumpCoroutine()
     {
         // small random start offset so multiple enemies don't jump in sync
         yield return new WaitForSeconds(Random.Range(0f, 1f));
@@ -146,5 +150,27 @@ public class EnemyJumper : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1f;
         transform.localScale = scale;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & playerLayer) == 0) return;
+
+        Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+        if (playerRb == null) return;
+
+        foreach (ContactPoint2D contact in collision.contacts)
+        {
+            if (contact.normal.y < -0.5f && playerRb.linearVelocity.y < 0f)
+            {
+                playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, 0f);
+                playerRb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
+
+                // Call damage method here?
+                // TakeDamage();
+
+                break;
+            }
+        }
     }
 }

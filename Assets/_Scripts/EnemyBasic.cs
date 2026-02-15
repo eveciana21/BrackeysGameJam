@@ -2,18 +2,23 @@ using UnityEngine;
 
 public class EnemyBasic : MonoBehaviour
 {
-    [Header("Internal Resources")]
+    [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
 
+    [Header("Player Bounce")]
+    [SerializeField] private float bounceForce = 10f;
+
     [Header("Detection")]
     [SerializeField] private float groundCheckDistance = 1f; // how far downwards the ground check is
     [SerializeField] private float wallCheckDistance = 2f; // distance check from the walls
     [SerializeField] private float groundCheckOffset = 1f; // How far forward to check for ground
+    [Space(10)]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask playerLayer;
 
     private bool facingRight;
 
@@ -61,5 +66,31 @@ public class EnemyBasic : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Check if it's the player
+        if (((1 << collision.gameObject.layer) & playerLayer) == 0) return;
+
+        Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+        if (playerRb == null) return;
+
+        // Check if player hit from above
+        foreach (ContactPoint2D contact in collision.contacts)
+        {
+            // If contact normal is pointing upward, player hit from above
+            if (contact.normal.y < -0.5f && playerRb.linearVelocity.y < 0f)
+            {
+                // Bounce the player
+                playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, 0f);
+                playerRb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
+
+                // Call damage method here?
+                // TakeDamage();
+
+                break;
+            }
+        }
     }
 }

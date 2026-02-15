@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
     [Header("Channels")]
     [SerializeField] private CoreManagersChannelSO coreManagersChannel;
 
-    [Header("Internal Components")]
+    [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
     [SerializeField] private Collider2D playerCollider;

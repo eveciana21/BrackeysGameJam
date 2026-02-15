@@ -397,6 +397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   rb: {fileID: 3819467388833298462}
   moveSpeed: 3
+  bounceForce: 15
   groundCheckDistance: 1
   wallCheckDistance: 1
   groundCheckOffset: 1
@@ -406,3 +407,6 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 131072
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
