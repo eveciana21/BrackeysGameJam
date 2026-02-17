@@ -4,12 +4,17 @@ public class EnemyBasic : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Animator animator;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
 
     [Header("Player Bounce")]
     [SerializeField] private float bounceForce = 10f;
+
+    [Header("Attack")]
+    [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private float attackCooldown = 1f;
 
     [Header("Detection")]
     [SerializeField] private float groundCheckDistance = 1f; // how far downwards the ground check is
@@ -21,6 +26,9 @@ public class EnemyBasic : MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
 
     private bool facingRight;
+    private bool isAttacking;
+    private float lastAttackTime;
+    private Transform playerTransform;
 
     private void Awake()
     {
@@ -29,14 +37,26 @@ public class EnemyBasic : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
-        CheckForFlip();
+        CheckForPlayer();
+
+        if (!isAttacking)
+        {
+            Move();
+            CheckForFlip();
+        }
+        else
+        {
+            // Stop moving during attack
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        }
     }
 
     private void Move()
     {
         float direction = facingRight ? 1f : -1f;
         rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
+
+        animator.SetBool("IsWalking", true);
     }
 
     private void CheckForFlip()
@@ -66,6 +86,71 @@ public class EnemyBasic : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+
+    private void CheckForPlayer() // will update this
+    {
+        if (playerTransform == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                playerTransform = player.transform;
+            }
+            return;
+        }
+
+        // Check distance to player
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+
+        // Attack if in range and cooldown is ready
+        if (distanceToPlayer <= attackRange && Time.time >= lastAttackTime + attackCooldown)
+        {
+            Attack();
+        }
+
+        // Walk if not in range or still on cooldown
+        else if (distanceToPlayer > attackRange)
+        {
+            isAttacking = false;
+            animator.SetBool("IsAttacking", false);
+            animator.SetBool("IsWalking", true);
+        }
+    }
+
+    private void Attack()
+    {
+        isAttacking = true;
+        lastAttackTime = Time.time;
+
+        animator.SetBool("IsWalking", false);
+        animator.SetBool("IsAttacking", true);
+    }
+
+    // Call from Animation Event ?
+    public void EndAttack()
+    {
+        isAttacking = false;
+        animator.SetBool("IsAttacking", false);
+    }
+
+    // Call from Animation Event ?
+    public void DealDamage()
+    {
+        if (playerTransform == null) return;
+
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+        if (distanceToPlayer <= attackRange)
+        {
+            // TODO: Apply damage to player
+        }
+    }
+
+    public void Die()
+    {
+        animator.SetTrigger("Die");
+        enabled = false;
+        Destroy(gameObject, 1f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
