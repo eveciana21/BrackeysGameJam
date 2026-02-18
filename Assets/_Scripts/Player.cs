@@ -106,5 +106,4 @@ public class Player : MonoBehaviour
             transform.localScale = scale;
         }
     }
-
 }
