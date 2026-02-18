@@ -1772,6 +1772,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 225906567}
     m_Modifications:
+    - target: {fileID: 1397471081046761409, guid: 43742b4ceb525a64a8ec575c69e800bd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.77
+      objectReference: {fileID: 0}
     - target: {fileID: 1481590753558758829, guid: 43742b4ceb525a64a8ec575c69e800bd, type: 3}
       propertyPath: brain
       value: 

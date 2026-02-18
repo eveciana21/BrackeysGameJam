@@ -17,28 +17,31 @@ public class Player : MonoBehaviour
     [Header("Jump Properties")]
     [SerializeField] private float jumpForce = 12f;
     [SerializeField] private float fallMultiplier = 2.5f;
-    [SerializeField] private float lowJumpMultiplier = 2f; // if you didnt hold the jump key
+    [SerializeField] private float lowJumpMultiplier = 2f;
 
     [Header("Throw")]
-    [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform throwPoint;
     [SerializeField] private float throwSpeed = 10f;
     [SerializeField] private float throwUpwardBoost = 2.5f;
     [SerializeField] private float throwCooldown = 0.35f;
 
+    [Header("Projectile Selection")]
+    [SerializeField] private bool useWeightedRandom = false;
+    [SerializeField] private GameObject projectilePrefab;
+
+    private GameObject[] currentProjectilePrefabs;
     private float nextThrowTime;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float groundCheckRadius = 0.2f; // the radius that is considered ground
-    [SerializeField] private float groundCheckOffset = 0.1f; // gives a more forgiving landing check
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private float groundCheckOffset = 0.1f;
 
     private Vector2 moveInput;
-    private bool isJumpHeld = false;
-    private bool isGrounded = false;
+    private bool isJumpHeld;
+    private bool isGrounded;
 
     private Sprite currentProjectileSprite;
-
 
     private void FixedUpdate()
     {
@@ -77,26 +80,28 @@ public class Player : MonoBehaviour
 
     private void ThrowProjectile()
     {
-        if (projectilePrefab == null || throwPoint == null) return;
+        if (throwPoint == null) return;
+        if (currentProjectilePrefabs == null) return;
+        if (currentProjectilePrefabs.Length == 0) return;
 
-        GameObject proj = Instantiate(projectilePrefab, throwPoint.position, Quaternion.identity);
+        int index = Random.Range(0, currentProjectilePrefabs.Length);
+        GameObject prefabToUse = currentProjectilePrefabs[index];
+        if (prefabToUse == null) return;
 
-        if (currentProjectileSprite != null)
-        {
-            SpriteRenderer sr = proj.GetComponent<SpriteRenderer>();
-            if (sr != null)
-            {
-                sr.sprite = currentProjectileSprite;
-            }
-        }
+        GameObject projObj = Instantiate(prefabToUse, throwPoint.position, Quaternion.identity);
 
-        Rigidbody2D projRb = proj.GetComponent<Rigidbody2D>();
+        Rigidbody2D projRb = projObj.GetComponent<Rigidbody2D>();
         if (projRb == null) return;
 
         float facingDir = transform.localScale.x >= 0f ? 1f : -1f;
         Vector2 launchVelocity = new Vector2(facingDir * throwSpeed, throwUpwardBoost);
 
         projRb.linearVelocity = launchVelocity;
+    }
+
+    public void SetProjectilePrefabs(GameObject[] prefabs)
+    {
+        currentProjectilePrefabs = prefabs;
     }
 
     public void SetProjectileSprite(Sprite newSprite)
@@ -115,13 +120,13 @@ public class Player : MonoBehaviour
         float velocityY = rb.linearVelocity.y;
         float multiplier = 0f;
 
-        if (velocityY < 0) // Falling
+        if (velocityY < 0)
         {
-            multiplier = fallMultiplier - 1;
+            multiplier = fallMultiplier - 1f;
         }
-        else if (velocityY > 0 && !isJumpHeld) // Released jump early
+        else if (velocityY > 0 && !isJumpHeld)
         {
-            multiplier = lowJumpMultiplier - 1;
+            multiplier = lowJumpMultiplier - 1f;
         }
 
         rb.linearVelocity += Vector2.up * Physics2D.gravity.y * multiplier * Time.fixedDeltaTime;
@@ -130,14 +135,7 @@ public class Player : MonoBehaviour
     private void CheckIfGrounded()
     {
         Vector2 checkPosition = new Vector2(transform.position.x, playerCollider.bounds.min.y + groundCheckOffset);
-        bool wasGrounded = isGrounded;
         isGrounded = Physics2D.OverlapCircle(checkPosition, groundCheckRadius, groundLayer);
-
-        if (isGrounded != wasGrounded && isGrounded)
-        {
-            // Just landed
-            // Add animation state here for landing
-        }
     }
 
     private void PlayerMovement()
@@ -148,7 +146,7 @@ public class Player : MonoBehaviour
 
     private void FlipPlayer()
     {
-        if (Mathf.Abs(moveInput.x) > 0.01)
+        if (Mathf.Abs(moveInput.x) > 0.01f)
         {
             Vector3 scale = transform.localScale;
             scale.x = Mathf.Abs(scale.x) * (moveInput.x > 0f ? 1f : -1f);

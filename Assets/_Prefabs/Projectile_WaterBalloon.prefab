@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 1092791622837611371}
   - component: {fileID: 5949420009975253335}
   - component: {fileID: 1610823854769185553}
-  - component: {fileID: -8016267176842200736}
+  - component: {fileID: 9081494255426575654}
   - component: {fileID: 6869759090427092782}
+  - component: {fileID: 1190331715679381029}
   m_Layer: 20
-  m_Name: Projectile
+  m_Name: Projectile_WaterBalloon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,8 +85,8 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.4716981, g: 0, b: 0.22467937, a: 1}
+  m_Sprite: {fileID: 7101823065482959017, guid: ca22969f50fd0674aa26dcb5e8743b42, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -109,7 +110,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1.5
+  m_GravityScale: 1.4
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -121,8 +122,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!60 &-8016267176842200736
-PolygonCollider2D:
+--- !u!58 &9081494255426575654
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -155,22 +156,8 @@ PolygonCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
-  m_UseDelaunayMesh: 1
+  m_Offset: {x: 0, y: -0.07163817}
+  m_Radius: 0.325382
 --- !u!114 &6869759090427092782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +170,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b33f28af830441a752ca4faff522f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  randomizeSpriteOnSpawn: 1
+  spriteRenderer: {fileID: 5949420009975253335}
+  randomSprites:
+  - {fileID: 7101823065482959017, guid: ca22969f50fd0674aa26dcb5e8743b42, type: 3}
+  - {fileID: -7514004747818894540, guid: 69dc0aad30d733745927f2d808e6328c, type: 3}
+  - {fileID: 3415256728661171064, guid: 2419990fea7beb345a9915beef1f6e4c, type: 3}
   damage: 1
   enemyLayer:
     serializedVersion: 2
@@ -190,5 +183,29 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 32768
-  groundDampen: 0.3
+  useLifetime: 0
   lifeTime: 5
+  groundDampen: 0.3
+  animator: {fileID: 1190331715679381029}
+--- !u!95 &1190331715679381029
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943081113863803852}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4c7e879b6728a1243a674d8646b7e529, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

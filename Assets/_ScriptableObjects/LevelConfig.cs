@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelConfig", menuName = "Scriptable Objects/LevelConfig")]
@@ -11,8 +12,8 @@ public class LevelConfig : ScriptableObject
     public int enemiesToKill = 5;
     public float spawnRate = 1.5f;
 
-    [Header("Player")]
-    public Sprite projectileSprite;
+    [Header("Player Projectile")]
+    public GameObject[] projectilePrefabs;
 
     [Header("Audio")]
     public AudioClip levelMusic;

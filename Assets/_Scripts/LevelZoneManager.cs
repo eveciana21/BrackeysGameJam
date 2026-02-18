@@ -70,11 +70,10 @@ public class LevelZoneManager : MonoBehaviour
 
     private void Start()
     {
-        // If this is the start level, start the game LOOKING at this drawing,
-        // but DO NOT start combat/spawning yet.
         if (startLevel)
         {
-            ApplyStartViewOnly();
+            ApplyStartViewOnly(); 
+            ApplyProjectileLoadoutOnly(); 
         }
     }
 
@@ -89,7 +88,7 @@ public class LevelZoneManager : MonoBehaviour
         if (Camera.main != null && levelCamera != null)
         {
             Transform mainCam = Camera.main.transform;
-            mainCam.position = new Vector3( levelCamera.transform.position.x,levelCamera.transform.position.y, mainCam.position.z );
+            mainCam.position = new Vector3(levelCamera.transform.position.x, levelCamera.transform.position.y, mainCam.position.z);
             mainCam.rotation = levelCamera.transform.rotation;
         }
     }
@@ -152,7 +151,7 @@ public class LevelZoneManager : MonoBehaviour
         // Blend into locked camera
         if (brain != null)
         {
-            brain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseInOut,enterBlendTime);
+            brain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseInOut, enterBlendTime);
         }
 
         // Priority switch (locked camera wins)
@@ -165,7 +164,7 @@ public class LevelZoneManager : MonoBehaviour
             coreManagersChannel.audioManager.PlayMusic(levelConfig.levelMusic);
         }
 
-        // Projectile sprite
+        // Projectile prefabs (per level)
         if (levelConfig != null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -174,7 +173,7 @@ public class LevelZoneManager : MonoBehaviour
                 Player player = playerObj.GetComponent<Player>();
                 if (player != null)
                 {
-                    player.SetProjectileSprite(levelConfig.projectileSprite);
+                    player.SetProjectilePrefabs(levelConfig.projectilePrefabs);
                 }
             }
         }
@@ -195,6 +194,19 @@ public class LevelZoneManager : MonoBehaviour
         }
     }
 
+    private void ApplyProjectileLoadoutOnly()
+    {
+        if (levelConfig == null) return;
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj == null) return;
+
+        Player player = playerObj.GetComponent<Player>();
+        if (player == null) return;
+
+        player.SetProjectilePrefabs(levelConfig.projectilePrefabs);
+    }
+
     private IEnumerator StartSpawningAfterDelay()
     {
         yield return new WaitForSeconds(firstSpawnDelay);
@@ -207,7 +219,7 @@ public class LevelZoneManager : MonoBehaviour
         if (coreManagersChannel.spawnManager == null) return;
         if (levelConfig == null) return;
 
-        coreManagersChannel.spawnManager.StartSpawning( levelConfig.spawnRate, levelConfig.enemiesToKill, levelConfig.enemyPrefabs,cachedSpawnPoints,this);
+        coreManagersChannel.spawnManager.StartSpawning(levelConfig.spawnRate, levelConfig.enemiesToKill, levelConfig.enemyPrefabs, cachedSpawnPoints, this);
     }
 
     public void RegisterEnemyDeath()
