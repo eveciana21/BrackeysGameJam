@@ -173,7 +173,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.5284354, g: 0.8962264, b: 0.5993109, a: 1}
+  m_Color: {r: 0.5849056, g: 0.13038778, b: 0.0744927, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -318,6 +318,7 @@ MonoBehaviour:
   throwPoint: {fileID: 225043021375168071}
   throwSpeed: 10
   throwUpwardBoost: 2.5
+  throwCooldown: 0.35
   groundLayer:
     serializedVersion: 2
     m_Bits: 32768
