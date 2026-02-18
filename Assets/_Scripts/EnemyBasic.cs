@@ -223,6 +223,11 @@ public class EnemyBasic : MonoBehaviour
         Destroy(gameObject, 1f);
     }
 
+    public void ApplyDamage(int amount)
+    {
+        TakeDamage(amount);
+    }
+
     private void TakeDamage(int amount)
     {
         if (currentHealth <= 0) return;

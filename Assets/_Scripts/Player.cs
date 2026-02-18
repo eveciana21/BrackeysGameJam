@@ -19,6 +19,15 @@ public class Player : MonoBehaviour
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f; // if you didnt hold the jump key
 
+    [Header("Throw")]
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform throwPoint;
+    [SerializeField] private float throwSpeed = 10f;
+    [SerializeField] private float throwUpwardBoost = 2.5f;
+    [SerializeField] private float throwCooldown = 0.35f;
+
+    private float nextThrowTime;
+
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckRadius = 0.2f; // the radius that is considered ground
@@ -53,6 +62,30 @@ public class Player : MonoBehaviour
         {
             isJumpHeld = false;
         }
+    }
+
+    public void OnThrow(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (Time.time < nextThrowTime) return;
+
+        nextThrowTime = Time.time + throwCooldown;
+        ThrowProjectile();
+    }
+
+    private void ThrowProjectile()
+    {
+        if (projectilePrefab == null || throwPoint == null) return;
+
+        GameObject proj = Instantiate(projectilePrefab, throwPoint.position, Quaternion.identity);
+
+        Rigidbody2D projRb = proj.GetComponent<Rigidbody2D>();
+        if (projRb == null) return;
+
+        float facingDir = transform.localScale.x >= 0f ? 1f : -1f;
+        Vector2 launchVelocity = new Vector2(facingDir * throwSpeed, throwUpwardBoost);
+
+        projRb.linearVelocity = launchVelocity;
     }
 
     private void PerformJump()
