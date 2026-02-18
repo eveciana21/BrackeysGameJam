@@ -445,37 +445,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.1319164, y: 0.97318226}
   m_EdgeRadius: 0
---- !u!1 &3447606589875190268
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 747208615545721987}
-  m_Layer: 0
-  m_Name: PointB
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &747208615545721987
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3447606589875190268}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.17, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8006492942067473289}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4653062214021197445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,7 +972,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8134366726373398353}
-  - {fileID: 747208615545721987}
   m_Father: {fileID: 8969450832305730436}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6931786498043460217
@@ -1074,6 +1042,8 @@ MonoBehaviour:
   spawnPointsRoot: {fileID: 8006492942067473289}
   entryBarrier: {fileID: 5346453954900902425}
   exitBarrier: {fileID: 4653062214021197445}
+  startLevel: 1
+  firstSpawnDelay: 0.25
 --- !u!61 &8872322117315666981
 BoxCollider2D:
   m_ObjectHideFlags: 0

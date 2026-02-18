@@ -13,10 +13,10 @@ public class LevelZoneManager : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private CinemachineBrain brain;
 
-    // Locked (per-level) camera
+    // Locked (per-level) camera (fixed view for this drawing)
     [SerializeField] private CinemachineCamera levelCamera;
 
-    // Travel/Peek (global) camera
+    // Travel/Peek (global) camera (follows between drawings)
     [SerializeField] private CinemachineCamera travelCamera;
     [SerializeField] private CinemachineConfiner2D travelConfiner;
 
@@ -34,11 +34,18 @@ public class LevelZoneManager : MonoBehaviour
     [SerializeField] private GameObject entryBarrier;
     [SerializeField] private GameObject exitBarrier;
 
+    [Header("Start Level")]
+    [SerializeField] private bool startLevel; // ONLY true for level 1
+
+    [Header("Spawning")]
+    [SerializeField] private float firstSpawnDelay = 0.25f; // 0 = immediate after trigger
+
     private Transform[] cachedSpawnPoints;
 
     private int enemiesKilled;
     private bool isActive;
     private bool isComplete;
+    private bool hasStartedCombat;
 
     private void Awake()
     {
@@ -54,11 +61,37 @@ public class LevelZoneManager : MonoBehaviour
         if (exitBarrier != null) exitBarrier.SetActive(true);
 
         // Camera defaults
-        if (travelCamera != null) travelCamera.Priority = 10;  // baseline
-        if (levelCamera != null) levelCamera.Priority = 0;     // off until entered
+        if (travelCamera != null) travelCamera.Priority = 10; // baseline
+        if (levelCamera != null) levelCamera.Priority = 0;    // off until active
 
-        // Keep travel camera confined to locked bounds until the level is completed
+        // Default: keep travel confined to locked bounds
         SetTravelBounds(lockedCameraBounds);
+    }
+
+    private void Start()
+    {
+        // If this is the start level, start the game LOOKING at this drawing,
+        // but DO NOT start combat/spawning yet.
+        if (startLevel)
+        {
+            ApplyStartViewOnly();
+        }
+    }
+
+    private void ApplyStartViewOnly()
+    {
+        SetTravelBounds(lockedCameraBounds);
+
+        if (travelCamera != null) travelCamera.Priority = 10;
+        if (levelCamera != null) levelCamera.Priority = 20;
+
+        // Snap output camera so there is no "move from somewhere else" on first frame
+        if (Camera.main != null && levelCamera != null)
+        {
+            Transform mainCam = Camera.main.transform;
+            mainCam.position = new Vector3( levelCamera.transform.position.x,levelCamera.transform.position.y, mainCam.position.z );
+            mainCam.rotation = levelCamera.transform.rotation;
+        }
     }
 
     private void CacheSpawnPoints()
@@ -80,17 +113,21 @@ public class LevelZoneManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (isActive || isComplete) return;
+        if (isComplete) return;
         if (!other.CompareTag("Player")) return;
 
-        ActivateLevel();
+        // First time entering this trigger = lock level + start combat
+        if (!isActive)
+        {
+            ActivateLevel();
+        }
     }
 
     private void ActivateLevel()
     {
         isActive = true;
 
-        // Turn off previous level's locked camera
+        // Lower previous level camera if needed
         if (coreManagersChannel != null && coreManagersChannel.levelZoneManager != null)
         {
             LevelZoneManager previous = coreManagersChannel.levelZoneManager;
@@ -105,20 +142,20 @@ public class LevelZoneManager : MonoBehaviour
             coreManagersChannel.SetLevelZoneManager(this);
         }
 
-        // Lock gates when entering
+        // Lock gates on entry
         if (entryBarrier != null) entryBarrier.SetActive(true);
         if (exitBarrier != null) exitBarrier.SetActive(true);
 
-        // While level is active: travel camera should NOT be able to drift
+        // Keep travel camera confined to locked bounds while level is active
         SetTravelBounds(lockedCameraBounds);
 
         // Blend into locked camera
         if (brain != null)
         {
-            brain.DefaultBlend = new CinemachineBlendDefinition( CinemachineBlendDefinition.Styles.EaseInOut, enterBlendTime);
+            brain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseInOut,enterBlendTime);
         }
 
-        // Ensure locked camera wins
+        // Priority switch (locked camera wins)
         if (travelCamera != null) travelCamera.Priority = 10;
         if (levelCamera != null) levelCamera.Priority = 20;
 
@@ -142,16 +179,41 @@ public class LevelZoneManager : MonoBehaviour
             }
         }
 
-        // Spawning
-        if (coreManagersChannel != null && coreManagersChannel.spawnManager != null && levelConfig != null)
+        // Start combat/spawning (only once)
+        if (!hasStartedCombat)
         {
-            coreManagersChannel.spawnManager.StartSpawning(levelConfig.spawnRate,levelConfig.enemiesToKill, levelConfig.enemyPrefabs,cachedSpawnPoints, this );
+            hasStartedCombat = true;
+
+            if (firstSpawnDelay > 0f)
+            {
+                StartCoroutine(StartSpawningAfterDelay());
+            }
+            else
+            {
+                StartSpawningNow();
+            }
         }
+    }
+
+    private IEnumerator StartSpawningAfterDelay()
+    {
+        yield return new WaitForSeconds(firstSpawnDelay);
+        StartSpawningNow();
+    }
+
+    private void StartSpawningNow()
+    {
+        if (coreManagersChannel == null) return;
+        if (coreManagersChannel.spawnManager == null) return;
+        if (levelConfig == null) return;
+
+        coreManagersChannel.spawnManager.StartSpawning( levelConfig.spawnRate, levelConfig.enemiesToKill, levelConfig.enemyPrefabs,cachedSpawnPoints,this);
     }
 
     public void RegisterEnemyDeath()
     {
         if (!isActive || isComplete) return;
+        if (!hasStartedCombat) return;
 
         enemiesKilled++;
 
@@ -170,6 +232,7 @@ public class LevelZoneManager : MonoBehaviour
             coreManagersChannel.spawnManager.StopSpawning();
         }
 
+        // Open exit
         if (exitBarrier != null)
         {
             exitBarrier.SetActive(false);
@@ -191,13 +254,14 @@ public class LevelZoneManager : MonoBehaviour
             travelCamera.transform.rotation = Camera.main.transform.rotation;
         }
 
-        // Switch cameras
+        // Switch cameras (travel wins)
         ForceDeactivateLockedCamera();
         if (travelCamera != null) travelCamera.Priority = 20;
 
         // After a short moment, allow the small peek range
         StartCoroutine(EnablePeekBoundsAfterDelay());
 
+        // Prevent re-triggering this level trigger
         Collider2D col = GetComponent<Collider2D>();
         if (col != null)
         {
@@ -207,9 +271,7 @@ public class LevelZoneManager : MonoBehaviour
 
     private IEnumerator EnablePeekBoundsAfterDelay()
     {
-        // Wait until the blend has mostly started (prevents "pop" reveal)
         yield return new WaitForSeconds(travelBlendTime * 0.5f);
-
         SetTravelBounds(peekCameraBounds);
     }
 

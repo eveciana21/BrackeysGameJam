@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 8272928823097693876}
   - component: {fileID: 1820901284040453441}
   m_Layer: 12
-  m_Name: Enemy_Basic
+  m_Name: Enemy_Orc
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,8 +331,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.126, y: -3.251, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: -0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8988197516485522137}
   m_Father: {fileID: 0}
@@ -429,6 +429,8 @@ MonoBehaviour:
   maxHealth: 10
   damageFlashTime: 0.08
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  damageSfx: {fileID: 0}
+  deathSFX: {fileID: 0}
   moveSpeed: 3
   bounceForce: 15
   stompKnockbackX: 15

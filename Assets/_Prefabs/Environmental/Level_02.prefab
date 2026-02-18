@@ -461,7 +461,7 @@ Transform:
   m_GameObject: {fileID: 2608172890645720439}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.19, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -820,6 +820,8 @@ MonoBehaviour:
   spawnPointsRoot: {fileID: 7362992723773268239}
   entryBarrier: {fileID: 1755469286519880577}
   exitBarrier: {fileID: 6691012741818398021}
+  startLevel: 0
+  firstSpawnDelay: 1
 --- !u!61 &3927642318308625910
 BoxCollider2D:
   m_ObjectHideFlags: 0
