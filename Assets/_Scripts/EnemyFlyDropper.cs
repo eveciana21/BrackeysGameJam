@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyFlyDropper : MonoBehaviour
+public class EnemyFlyDropper : EnemyBaseClass
 {
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;

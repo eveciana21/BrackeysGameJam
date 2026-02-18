@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyFly : MonoBehaviour
+public class EnemyFly : EnemyBaseClass
 {
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;

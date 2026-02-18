@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     private bool isJumpHeld = false;
     private bool isGrounded = false;
 
+    private Sprite currentProjectileSprite;
+
 
     private void FixedUpdate()
     {
@@ -79,6 +81,15 @@ public class Player : MonoBehaviour
 
         GameObject proj = Instantiate(projectilePrefab, throwPoint.position, Quaternion.identity);
 
+        if (currentProjectileSprite != null)
+        {
+            SpriteRenderer sr = proj.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sprite = currentProjectileSprite;
+            }
+        }
+
         Rigidbody2D projRb = proj.GetComponent<Rigidbody2D>();
         if (projRb == null) return;
 
@@ -86,6 +97,11 @@ public class Player : MonoBehaviour
         Vector2 launchVelocity = new Vector2(facingDir * throwSpeed, throwUpwardBoost);
 
         projRb.linearVelocity = launchVelocity;
+    }
+
+    public void SetProjectileSprite(Sprite newSprite)
+    {
+        currentProjectileSprite = newSprite;
     }
 
     private void PerformJump()

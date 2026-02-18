@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyBasic : MonoBehaviour
+public class EnemyBasic : EnemyBaseClass
 {
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
@@ -12,9 +12,11 @@ public class EnemyBasic : MonoBehaviour
     [Header("Health")]
     [SerializeField] private int maxHealth = 3;
 
-    [Header("Damage Flash")]
+    [Header("Damage")]
     [SerializeField] private float damageFlashTime = 0.08f;
     [SerializeField] private Color damageFlashColor = Color.red;
+    [SerializeField] private AudioClip damageSfx;
+    [SerializeField] private AudioClip deathSFX;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
@@ -199,6 +201,8 @@ public class EnemyBasic : MonoBehaviour
 
     public void Die()
     {
+        NotifyDeath();
+
         CancelInvoke(nameof(EndAttack));
         isAttacking = false;
 

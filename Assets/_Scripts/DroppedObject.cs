@@ -57,12 +57,7 @@ public class DroppedObject : MonoBehaviour
         // Only damage player if object hasn't landed yet
         if (!hasLanded && ((1 << collision.gameObject.layer) & playerLayer) != 0)
         {
-            /*            PlayerHealth health = collision.gameObject.GetComponentInParent<PlayerHealth>();
-                        if (health != null)
-                        {
-                            health.TakeDamage(damageAmount);
-                        }*/
-
+            // Player Damage
             Destroy(gameObject);
         }
     }

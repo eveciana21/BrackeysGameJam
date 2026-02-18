@@ -9,6 +9,12 @@ public class CoreManagersChannelSO : ScriptableObject
     [HideInInspector] public GameManager gameManager;
     [HideInInspector] public SpawnManager spawnManager;
     [HideInInspector] public AudioManager audioManager;
+    [HideInInspector] public LevelZoneManager levelZoneManager;
+
+    public void SetLevelZoneManager(LevelZoneManager instance)
+    {
+        levelZoneManager = instance;
+    }
 
     public void SetUIManager(UIManager instance)
     {
