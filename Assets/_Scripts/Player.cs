@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +22,19 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpForce = 12f;
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
+
+    [Header("Knockback")]
+    [SerializeField] private float knockbackLockTime = 0.18f;
+
+    [Header("Damage Flash")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private float flashInterval = 0.08f;
+
+    private Color originalColor;
+    private Coroutine flashRoutine;
+
+    private float knockbackTimeRemaining;
+    private Vector2 knockbackVelocity;
 
     [Header("Throw")]
     [SerializeField] private Transform throwPoint;
@@ -55,34 +69,75 @@ public class Player : MonoBehaviour
     private bool isInvincible = false;
     private float timeSinceMadeInvincible = 0.0f;
 
+    private bool isDead;
+
     private void Start()
     {
         currentHealth = initHealth;
 
         healthIndicator = healthIndicatorUI.GetComponent<HealthIndicator>();
         healthIndicator.SetHealth(currentHealth);
+
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
     }
 
     private void FixedUpdate()
     {
-        ChickIfInvincible();
+        CheckIfInvincible();
         CheckIfGrounded();
-        PlayerMovement();
+
+        if (animator != null)
+        {
+            animator.SetBool("IsGrounded", isGrounded);
+        }
+
+        if (isDead)
+        {
+            UpdateAnimator();
+            return;
+        }
+
+
+
+        if (knockbackTimeRemaining > 0f)
+        {
+            knockbackTimeRemaining -= Time.fixedDeltaTime;
+            rb.linearVelocity = new Vector2(knockbackVelocity.x, rb.linearVelocity.y);
+        }
+        else
+        {
+            PlayerMovement();
+        }
+
         ApplyGravityMultiplier();
+        UpdateAnimator();
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (isDead) return;
+
         moveInput = context.ReadValue<Vector2>();
         FlipPlayer();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (isDead) return;
+
         if (context.performed && isGrounded)
         {
             isJumpHeld = true;
             PerformJump();
+
+            if (animator != null)
+            {
+                animator.ResetTrigger("Jump");
+                animator.SetTrigger("Jump");
+            }
         }
         else if (context.canceled)
         {
@@ -92,6 +147,7 @@ public class Player : MonoBehaviour
 
     public void OnThrow(InputAction.CallbackContext context)
     {
+        if (isDead) return;
         if (!context.performed) return;
         if (Time.time < nextThrowTime) return;
 
@@ -175,7 +231,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ChickIfInvincible()
+    private void UpdateAnimator()
+    {
+        if (animator == null) return;
+
+        bool isInKnockback = knockbackTimeRemaining > 0f;
+        bool shouldWalk = !isDead && !isInKnockback && isGrounded && Mathf.Abs(rb.linearVelocity.x) > 0.1f;
+
+        animator.SetBool("Walk", shouldWalk);
+    }
+
+    private void CheckIfInvincible()
     {
         if (isInvincible)
         {
@@ -186,33 +252,99 @@ public class Player : MonoBehaviour
                 isInvincible = false;
                 timeSinceMadeInvincible = 0.0f;
             }
+
+            StopDamageFlash();
         }
+    }
+
+    private void StartDamageFlash()
+    {
+        if (spriteRenderer == null) return;
+
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(DamageFlashCoroutine());
+    }
+
+    private void StopDamageFlash()
+    {
+        if (spriteRenderer == null) return;
+
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+            flashRoutine = null;
+        }
+
+        spriteRenderer.color = originalColor;
+    }
+
+    private IEnumerator DamageFlashCoroutine()
+    {
+        Color red = Color.red;
+
+        while (isInvincible)
+        {
+            spriteRenderer.color = red;
+            yield return new WaitForSeconds(flashInterval);
+
+            spriteRenderer.color = originalColor;
+            yield return new WaitForSeconds(flashInterval);
+        }
+
+        spriteRenderer.color = originalColor;
+        flashRoutine = null;
     }
 
     public void DamagePlayer(int damageDealt = 1)
     {
         if (isInvincible) return;
+        if (isDead) return;
 
         Debug.Log(damageDealt + " damage dealt");
 
         currentHealth = Math.Max(0, currentHealth - damageDealt);
         isInvincible = true;
 
+        StartDamageFlash();
+
         healthIndicator.SetHealth(currentHealth);
 
         if (currentHealth == 0)
         {
-            killPlayer();
+            KillPlayer();
             return;
         }
-
-        // Trigger damage animation here
     }
 
-    private void killPlayer()
+    public void ApplyKnockback(Vector2 knockback)
     {
-        Debug.Log("Player died");
-        // Trigger death animation/logic here
+        if (isDead) return;
 
+        knockbackVelocity = knockback;
+        knockbackTimeRemaining = knockbackLockTime;
+
+        rb.linearVelocity = new Vector2(knockback.x, knockback.y);
+    }
+
+    private void KillPlayer()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        Debug.Log("Player died");
+
+        if (animator != null)
+        {
+            animator.SetBool("Walk", false);
+            animator.ResetTrigger("Death");
+            animator.SetTrigger("Death");
+        }
+
+        // Optional: stop movement
+        rb.linearVelocity = Vector2.zero;
     }
 }

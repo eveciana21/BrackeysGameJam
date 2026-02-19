@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7665591181313955297}
   - component: {fileID: 2561200576832200649}
-  - component: {fileID: 3991997801379152597}
+  - component: {fileID: 2755897398549174816}
   - component: {fileID: 3410209155376615622}
   m_Layer: 12
   m_Name: Enemy_Leg
@@ -30,7 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5527630000031891638}
   m_Father: {fileID: 0}
@@ -62,8 +62,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!61 &3991997801379152597
-BoxCollider2D:
+--- !u!60 &2755897398549174816
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -96,7 +96,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.61243844, y: -3.231349}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -106,8 +106,16 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.047512, y: 6.3165245}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.3309658, y: -2.3563406}
+      - {x: -1.3826747, y: -5.7672772}
+      - {x: -1.4060502, y: -6.419979}
+      - {x: 1.3251766, y: -6.417252}
+      - {x: 1.3033533, y: -5.7352057}
+      - {x: -0.40759003, y: -5.60608}
+      - {x: -0.50021267, y: -2.2150126}
+  m_UseDelaunayMesh: 1
 --- !u!114 &3410209155376615622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,9 +129,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLeg
   rb: {fileID: 2561200576832200649}
-  enemyCollider: {fileID: 3991997801379152597}
+  enemyCollider: {fileID: 2755897398549174816}
   moveSpeed: 3
-  bounceForce: 10
+  enragedSpeedMultiplier: 1.5
   jumpForce: 20
   jumpInterval: 2
   horizontalJumpMultiplier: 1.2
@@ -131,20 +139,29 @@ MonoBehaviour:
   bodyRenderer: {fileID: 3512063716457378717}
   damageFlashTime: 0.08
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
-  contactDamage: 1
-  contactDamageCooldown: 1
+  stompDamage: 1
+  stompKnockbackX: 15
+  stompKnockbackY: 10
+  stompIgnoreCollisionTime: 0.15
+  touchDamage: 1
+  touchKnockbackX: 10
+  touchKnockbackY: 8
+  touchCooldown: 0.35
   shakeOnStomp: 1
   stompShakeAmplitude: 0.25
   stompShakeDuration: 0.12
-  groundCheckDistance: 2
-  wallCheckDistance: 2
+  groundCheckDistance: 4
+  wallCheckDistance: 4
   groundCheckOffset: 0.5
-  groundedRayLength: 0.2
   extraFallGravity: 3
-  useScreenBounds: 1
-  screenEdgePadding: 0.3
-  edgeFlipCooldown: 0.25
+  useBounds: 1
+  edgeFlipCooldown: 1
+  boundsPadding: 0.1
   flipCooldown: 0.2
+  deathStompImpulse: 14
+  deathFallExtraGravity: 4
+  fallThroughDelay: 0.08
+  destroyAfterDeathSeconds: 1.25
   groundLayer:
     serializedVersion: 2
     m_Bits: 32768
@@ -181,8 +198,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: -0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7665591181313955297}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -237,7 +254,7 @@ SpriteRenderer:
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 3c7a962f20ea1d54cb02a3c4a1d32fa1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 10.8, y: 19.2}

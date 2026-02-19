@@ -126,6 +126,21 @@ public class Projectile : MonoBehaviour
 
     private void ApplyDamageIfPossible(Collision2D collision)
     {
+        // If you hit a child collider, try parent first too
+        Rat rat = collision.gameObject.GetComponentInParent<Rat>();
+        if (rat != null)
+        {
+            rat.ApplyDamage(damage);
+            return;
+        }
+
+        EnemyLeg leg = collision.gameObject.GetComponentInParent<EnemyLeg>();
+        if (leg != null)
+        {
+            leg.ApplyDamage(damage);
+            return;
+        }
+
         EnemyBasic enemy = collision.gameObject.GetComponentInParent<EnemyBasic>();
         if (enemy != null)
         {

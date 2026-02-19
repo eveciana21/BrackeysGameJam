@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     {
         if (coreManagersChannel != null)
         {
-            coreManagersChannel?.SetGameManager(this);
+            coreManagersChannel.SetGameManager(this);
         }
 
         uiInput = new InputActions();
@@ -39,30 +39,40 @@ public class GameManager : MonoBehaviour
 
     public void OnClick_StartGame()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(mainSceneIndex);
     }
 
+    // called by UIManager ConfirmYes()
+    public void RestartCurrentScene()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    // called by UIManager ConfirmYes()
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainMenuIndex);
+    }
+
+    // Kept for button wiring if you still use them
     public void OnClick_RestartGame()
     {
-        Time.timeScale = 1;
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        RestartCurrentScene();
     }
 
     public void OnClick_MainMenu()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(mainMenuIndex);
+        GoToMainMenu();
     }
 
     public void OnClick_Continue()
     {
         coreManagersChannel?.uiManager?.HidePausePopup();
-
         onQuitGameScreen = false;
-
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
     }
 
     private void EscapeButtonPressed(InputAction.CallbackContext context)
@@ -71,9 +81,7 @@ public class GameManager : MonoBehaviour
 
         // Don't pause on Main Menu
         if (current.buildIndex == 0)
-        {
             return;
-        }
 
         if (onQuitGameScreen)
         {
@@ -83,7 +91,7 @@ public class GameManager : MonoBehaviour
 
         coreManagersChannel?.uiManager?.ShowPausePopup();
         onQuitGameScreen = true;
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
     }
 
     public void OnClick_QuitGame()

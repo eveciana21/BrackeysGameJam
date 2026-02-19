@@ -432,7 +432,7 @@ MonoBehaviour:
   damageSfx: {fileID: 0}
   deathSFX: {fileID: 0}
   moveSpeed: 3
-  bounceForce: 15
+  bounceForce: 20
   stompKnockbackX: 15
   moveSpeedIncreaseOnStomp: 1
   maxMoveSpeed: 5

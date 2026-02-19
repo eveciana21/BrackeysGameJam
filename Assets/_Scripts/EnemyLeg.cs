@@ -9,55 +9,60 @@ public class EnemyLeg : EnemyBaseClass
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
-
-    [Header("Player Bounce")]
-    [SerializeField] private float bounceForce = 10f;
+    [SerializeField] private float enragedSpeedMultiplier = 1.5f;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 8f;
-    [SerializeField] private float jumpInterval = 2f; // seconds between jumps
-    [SerializeField] private float horizontalJumpMultiplier = 1.2f; // horizontal speed during jump
+    [SerializeField] private float jumpInterval = 2f;
+    [SerializeField] private float horizontalJumpMultiplier = 1.2f;
 
     [Header("Health")]
     [SerializeField] private int maxHealth = 3;
 
-    [Header("Damage")]
+    [Header("Damage Flash")]
     [SerializeField] private SpriteRenderer bodyRenderer;
     [SerializeField] private float damageFlashTime = 0.08f;
     [SerializeField] private Color damageFlashColor = Color.red;
 
-    [Header("Contact Damage")]
-    [SerializeField] private int contactDamage = 1;
-    [SerializeField] private float contactDamageCooldown = 1f;
+    [Header("Player Hit (stomp + touch)")]
+    [SerializeField] private int stompDamage = 1;
+    [SerializeField] private float stompKnockbackX = 14f;
+    [SerializeField] private float stompKnockbackY = 14f;
+    [SerializeField] private float stompIgnoreCollisionTime = 0.15f;
+
+    [SerializeField] private int touchDamage = 1;
+    [SerializeField] private float touchKnockbackX = 10f;
+    [SerializeField] private float touchKnockbackY = 8f;
+    [SerializeField] private float touchCooldown = 0.35f;
 
     [Header("Screen Shake")]
     [SerializeField] private bool shakeOnStomp = true;
     [SerializeField] private float stompShakeAmplitude = 1.5f;
     [SerializeField] private float stompShakeDuration = 0.12f;
 
-    private float nextStompShakeTime;
-    private float nextContactDamageTime;
-    private int currentHealth;
-    private Coroutine flashRoutine;
-
-    private bool wasGrounded;
-
     [Header("Detection")]
     [SerializeField] private float groundCheckDistance = 2f;
     [SerializeField] private float wallCheckDistance = 0.5f;
     [SerializeField] private float groundCheckOffset = 1f;
-    [SerializeField] private float groundedRayLength = 0.2f;
 
     [Header("Fall Feel")]
     [SerializeField] private float extraFallGravity = 2f;
 
-    [Header("Screen Bounds (X only)")]
-    [SerializeField] private bool useScreenBounds = true;
-    [SerializeField] private float screenEdgePadding = 0.03f; // 0..0.5 (viewport space)
+    [Header("Bounds (X only)")]
+    [SerializeField] private bool useBounds = true;
     [SerializeField] private float edgeFlipCooldown = 0.25f;
+    [SerializeField] private float boundsPadding = 0.1f;
 
+    [Header("Flip Cooldown")]
     [SerializeField] private float flipCooldown = 0.2f;
-    private float nextFlipTime;
+
+    [Header("Death: Final Stomp + Fall Through")]
+    [SerializeField] private float deathStompImpulse = 14f;
+    [SerializeField] private float deathFallExtraGravity = 4f;
+    [SerializeField] private float fallThroughDelay = 0.08f;
+    [SerializeField] private float destroyAfterDeathSeconds = 1.25f;
+
+    private Collider2D patrolBounds; // auto-found by PatrolBounds tag
 
     [Space(10)]
     [SerializeField] private LayerMask groundLayer;
@@ -66,37 +71,38 @@ public class EnemyLeg : EnemyBaseClass
 
     private bool facingRight;
     private bool isGrounded;
+    private bool wasGrounded;
+
+    private float nextFlipTime;
+    private float nextEdgeFlipTime;
+    private float nextTouchTime;
+    private float nextStompShakeTime;
+
+    private int currentHealth;
+    private bool isDying;
 
     private Coroutine jumpRoutine;
+    private Coroutine flashRoutine;
 
-    private float nextEdgeFlipTime;
-    private Camera mainCam;
+    private float baseMoveSpeed;
 
     private void Awake()
     {
         facingRight = transform.localScale.x >= 0f;
-        mainCam = Camera.main;
         currentHealth = maxHealth;
+        baseMoveSpeed = moveSpeed;
 
-        if (rb == null)
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        if (enemyCollider == null) enemyCollider = GetComponent<Collider2D>();
+
+        if (patrolBounds == null)
         {
-            rb = GetComponent<Rigidbody2D>();
+            GameObject obj = GameObject.FindGameObjectWithTag("PatrolBounds");
+            if (obj != null)
+            {
+                patrolBounds = obj.GetComponent<Collider2D>();
+            }
         }
-
-        if (enemyCollider == null)
-        {
-            enemyCollider = GetComponent<Collider2D>();
-        }
-
-        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-
-        if (HandleScreenEdgeXOnly())
-        {
-            return;
-        }
-
-        CheckForFlip();
-        return;
     }
 
     private void OnEnable()
@@ -115,6 +121,8 @@ public class EnemyLeg : EnemyBaseClass
 
     private void FixedUpdate()
     {
+        if (isDying) return;
+
         isGrounded = CheckGrounded();
 
         bool landedThisFrame = !wasGrounded && isGrounded;
@@ -127,44 +135,55 @@ public class EnemyLeg : EnemyBaseClass
 
         if (isGrounded)
         {
-            // Leg is "planted" on ground: never slide horizontally
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
 
-            // Left/right screen edge handling (X only). If we flipped, jump away immediately.
-            if (HandleScreenEdgeXOnly())
-            {
-                return;
-            }
+            if (HandleBoundsXOnly()) return;
 
-            // Optional: also flip if a wall/edge is immediately ahead (world collision)
             CheckForFlip();
             return;
         }
 
-        // In air: stomp horizontally
         MoveInAir();
-
-        // Extra gravity while in air (heavier stomp feel)
         ApplyExtraFallGravity();
     }
 
-    private void TryStompShake()
+    private IEnumerator JumpCoroutine()
     {
-        if (!shakeOnStomp) return;
+        yield return new WaitForSeconds(Random.Range(0f, 1f));
 
-        ScreenShake shaker = ScreenShake.Instance;
-        if (shaker == null) return;
+        while (true)
+        {
+            yield return new WaitForSeconds(jumpInterval);
 
-        if (Time.time < nextStompShakeTime) return;
-        nextStompShakeTime = Time.time + stompShakeDuration;
+            if (isDying) continue;
 
-        shaker.Shake(stompShakeAmplitude);
+            if (isGrounded && IsSafeToJump())
+            {
+                yield return new WaitForFixedUpdate();
+                Jump();
+            }
+        }
+    }
+
+    private float GetCurrentMoveSpeed()
+    {
+        bool enraged = currentHealth <= (maxHealth / 2);
+        return enraged ? baseMoveSpeed * enragedSpeedMultiplier : baseMoveSpeed;
+    }
+
+    private void Jump()
+    {
+        float dir = facingRight ? 1f : -1f;
+        float airSpeed = GetCurrentMoveSpeed() * horizontalJumpMultiplier;
+
+        rb.linearVelocity = new Vector2(dir * airSpeed, 0f);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
     private void MoveInAir()
     {
         float dir = facingRight ? 1f : -1f;
-        float airSpeed = moveSpeed * horizontalJumpMultiplier;
+        float airSpeed = GetCurrentMoveSpeed() * horizontalJumpMultiplier;
 
         rb.linearVelocity = new Vector2(dir * airSpeed, rb.linearVelocity.y);
     }
@@ -176,55 +195,24 @@ public class EnemyLeg : EnemyBaseClass
         rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (extraFallGravity - 1f) * Time.fixedDeltaTime;
     }
 
-    private void Jump()
+    private bool HandleBoundsXOnly()
     {
-        float dir = facingRight ? 1f : -1f;
-        float airSpeed = moveSpeed * horizontalJumpMultiplier;
-
-        // Start stomp direction immediately
-        rb.linearVelocity = new Vector2(dir * airSpeed, 0f);
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-    }
-
-    private IEnumerator JumpCoroutine()
-    {
-        // small random start offset so multiple enemies don't jump in sync
-        yield return new WaitForSeconds(Random.Range(0f, 1f));
-
-        while (true)
-        {
-            yield return new WaitForSeconds(jumpInterval);
-
-            if (isGrounded && IsSafeToJump())
-            {
-                yield return new WaitForFixedUpdate();
-                Jump();
-            }
-        }
-    }
-
-    private bool HandleScreenEdgeXOnly()
-    {
-        if (!useScreenBounds) return false;
-        if (mainCam == null) return false;
+        if (!useBounds) return false;
         if (enemyCollider == null) return false;
+        if (patrolBounds == null) return false;
         if (Time.time < nextEdgeFlipTime) return false;
 
-        Bounds b = enemyCollider.bounds;
+        Bounds my = enemyCollider.bounds;
+        Bounds bounds = patrolBounds.bounds;
 
-        // Screen edge check (X only) using the collider edges
-        Vector3 leftVp = mainCam.WorldToViewportPoint(new Vector3(b.min.x, b.center.y, 0f));
-        Vector3 rightVp = mainCam.WorldToViewportPoint(new Vector3(b.max.x, b.center.y, 0f));
+        bool atRight = my.max.x >= bounds.max.x - boundsPadding;
+        bool atLeft = my.min.x <= bounds.min.x + boundsPadding;
 
-        bool atRightScreenEdge = rightVp.x >= 1f - screenEdgePadding;
-        bool atLeftScreenEdge = leftVp.x <= screenEdgePadding;
-
-        // Ground-ahead safety check (prevents falling off stage)
         bool groundAhead = HasGroundAhead();
 
         bool shouldTurn =
-            (facingRight && atRightScreenEdge) ||
-            (!facingRight && atLeftScreenEdge) ||
+            (facingRight && atRight) ||
+            (!facingRight && atLeft) ||
             !groundAhead;
 
         if (!shouldTurn) return false;
@@ -232,7 +220,6 @@ public class EnemyLeg : EnemyBaseClass
         Flip();
         nextEdgeFlipTime = Time.time + edgeFlipCooldown;
 
-        // Jump immediately so we leave the edge and don't "stutter"
         Jump();
         return true;
     }
@@ -242,38 +229,27 @@ public class EnemyLeg : EnemyBaseClass
         if (enemyCollider == null) return true;
 
         Bounds b = enemyCollider.bounds;
-
         float dir = facingRight ? 1f : -1f;
 
-        // "Front foot" position (a little in front of the collider edge)
         float footX = facingRight ? b.max.x : b.min.x;
         Vector2 origin = new Vector2(footX + (0.1f * dir), b.min.y + 0.05f);
 
-        float distanceDown = groundCheckDistance;
-
-        // Debug.DrawRay(origin, Vector2.down * distanceDown, Color.cyan); // optional
-
-        return Physics2D.Raycast(origin, Vector2.down, distanceDown, groundLayer);
+        return Physics2D.Raycast(origin, Vector2.down, groundCheckDistance, groundLayer);
     }
 
     private bool IsSafeToJump()
     {
         float dir = facingRight ? 1f : -1f;
-
-        // Rough landing distance estimate
-        float jumpDistance = moveSpeed * horizontalJumpMultiplier * 0.8f;
+        float jumpDistance = GetCurrentMoveSpeed() * horizontalJumpMultiplier * 0.8f;
 
         Bounds b = enemyCollider.bounds;
 
-        // Ray starts well above so it doesn't clip into any surface
         float rayStartY = b.max.y + 1f;
         float rayLength = groundCheckDistance + (rayStartY - b.min.y);
 
-        // Check ground at the landing spot
         Vector2 landingCheckPosition = new Vector2(transform.position.x + (jumpDistance * dir), rayStartY);
         bool groundAtLanding = Physics2D.Raycast(landingCheckPosition, Vector2.down, rayLength, groundLayer);
 
-        // Also check that there's still ground right at the front edge (catches edge cases)
         Vector2 frontEdgePosition = new Vector2(facingRight ? b.max.x : b.min.x, rayStartY);
         bool groundAtFrontEdge = Physics2D.Raycast(frontEdgePosition, Vector2.down, rayLength, groundLayer);
 
@@ -288,12 +264,8 @@ public class EnemyLeg : EnemyBaseClass
         if (enemyCollider == null) return;
 
         Bounds b = enemyCollider.bounds;
-
         float dir = facingRight ? 1f : -1f;
 
-        // Put the ground-ahead ray at the FRONT FOOT area:
-        // - X: a bit in front of the collider
-        // - Y: right near the bottom of the collider (the "foot")
         Vector2 groundCheckPosition = new Vector2(
             b.center.x + (groundCheckOffset * dir),
             b.min.y + 0.05f
@@ -301,13 +273,8 @@ public class EnemyLeg : EnemyBaseClass
 
         bool groundAhead = Physics2D.Raycast(groundCheckPosition, Vector2.down, groundCheckDistance, groundLayer);
 
-        // Wall check from the collider center (good baseline)
         Vector2 wallCheckDirection = facingRight ? Vector2.right : Vector2.left;
         bool wallAhead = Physics2D.Raycast(b.center, wallCheckDirection, wallCheckDistance, wallLayer);
-
-        // Optional: visualize the rays while debugging
-        // Debug.DrawRay(groundCheckPosition, Vector2.down * groundCheckDistance, groundAhead ? Color.green : Color.red);
-        // Debug.DrawRay(b.center, wallCheckDirection * wallCheckDistance, wallAhead ? Color.green : Color.red);
 
         if (!groundAhead || wallAhead)
         {
@@ -321,9 +288,9 @@ public class EnemyLeg : EnemyBaseClass
 
         Bounds b = enemyCollider.bounds;
 
-        float extra = 0.05f; // small "reach" below the collider
+        float extra = 0.05f;
         Vector2 origin = new Vector2(b.center.x, b.center.y);
-        Vector2 size = new Vector2(b.size.x * 0.9f, b.size.y); // slightly thinner to avoid side hits
+        Vector2 size = new Vector2(b.size.x * 0.9f, b.size.y);
 
         RaycastHit2D hit = Physics2D.BoxCast(origin, size, 0f, Vector2.down, extra, groundLayer);
         return hit.collider != null;
@@ -343,24 +310,98 @@ public class EnemyLeg : EnemyBaseClass
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (isDying) return;
         if (((1 << collision.gameObject.layer) & playerLayer) == 0) return;
 
-        Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (playerRb == null) return;
+        Player player = collision.gameObject.GetComponent<Player>();
+        if (player == null) return;
 
-        foreach (ContactPoint2D contact in collision.contacts)
+        if (IsStompOnPlayer(collision))
         {
-            if (contact.normal.y < -0.5f && playerRb.linearVelocity.y < 0f)
-            {
-                playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, 0f);
-                playerRb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
-                break;
-            }
+            float dirX = GetKnockbackDirX(player.transform);
+
+            player.DamagePlayer(stompDamage);
+            player.ApplyKnockback(new Vector2(dirX * stompKnockbackX, stompKnockbackY));
+
+            StartCoroutine(TemporarilyIgnorePlayerCollision(player));
+            TryStompShake();
+            return;
         }
+
+        ApplyTouchHit(player);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (isDying) return;
+        if (((1 << collision.gameObject.layer) & playerLayer) == 0) return;
+
+        Player player = collision.gameObject.GetComponent<Player>();
+        if (player == null) return;
+
+        if (IsStompOnPlayer(collision)) return;
+
+        ApplyTouchHit(player);
+    }
+
+    private bool IsStompOnPlayer(Collision2D collision)
+    {
+        if (rb.linearVelocity.y >= 0f) return false;
+
+        for (int i = 0; i < collision.contactCount; i++)
+        {
+            ContactPoint2D contact = collision.GetContact(i);
+            if (contact.normal.y > 0.5f) return true;
+        }
+
+        return false;
+    }
+
+    private void ApplyTouchHit(Player player)
+    {
+        if (Time.time < nextTouchTime) return;
+
+        nextTouchTime = Time.time + touchCooldown;
+
+        float dirX = GetKnockbackDirX(player.transform);
+
+        player.DamagePlayer(touchDamage);
+        player.ApplyKnockback(new Vector2(dirX * touchKnockbackX, touchKnockbackY));
+    }
+
+    private float GetKnockbackDirX(Transform playerTransform)
+    {
+        return playerTransform.position.x >= transform.position.x ? 1f : -1f;
+    }
+
+    private IEnumerator TemporarilyIgnorePlayerCollision(Player player)
+    {
+        if (enemyCollider == null) yield break;
+
+        Collider2D playerCol = player.GetComponent<Collider2D>();
+        if (playerCol == null) yield break;
+
+        Physics2D.IgnoreCollision(enemyCollider, playerCol, true);
+        yield return new WaitForSeconds(stompIgnoreCollisionTime);
+        Physics2D.IgnoreCollision(enemyCollider, playerCol, false);
+    }
+
+    private void TryStompShake()
+    {
+        if (!shakeOnStomp) return;
+
+        ScreenShake shaker = ScreenShake.Instance;
+        if (shaker == null) return;
+
+        if (Time.time < nextStompShakeTime) return;
+        nextStompShakeTime = Time.time + stompShakeDuration;
+
+        shaker.Shake(stompShakeAmplitude);
     }
 
     public void ApplyDamage(int amount)
     {
+        if (isDying) return;
         TakeDamage(amount);
     }
 
@@ -402,13 +443,10 @@ public class EnemyLeg : EnemyBaseClass
 
     private void Die()
     {
-        NotifyDeath();
+        if (isDying) return;
+        isDying = true;
 
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.simulated = false;
-        }
+        NotifyDeath();
 
         if (jumpRoutine != null)
         {
@@ -416,6 +454,33 @@ public class EnemyLeg : EnemyBaseClass
             jumpRoutine = null;
         }
 
-        Destroy(gameObject, 0.1f);
+        StartCoroutine(DeathStompThenFallThrough());
+    }
+
+    private IEnumerator DeathStompThenFallThrough()
+    {
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+
+            rb.AddForce(Vector2.down * deathStompImpulse, ForceMode2D.Impulse);
+
+            if (deathFallExtraGravity > 1f)
+            {
+                rb.gravityScale *= deathFallExtraGravity;
+            }
+        }
+
+        TryStompShake();
+
+        yield return new WaitForSeconds(fallThroughDelay);
+
+        if (enemyCollider != null)
+        {
+            enemyCollider.isTrigger = true;
+        }
+
+        Destroy(gameObject, destroyAfterDeathSeconds);
     }
 }
