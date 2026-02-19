@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
 
     [Header("Player Properties")]
     [SerializeField] private float playerSpeed = 8f;
+    [SerializeField] private int initHealth = 5;
+    [SerializeField] private float invincibilityTime = 1.0f;
 
     [Header("Jump Properties")]
     [SerializeField] private float jumpForce = 12f;
@@ -37,14 +40,32 @@ public class Player : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private float groundCheckOffset = 0.1f;
 
+    [Header("UI Components")]
+    [SerializeField] private GameObject healthIndicatorUI;
+
     private Vector2 moveInput;
     private bool isJumpHeld;
     private bool isGrounded;
 
     private Sprite currentProjectileSprite;
 
+    private HealthIndicator healthIndicator;
+
+    private int currentHealth;
+    private bool isInvincible = false;
+    private float timeSinceMadeInvincible = 0.0f;
+
+    private void Start()
+    {
+        currentHealth = initHealth;
+
+        healthIndicator = healthIndicatorUI.GetComponent<HealthIndicator>();
+        healthIndicator.SetHealth(currentHealth);
+    }
+
     private void FixedUpdate()
     {
+        ChickIfInvincible();
         CheckIfGrounded();
         PlayerMovement();
         ApplyGravityMultiplier();
@@ -84,7 +105,7 @@ public class Player : MonoBehaviour
         if (currentProjectilePrefabs == null) return;
         if (currentProjectilePrefabs.Length == 0) return;
 
-        int index = Random.Range(0, currentProjectilePrefabs.Length);
+        int index = UnityEngine.Random.Range(0, currentProjectilePrefabs.Length);
         GameObject prefabToUse = currentProjectilePrefabs[index];
         if (prefabToUse == null) return;
 
@@ -152,5 +173,46 @@ public class Player : MonoBehaviour
             scale.x = Mathf.Abs(scale.x) * (moveInput.x > 0f ? 1f : -1f);
             transform.localScale = scale;
         }
+    }
+
+    private void ChickIfInvincible()
+    {
+        if (isInvincible)
+        {
+            timeSinceMadeInvincible += Time.deltaTime;
+
+            if (timeSinceMadeInvincible >= invincibilityTime)
+            {
+                isInvincible = false;
+                timeSinceMadeInvincible = 0.0f;
+            }
+        }
+    }
+
+    public void DamagePlayer(int damageDealt = 1)
+    {
+        if (isInvincible) return;
+
+        Debug.Log(damageDealt + " damage dealt");
+
+        currentHealth = Math.Max(0, currentHealth - damageDealt);
+        isInvincible = true;
+
+        healthIndicator.SetHealth(currentHealth);
+
+        if (currentHealth == 0)
+        {
+            killPlayer();
+            return;
+        }
+
+        // Trigger damage animation here
+    }
+
+    private void killPlayer()
+    {
+        Debug.Log("Player died");
+        // Trigger death animation/logic here
+
     }
 }
