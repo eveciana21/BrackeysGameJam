@@ -7,10 +7,9 @@ public class HealthIndicator : MonoBehaviour
 
     private RectTransform rectTransform;
 
-    public void Start()
+    public void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        
     }
 
     public void SetHealth(int health)
@@ -25,6 +24,7 @@ public class HealthIndicator : MonoBehaviour
                 indicator.transform.SetParent(rectTransform, false);
             }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+        if (rectTransform != null) LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+        
     }
 }
