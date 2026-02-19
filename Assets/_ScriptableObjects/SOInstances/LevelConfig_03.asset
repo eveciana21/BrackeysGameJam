@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: ShoeStore
   enemyPrefabs:
-  - {fileID: 9069719172525236248, guid: db89c4722326d134d88b011b8ea9a23f, type: 3}
-  enemiesToKill: 5
+  - {fileID: 2402435362702252664, guid: e29655691c939fc4a85d2b964d705781, type: 3}
+  enemiesToKill: 1
   spawnRate: 1.5
   projectilePrefabs:
   - {fileID: 943081113863803852, guid: 0e8b13e3c5e2bbc41a7d49a96a65a62c, type: 3}

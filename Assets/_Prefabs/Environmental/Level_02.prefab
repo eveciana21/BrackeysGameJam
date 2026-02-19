@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8509371365474892804
 Transform:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 6789128673195755204}
   - component: {fileID: 2995182897143073913}
   - component: {fileID: 3277181141267523375}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: EntryBarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -591,7 +591,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3499203729498759954}
-  - {fileID: 164276951724045357}
   m_Father: {fileID: 5133804515900532082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3370239832226072348
@@ -612,7 +611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3414101813745682042
 Transform:
   m_ObjectHideFlags: 0
@@ -1024,7 +1023,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2795612209103463888
 Transform:
   m_ObjectHideFlags: 0
@@ -1245,7 +1244,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 552209374302437760, guid: be8095ca80378664cb394b59ae248f72, type: 3}
+  m_Sprite: {fileID: 5961732774943016698, guid: dc3870c2cea8e7a49a5e4091d52c2b89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1299,7 +1298,7 @@ GameObject:
   - component: {fileID: 2712611337642221415}
   - component: {fileID: 4540770436695628959}
   - component: {fileID: 8751061145412471889}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: ExitBarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1564,34 +1563,3 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.0389435, y: 0.9772357}
   m_EdgeRadius: 0
---- !u!1 &8731030131644028436
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 164276951724045357}
-  m_Layer: 0
-  m_Name: PointB
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &164276951724045357
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8731030131644028436}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.83, y: -3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7362992723773268239}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

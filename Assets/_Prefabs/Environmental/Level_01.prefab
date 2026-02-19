@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 564867723750788246}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.78, y: -3.35, z: 0}
+  m_LocalPosition: {x: 1.84, y: 1.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3741580291522497835}
   - component: {fileID: 6634293050272354634}
   - component: {fileID: 4643562819662632632}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: EntryBarrier (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,7 +456,7 @@ GameObject:
   - component: {fileID: 8014903660838838865}
   - component: {fileID: 8860833471849785924}
   - component: {fileID: 3836216108276437669}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: ExitBarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -594,7 +594,7 @@ GameObject:
   - component: {fileID: 7869604859656888586}
   - component: {fileID: 2251276872504370327}
   - component: {fileID: 1899207315032630669}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: EntryBarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -732,6 +732,7 @@ GameObject:
   - component: {fileID: 7752731248847561123}
   - component: {fileID: 6557115034488747307}
   - component: {fileID: 3209282974446139863}
+  - component: {fileID: 5853826311552315639}
   m_Layer: 0
   m_Name: LevelCamera
   m_TagString: Untagged
@@ -817,6 +818,30 @@ MonoBehaviour:
     MaxWindowSize: 0
     Padding: 0
   m_LegacyMaxWindowSize: -2
+--- !u!114 &5853826311552315639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194201661285833598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseListener
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  SignalCombinationMode: 0
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &6444443786399535775
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,7 +923,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 552209374302437760, guid: be8095ca80378664cb394b59ae248f72, type: 3}
+  m_Sprite: {fileID: 5961732774943016698, guid: dc3870c2cea8e7a49a5e4091d52c2b89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1030,7 +1055,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelZoneManager
   coreManagersChannel: {fileID: 11400000, guid: 927fed7eec3c86440b378baeadce6f24, type: 2}
-  levelConfig: {fileID: 11400000, guid: 7ef80ca1ee1fb7841ae24bc09fa9b728, type: 2}
+  levelConfig: {fileID: 11400000, guid: 8b735e7f7554f9f4996dc26324479072, type: 2}
   brain: {fileID: 0}
   levelCamera: {fileID: 6557115034488747307}
   travelCamera: {fileID: 0}
@@ -1043,7 +1068,7 @@ MonoBehaviour:
   entryBarrier: {fileID: 5346453954900902425}
   exitBarrier: {fileID: 4653062214021197445}
   startLevel: 1
-  firstSpawnDelay: 0.25
+  firstSpawnDelay: 0
 --- !u!61 &8872322117315666981
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1216,7 +1241,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.010768175, y: -0.7657349}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1226,7 +1251,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.1517999, y: 2.5314698}
   m_EdgeRadius: 0
 --- !u!1001 &4923479095699584051
 PrefabInstance:
@@ -1295,6 +1320,10 @@ PrefabInstance:
     - target: {fileID: 3159030636598242509, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
       propertyPath: m_Name
       value: Platform (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3159030636598242509, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8253906074621068601, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
       propertyPath: m_LocalScale.x
@@ -1414,6 +1443,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform
       objectReference: {fileID: 0}
+    - target: {fileID: 3159030636598242509, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5387072733143265056, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
       propertyPath: m_SurfaceArc
       value: 179
@@ -1436,7 +1469,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8253906074621068601, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.8800001
+      value: -1.77
       objectReference: {fileID: 0}
     - target: {fileID: 8253906074621068601, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1531,6 +1564,10 @@ PrefabInstance:
     - target: {fileID: 3159030636598242509, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
       propertyPath: m_Name
       value: Platform (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3159030636598242509, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5387072733143265056, guid: ba3a6a27f138ea64582715ca9667930a, type: 3}
       propertyPath: m_SurfaceArc
