@@ -236,6 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Rat
   rb: {fileID: 5665460355301503378}
   bodyRenderer: {fileID: 7517708011773951142}
+  animator: {fileID: 1596297151103287110}
   minBaseSpeed: 2
   maxBaseSpeed: 3
   stompSpeedMultiplier: 1.5

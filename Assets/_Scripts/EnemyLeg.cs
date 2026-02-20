@@ -153,7 +153,10 @@ public class EnemyLeg : EnemyBaseClass
 
         while (true)
         {
-            yield return new WaitForSeconds(jumpInterval);
+            bool enraged = currentHealth <= (maxHealth / 2f);
+            float interval = enraged ? jumpInterval / enragedSpeedMultiplier : jumpInterval;
+
+            yield return new WaitForSeconds(interval);
 
             if (isDying) continue;
 
@@ -165,16 +168,10 @@ public class EnemyLeg : EnemyBaseClass
         }
     }
 
-    private float GetCurrentMoveSpeed()
-    {
-        bool enraged = currentHealth <= (maxHealth / 2);
-        return enraged ? baseMoveSpeed * enragedSpeedMultiplier : baseMoveSpeed;
-    }
-
     private void Jump()
     {
         float dir = facingRight ? 1f : -1f;
-        float airSpeed = GetCurrentMoveSpeed() * horizontalJumpMultiplier;
+        float airSpeed = baseMoveSpeed * horizontalJumpMultiplier;
 
         rb.linearVelocity = new Vector2(dir * airSpeed, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -183,7 +180,7 @@ public class EnemyLeg : EnemyBaseClass
     private void MoveInAir()
     {
         float dir = facingRight ? 1f : -1f;
-        float airSpeed = GetCurrentMoveSpeed() * horizontalJumpMultiplier;
+        float airSpeed = baseMoveSpeed * horizontalJumpMultiplier;
 
         rb.linearVelocity = new Vector2(dir * airSpeed, rb.linearVelocity.y);
     }
@@ -240,8 +237,7 @@ public class EnemyLeg : EnemyBaseClass
     private bool IsSafeToJump()
     {
         float dir = facingRight ? 1f : -1f;
-        float jumpDistance = GetCurrentMoveSpeed() * horizontalJumpMultiplier * 0.8f;
-
+        float jumpDistance = baseMoveSpeed * horizontalJumpMultiplier * 0.8f;
         Bounds b = enemyCollider.bounds;
 
         float rayStartY = b.max.y + 1f;
@@ -378,12 +374,22 @@ public class EnemyLeg : EnemyBaseClass
     {
         if (enemyCollider == null) yield break;
 
-        Collider2D playerCol = player.GetComponent<Collider2D>();
+        Collider2D playerCol = player?.GetComponent<Collider2D>();
         if (playerCol == null) yield break;
 
         Physics2D.IgnoreCollision(enemyCollider, playerCol, true);
         yield return new WaitForSeconds(stompIgnoreCollisionTime);
-        Physics2D.IgnoreCollision(enemyCollider, playerCol, false);
+
+        if (enemyCollider != null && playerCol != null)
+        {
+            Physics2D.IgnoreCollision(enemyCollider, playerCol, false);
+        }
+
+        // Restart jump routine if it was killed
+        if (jumpRoutine == null && !isDying)
+        {
+            jumpRoutine = StartCoroutine(JumpCoroutine());
+        }
     }
 
     private void TryStompShake()

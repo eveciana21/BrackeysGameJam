@@ -2,19 +2,29 @@ using UnityEngine;
 
 public class BouncePlatform : MonoBehaviour
 {
-    [SerializeField] private float bounceVelocity = 14f; // increase for higher bounce
+    [SerializeField] private float bounceVelocity = 14f;
     [SerializeField] private LayerMask playerLayer;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    [SerializeField] private Animator uncleAnimator;
+
+    private void OnCollisionEnter2D(Collision2D collision) => TryBounce(collision);
+    private void OnCollisionStay2D(Collision2D collision) => TryBounce(collision);
+
+    private void TryBounce(Collision2D collision)
     {
         if (((1 << collision.gameObject.layer) & playerLayer) == 0) return;
+        if (collision.rigidbody == null) return;
+        if (collision.rigidbody.linearVelocity.y >= 0f) return;
 
-        Rigidbody2D rb = collision.rigidbody;
-        if (rb == null) return;
+        Player player = collision.gameObject.GetComponent<Player>();
+        if (player == null) return;
 
-        // Only bounce if the player is coming down onto it
-        if (rb.linearVelocity.y >= 0f) return;
+        player.ApplyBounceLaunch(bounceVelocity);
 
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, bounceVelocity);
+        if (uncleAnimator != null)
+        {
+            uncleAnimator.ResetTrigger("Bounce");
+            uncleAnimator.SetTrigger("Bounce");
+        }
     }
 }

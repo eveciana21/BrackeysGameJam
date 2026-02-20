@@ -28,7 +28,9 @@ public class Player : MonoBehaviour
 
     [Header("Damage Flash")]
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private float flashInterval = 0.08f;
+    [SerializeField] private float redFlashInterval = 0.08f;
+    [SerializeField] private float flickerInterval = 0.15f;
+    [SerializeField] private Color flashColor = Color.red;
 
     private Color originalColor;
     private Coroutine flashRoutine;
@@ -43,7 +45,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float throwCooldown = 0.35f;
 
     [Header("Projectile Selection")]
-    [SerializeField] private bool useWeightedRandom = false;
     [SerializeField] private GameObject projectilePrefab;
 
     private GameObject[] currentProjectilePrefabs;
@@ -60,7 +61,10 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private bool isJumpHeld;
     private bool isGrounded;
+    private bool isKnockbackInvincible = false;
     private float beltVelocityX;
+
+    private float bounceGraceTime = 0f;
 
     private Sprite currentProjectileSprite;
 
@@ -71,6 +75,24 @@ public class Player : MonoBehaviour
     private float timeSinceMadeInvincible = 0.0f;
 
     private bool isDead;
+
+    private void Awake()
+    {
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
+
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
+    }
 
     private void Start()
     {
@@ -193,6 +215,12 @@ public class Player : MonoBehaviour
 
     private void ApplyGravityMultiplier()
     {
+        if (bounceGraceTime > 0f)
+        {
+            bounceGraceTime -= Time.fixedDeltaTime;
+            return; // skip multiplier during grace period
+        }
+
         float velocityY = rb.linearVelocity.y;
         float multiplier = 0f;
 
@@ -206,6 +234,18 @@ public class Player : MonoBehaviour
         }
 
         rb.linearVelocity += Vector2.up * Physics2D.gravity.y * multiplier * Time.fixedDeltaTime;
+    }
+
+    public void ApplyBounceLaunch(float velocity)
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, velocity);
+        bounceGraceTime = 0.3f;
+
+        if (animator != null)
+        {
+            animator.ResetTrigger("Jump");
+            animator.SetTrigger("Jump");
+        }
     }
 
     private void CheckIfGrounded()
@@ -254,17 +294,15 @@ public class Player : MonoBehaviour
 
     private void CheckIfInvincible()
     {
-        if (isInvincible)
+        if (!isInvincible) return;
+
+        timeSinceMadeInvincible += Time.deltaTime;
+
+        if (timeSinceMadeInvincible >= invincibilityTime)
         {
-            timeSinceMadeInvincible += Time.deltaTime;
-
-            if (timeSinceMadeInvincible >= invincibilityTime)
-            {
-                isInvincible = false;
-                timeSinceMadeInvincible = 0.0f;
-            }
-
-            StopDamageFlash();
+            isInvincible = false;
+            isKnockbackInvincible = false; 
+            timeSinceMadeInvincible = 0.0f;
         }
     }
 
@@ -280,33 +318,43 @@ public class Player : MonoBehaviour
         flashRoutine = StartCoroutine(DamageFlashCoroutine());
     }
 
-    private void StopDamageFlash()
-    {
-        if (spriteRenderer == null) return;
-
-        if (flashRoutine != null)
-        {
-            StopCoroutine(flashRoutine);
-            flashRoutine = null;
-        }
-
-        spriteRenderer.color = originalColor;
-    }
-
     private IEnumerator DamageFlashCoroutine()
     {
-        Color red = Color.red;
-
-        while (isInvincible)
+        if (spriteRenderer == null)
         {
-            spriteRenderer.color = red;
-            yield return new WaitForSeconds(flashInterval);
-
-            spriteRenderer.color = originalColor;
-            yield return new WaitForSeconds(flashInterval);
+            flashRoutine = null;
+            yield break;
         }
 
+        // Initial red flash
+        spriteRenderer.color = flashColor;
+        yield return new WaitForSeconds(redFlashInterval);
+
+        if (spriteRenderer == null) { flashRoutine = null; yield break; }
         spriteRenderer.color = originalColor;
+
+        // Flicker by toggling renderer enabled
+        float elapsed = redFlashInterval;
+
+        while (elapsed < invincibilityTime)
+        {
+            if (spriteRenderer == null) { flashRoutine = null; yield break; }
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(flickerInterval);
+            elapsed += flickerInterval;
+
+            if (spriteRenderer == null) { flashRoutine = null; yield break; }
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(flickerInterval);
+            elapsed += flickerInterval;
+        }
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = true;
+            spriteRenderer.color = originalColor;
+        }
+
         flashRoutine = null;
     }
 
@@ -315,12 +363,11 @@ public class Player : MonoBehaviour
         if (isInvincible) return;
         if (isDead) return;
 
-        Debug.Log(damageDealt + " damage dealt");
-
         currentHealth = Math.Max(0, currentHealth - damageDealt);
-        isInvincible = true;
 
-        StartDamageFlash();
+        isInvincible = true;
+        timeSinceMadeInvincible = 0.0f;
+        StartDamageFlash(); // runs 2 alpha flickers
 
         healthIndicator.SetHealth(currentHealth);
 
@@ -334,11 +381,13 @@ public class Player : MonoBehaviour
     public void ApplyKnockback(Vector2 knockback)
     {
         if (isDead) return;
+        if (isKnockbackInvincible) return;
 
         knockbackVelocity = knockback;
         knockbackTimeRemaining = knockbackLockTime;
-
         rb.linearVelocity = new Vector2(knockback.x, knockback.y);
+
+        isKnockbackInvincible = true;
     }
 
     private void KillPlayer()
@@ -355,7 +404,6 @@ public class Player : MonoBehaviour
             animator.SetTrigger("Death");
         }
 
-        // Optional: stop movement
         rb.linearVelocity = Vector2.zero;
     }
 

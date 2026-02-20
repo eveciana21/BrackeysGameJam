@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class Rat : MonoBehaviour
+public class Rat : EnemyBaseClass
 {
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer bodyRenderer;
+    [SerializeField] private Animator animator;
 
     [Header("Movement")]
     [SerializeField] private int minBaseSpeed = 1;
@@ -172,8 +173,12 @@ public class Rat : MonoBehaviour
         TakeDamage(amount);
     }
 
-    private void Die()
+    public void Die()
     {
+        animator.SetTrigger("Death");
+
+        NotifyDeath();
+
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
@@ -181,7 +186,7 @@ public class Rat : MonoBehaviour
         }
 
         enabled = false;
-        Destroy(gameObject);
+        Destroy(gameObject, 1f);
     }
 
     private void FlashDamage()

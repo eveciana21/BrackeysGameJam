@@ -108,13 +108,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.3309658, y: -2.3563406}
+    - - {x: -1.3696138, y: -0.7717713}
       - {x: -1.3826747, y: -5.7672772}
       - {x: -1.4060502, y: -6.419979}
       - {x: 1.3251766, y: -6.417252}
       - {x: 1.3033533, y: -5.7352057}
       - {x: -0.40759003, y: -5.60608}
-      - {x: -0.50021267, y: -2.2150126}
+      - {x: -0.17170429, y: -0.7657112}
   m_UseDelaunayMesh: 1
 --- !u!114 &3410209155376615622
 MonoBehaviour:
@@ -131,13 +131,13 @@ MonoBehaviour:
   rb: {fileID: 2561200576832200649}
   enemyCollider: {fileID: 2755897398549174816}
   moveSpeed: 3
-  enragedSpeedMultiplier: 1.5
+  enragedSpeedMultiplier: 10
   jumpForce: 20
   jumpInterval: 2
   horizontalJumpMultiplier: 1.2
-  maxHealth: 3
+  maxHealth: 4
   bodyRenderer: {fileID: 3512063716457378717}
-  damageFlashTime: 0.08
+  damageFlashTime: 0.05
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   stompDamage: 1
   stompKnockbackX: 15

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: LevelConfig_03
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelName: Walmart
-  enemyPrefabs: []
+  enemyPrefabs:
+  - {fileID: 5963906240879707447, guid: 93bf3149286b14c488c5adc4a2680422, type: 3}
   enemiesToKill: 1
-  spawnRate: 1.5
+  spawnRate: 0
   projectilePrefabs:
   - {fileID: 943081113863803852, guid: 0e8b13e3c5e2bbc41a7d49a96a65a62c, type: 3}
-  levelMusic: {fileID: 0}
+  levelMusic: {fileID: 8300000, guid: efc30145f1683ab45a8c2e8188cbf476, type: 3}

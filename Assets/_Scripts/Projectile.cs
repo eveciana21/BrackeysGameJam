@@ -146,6 +146,12 @@ public class Projectile : MonoBehaviour
         {
             enemy.ApplyDamage(damage);
         }
+
+        EnemyMarge marge = collision.gameObject.GetComponentInParent<EnemyMarge>();
+        if (marge != null)
+        {
+            marge.ApplyDamage(damage);
+        }
     }
 
     private void Impact()

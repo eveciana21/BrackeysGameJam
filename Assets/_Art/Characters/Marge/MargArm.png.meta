@@ -116,10 +116,10 @@ TextureImporter:
       name: MargArm_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 510
-        height: 260
+        x: 31
+        y: 42
+        width: 429
+        height: 196
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
