@@ -60,6 +60,7 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private bool isJumpHeld;
     private bool isGrounded;
+    private float beltVelocityX;
 
     private Sprite currentProjectileSprite;
 
@@ -99,8 +100,6 @@ public class Player : MonoBehaviour
             UpdateAnimator();
             return;
         }
-
-
 
         if (knockbackTimeRemaining > 0f)
         {
@@ -215,10 +214,22 @@ public class Player : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(checkPosition, groundCheckRadius, groundLayer);
     }
 
+    /*    private void PlayerMovement()
+        {
+            float targetVelX = Mathf.Clamp(moveInput.x, -1f, 1f) * playerSpeed;
+            rb.linearVelocity = new Vector2(targetVelX, rb.linearVelocity.y);
+        }*/
+
     private void PlayerMovement()
     {
         float targetVelX = Mathf.Clamp(moveInput.x, -1f, 1f) * playerSpeed;
-        rb.linearVelocity = new Vector2(targetVelX, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(targetVelX + beltVelocityX, rb.linearVelocity.y);
+
+        // Animate based on input only — belt movement doesn't trigger walk animation
+        if (animator != null)
+        {
+            animator.SetBool("Walk", Mathf.Abs(moveInput.x) > 0.01f);
+        }
     }
 
     private void FlipPlayer()
@@ -236,7 +247,7 @@ public class Player : MonoBehaviour
         if (animator == null) return;
 
         bool isInKnockback = knockbackTimeRemaining > 0f;
-        bool shouldWalk = !isDead && !isInKnockback && isGrounded && Mathf.Abs(rb.linearVelocity.x) > 0.1f;
+        bool shouldWalk = !isDead && !isInKnockback && isGrounded && Mathf.Abs(moveInput.x) > 0.01f;
 
         animator.SetBool("Walk", shouldWalk);
     }
@@ -346,5 +357,16 @@ public class Player : MonoBehaviour
 
         // Optional: stop movement
         rb.linearVelocity = Vector2.zero;
+    }
+
+    // Called by MovingWalkway each FixedUpdate while player is on the belt
+    public void SetBeltVelocity(float velocityX)
+    {
+        beltVelocityX = velocityX;
+    }
+
+    public void ClearBeltVelocity()
+    {
+        beltVelocityX = 0f;
     }
 }
