@@ -26,6 +26,9 @@ public class EnemyDragon : EnemyBaseClass
     [SerializeField] private float moveSpeedIncreaseOnStomp = 0.5f; // enemy gets faster per stomp
     [SerializeField] private float maxMoveSpeed = 5f;
 
+    [Header("Entry")]
+    [SerializeField] private float entrySpeed = 3f; // units per second toward spline start
+
     [Header("Damage")]
     [SerializeField] private float damageFlashTime = 0.08f;
     [SerializeField] private Color damageFlashColor = Color.red;
@@ -41,6 +44,7 @@ public class EnemyDragon : EnemyBaseClass
 
     private SplineAnimate splineAnimate;
     private Spline spline;
+    private SplineContainer injectedContainer;
 
     private Animator animator;
     private SpriteRenderer bodyRenderer;
@@ -67,6 +71,12 @@ public class EnemyDragon : EnemyBaseClass
     private void Awake()
     {
         currentHealth = maxHealth;
+    }
+
+    // Call this immediately after Instantiate, before Start() fires
+    public void SetSplineContainer(SplineContainer container)
+    {
+        injectedContainer = container;
     }
 
     private void Start()
@@ -114,7 +124,6 @@ public class EnemyDragon : EnemyBaseClass
 
     public void Init()
     {
-        Debug.Log("init");
         splineAnimate.Play();
     }
 
@@ -278,13 +287,11 @@ public class EnemyDragon : EnemyBaseClass
 
     public void Roar()
     {
-        Debug.Log("Is roading");
         isRoaring = true;
     }
 
     private IEnumerator _roar()
     {
-        Debug.Log("Roar Coroutine");
         isStunned = false;
         animator.SetTrigger("roar");
 

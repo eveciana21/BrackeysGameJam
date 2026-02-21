@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9081494255426575654}
   - component: {fileID: 6869759090427092782}
   - component: {fileID: 1190331715679381029}
+  - component: {fileID: 5694099673678443855}
   m_Layer: 20
   m_Name: Projectile_WaterBalloon
   m_TagString: Untagged
@@ -110,7 +111,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1.4
+  m_GravityScale: 1.3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -177,16 +178,16 @@ MonoBehaviour:
   - {fileID: -7514004747818894540, guid: 69dc0aad30d733745927f2d808e6328c, type: 3}
   - {fileID: 3415256728661171064, guid: 2419990fea7beb345a9915beef1f6e4c, type: 3}
   damage: 1
+  useLifetime: 0
+  lifeTime: 5
+  groundDampen: 0.3
+  animator: {fileID: 1190331715679381029}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
   groundLayer:
     serializedVersion: 2
     m_Bits: 32768
-  useLifetime: 0
-  lifeTime: 5
-  groundDampen: 0.3
-  animator: {fileID: 1190331715679381029}
 --- !u!95 &1190331715679381029
 Animator:
   serializedVersion: 7
@@ -209,3 +210,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5694099673678443855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943081113863803852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b80027062d9195b43a74caab61d744a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileSpin
+  rb: {fileID: 1610823854769185553}
+  minSpin: -360
+  maxSpin: 360

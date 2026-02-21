@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class LevelZoneManager : MonoBehaviour
 {
@@ -46,14 +47,22 @@ public class LevelZoneManager : MonoBehaviour
     [Header("Spawning")]
     [SerializeField] private float firstSpawnDelay = 0.25f; // 0 = immediate after trigger
 
+    [Header("Last Level Boss")]
+    [SerializeField] private bool isLastLevel;
+    [SerializeField] private GameObject dragon;
+
     private Transform[] cachedSpawnPoints;
 
+    [SerializeField] private float arrowShowDelay = 1f;
+    private Coroutine arrowRoutine;
     [SerializeField] private GameObject arrow;
 
     private int enemiesKilled;
     private bool isActive;
     private bool isComplete;
     private bool hasStartedCombat;
+    private bool bossPhase;
+    private bool bossKilled;
 
     private void Awake()
     {
@@ -64,6 +73,10 @@ public class LevelZoneManager : MonoBehaviour
             brain = Camera.main.GetComponent<CinemachineBrain>();
         }
 
+        if (arrow != null && arrow.activeSelf)
+        {
+            arrow.SetActive(false);
+        }
         // Default barrier states
         if (entryBarrier != null) entryBarrier.SetActive(false);
         if (exitBarrier != null) exitBarrier.SetActive(true);
@@ -238,20 +251,57 @@ public class LevelZoneManager : MonoBehaviour
         if (!isActive || isComplete) return;
         if (!hasStartedCombat) return;
 
+        // Boss phase: only the dragon dying completes the level
+        if (bossPhase)
+        {
+            if (!bossKilled)
+            {
+                bossKilled = true;
+                CompleteLevel(skipPeek: true);
+            }
+            return;
+        }
+
         enemiesKilled++;
 
         if (levelConfig != null && enemiesKilled >= levelConfig.enemiesToKill)
         {
-            CompleteLevel();
+            if (isLastLevel)
+            {
+                SpawnBoss();
+            }
+            else
+            {
+                CompleteLevel(skipPeek: false);
+            }
         }
     }
 
-    private void CompleteLevel()
+    private void SpawnBoss()
+    {
+        if (coreManagersChannel != null && coreManagersChannel.spawnManager != null)
+        {
+            coreManagersChannel.spawnManager.StopSpawning();
+        }
+
+        bossPhase = true;
+
+        if (dragon == null) return;
+
+        dragon.SetActive(true);
+
+        EnemyBaseClass enemyBase = dragon.GetComponent<EnemyBaseClass>();
+        if (enemyBase != null)
+        {
+            enemyBase.Initialize(this);
+        }
+    }
+
+    private void CompleteLevel(bool skipPeek = false)
     {
         isComplete = true;
 
-        if (arrow != null)
-            arrow.SetActive(true);
+        TryShowArrowWithDelay();
 
         // Enable the rathole cutscene trigger
         if (ratHoleTrigger != null)
@@ -291,8 +341,11 @@ public class LevelZoneManager : MonoBehaviour
         ForceDeactivateLockedCamera();
         if (travelCamera != null) travelCamera.Priority = 20;
 
-        // After a short moment, allow the small peek range
-        StartCoroutine(EnablePeekBoundsAfterDelay());
+        // After a short moment, allow the small peek range (skipped on last level)
+        if (!skipPeek)
+        {
+            StartCoroutine(EnablePeekBoundsAfterDelay());
+        }
 
         // Prevent re-triggering this level trigger
         Collider2D col = GetComponent<Collider2D>();
@@ -300,6 +353,31 @@ public class LevelZoneManager : MonoBehaviour
         {
             col.enabled = false;
         }
+    }
+
+    private void TryShowArrowWithDelay()
+    {
+        // If this level has no arrow assigned, do nothing
+        if (arrow == null) return;
+
+        if (arrowRoutine != null)
+        {
+            StopCoroutine(arrowRoutine);
+        }
+
+        arrowRoutine = StartCoroutine(ShowArrowAfterDelay());
+    }
+
+    private IEnumerator ShowArrowAfterDelay()
+    {
+        yield return new WaitForSeconds(arrowShowDelay);
+
+        if (arrow != null)
+        {
+            arrow.SetActive(true);
+        }
+
+        arrowRoutine = null;
     }
 
     private IEnumerator EnablePeekBoundsAfterDelay()

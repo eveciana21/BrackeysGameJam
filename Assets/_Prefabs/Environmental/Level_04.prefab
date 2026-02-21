@@ -371,6 +371,11 @@ MonoBehaviour:
   exitBarrier: {fileID: 5264167843505530295}
   startLevel: 1
   firstSpawnDelay: 1
+  isLastLevel: 0
+  dragon: {fileID: 1479259153904375826}
+  dragonSpawnPoint: {fileID: 0}
+  dragonSplineContainer: {fileID: 0}
+  arrowShowDelay: 1
   arrow: {fileID: 0}
 --- !u!61 &2545832867050495236
 BoxCollider2D:
@@ -1932,6 +1937,10 @@ PrefabInstance:
     - target: {fileID: 7709125848630019573, guid: aa3bece7f656ca9d1939c64cd3115077, type: 3}
       propertyPath: m_Name
       value: Dragon
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709125848630019573, guid: aa3bece7f656ca9d1939c64cd3115077, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8247799091494817187, guid: aa3bece7f656ca9d1939c64cd3115077, type: 3}
       propertyPath: dragonPlatform

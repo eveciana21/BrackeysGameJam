@@ -1330,6 +1330,7 @@ MonoBehaviour:
   stompKnockbackX: 3
   moveSpeedIncreaseOnStomp: 0.5
   maxMoveSpeed: 5
+  entrySpeed: 3
   damageFlashTime: 0.08
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   damageSfx: {fileID: 0}

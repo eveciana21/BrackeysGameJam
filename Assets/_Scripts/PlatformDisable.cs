@@ -24,7 +24,7 @@ public class PlatformDisable : MonoBehaviour
     private Collider2D playerCollider;
     private float standTimer;
     private bool sequenceRunning;
-    private bool hasRoared = false;
+    private bool waitingForRoar = false;
 
     private void Awake()
     {
@@ -49,7 +49,7 @@ public class PlatformDisable : MonoBehaviour
             return;
         }
 
-        if (IsPlayerOnTop())
+        if (IsPlayerOnTop() && !waitingForRoar)
         {
             standTimer += Time.deltaTime;
 
@@ -94,13 +94,10 @@ public class PlatformDisable : MonoBehaviour
 
     private IEnumerator DropAndRestoreRoutine()
     {
-        Debug.Log("Trigger roar");
         dragon.GetComponent<EnemyDragon>().Roar();
 
-        yield return new WaitUntil(() => hasRoared == true);
-        hasRoared = false;
-
-        Debug.Log("Platform disappear");
+        waitingForRoar = true;
+        yield return new WaitUntil(() => !waitingForRoar);
 
         sequenceRunning = true;
         standTimer = 0f;
@@ -144,6 +141,6 @@ public class PlatformDisable : MonoBehaviour
 
     public void Roar()
     {
-        hasRoared = true;
+        waitingForRoar = false;
     }
 }
