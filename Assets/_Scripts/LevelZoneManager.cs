@@ -23,6 +23,12 @@ public class LevelZoneManager : MonoBehaviour
     [SerializeField] private float enterBlendTime = 0.45f;
     [SerializeField] private float travelBlendTime = 0.35f;
 
+    [Header("Cutscene")]
+    [SerializeField] private CutsceneTriggerRatHole ratHoleTrigger;
+
+    [Header("Conveyor")]
+    [SerializeField] private ConveyorObjectSpawner conveyorSpawner;
+
     [Header("Camera Bounds")]
     [SerializeField] private Collider2D lockedCameraBounds;
     [SerializeField] private Collider2D peekCameraBounds;
@@ -41,6 +47,8 @@ public class LevelZoneManager : MonoBehaviour
     [SerializeField] private float firstSpawnDelay = 0.25f; // 0 = immediate after trigger
 
     private Transform[] cachedSpawnPoints;
+
+    [SerializeField] private GameObject arrow;
 
     private int enemiesKilled;
     private bool isActive;
@@ -141,6 +149,9 @@ public class LevelZoneManager : MonoBehaviour
             coreManagersChannel.SetLevelZoneManager(this);
         }
 
+        if (conveyorSpawner != null)
+            conveyorSpawner.StartSpawning();
+
         // Lock gates on entry
         if (entryBarrier != null) entryBarrier.SetActive(true);
         if (exitBarrier != null) exitBarrier.SetActive(true);
@@ -239,10 +250,19 @@ public class LevelZoneManager : MonoBehaviour
     {
         isComplete = true;
 
+        arrow.SetActive(true);
+
+        // Enable the rathole cutscene trigger
+        if (ratHoleTrigger != null)
+            ratHoleTrigger.EnableTrigger();
+
         if (coreManagersChannel != null && coreManagersChannel.spawnManager != null)
         {
             coreManagersChannel.spawnManager.StopSpawning();
         }
+
+        if (conveyorSpawner != null)
+            conveyorSpawner.StopSpawning();
 
         // Open exit
         if (exitBarrier != null)
