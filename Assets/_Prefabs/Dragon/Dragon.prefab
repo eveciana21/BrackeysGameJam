@@ -1326,7 +1326,7 @@ MonoBehaviour:
   maxHealth: 30
   hitsBeforeStun: 3
   stunLength: 3
-  bounceForce: 20
+  bounceForce: 25
   stompKnockbackX: 3
   moveSpeedIncreaseOnStomp: 0.5
   maxMoveSpeed: 5

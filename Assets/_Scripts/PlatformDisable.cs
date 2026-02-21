@@ -19,9 +19,12 @@ public class PlatformDisable : MonoBehaviour
     [Header("Top Check")]
     [SerializeField] private float topTolerance = 0.05f;
 
+    [SerializeField] private GameObject dragon;
+
     private Collider2D playerCollider;
     private float standTimer;
     private bool sequenceRunning;
+    private bool hasRoared = false;
 
     private void Awake()
     {
@@ -91,6 +94,14 @@ public class PlatformDisable : MonoBehaviour
 
     private IEnumerator DropAndRestoreRoutine()
     {
+        Debug.Log("Trigger roar");
+        dragon.GetComponent<EnemyDragon>().Roar();
+
+        yield return new WaitUntil(() => hasRoared == true);
+        hasRoared = false;
+
+        Debug.Log("Platform disappear");
+
         sequenceRunning = true;
         standTimer = 0f;
 
@@ -129,5 +140,10 @@ public class PlatformDisable : MonoBehaviour
             spriteRenderer.enabled = true;
             yield return new WaitForSeconds(flashInterval);
         }
+    }
+
+    public void Roar()
+    {
+        hasRoared = true;
     }
 }

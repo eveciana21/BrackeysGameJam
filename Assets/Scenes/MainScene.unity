@@ -479,6 +479,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &1430907128 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 207368351501833146, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
+  m_PrefabInstance: {fileID: 6099262439565212255}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1508131689
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,6 +758,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1392142672797068193, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
+      propertyPath: dragon
+      value: 
+      objectReference: {fileID: 1430907128}
     - target: {fileID: 1964533687222141894, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
       propertyPath: brain
       value: 
@@ -808,6 +817,10 @@ PrefabInstance:
     - target: {fileID: 4694651537466715610, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147961810823373866, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5801326230192559251, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
       propertyPath: brain

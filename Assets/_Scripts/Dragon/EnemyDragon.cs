@@ -278,17 +278,19 @@ public class EnemyDragon : EnemyBaseClass
 
     public void Roar()
     {
+        Debug.Log("Is roading");
         isRoaring = true;
     }
 
     private IEnumerator _roar()
     {
+        Debug.Log("Roar Coroutine");
         isStunned = false;
         animator.SetTrigger("roar");
 
         yield return new WaitForSeconds(roarLength / 2.0f);
 
-        dragonPlatform.GetComponentInChildren<DragonPlatform>().PhasePlatform();
+        dragonPlatform.GetComponentInChildren<PlatformDisable>().Roar();
 
         yield return new WaitForSeconds(roarLength / 2.0f);
 
