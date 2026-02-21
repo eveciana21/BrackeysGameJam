@@ -126,7 +126,16 @@ public class Projectile : MonoBehaviour
 
     private void ApplyDamageIfPossible(Collision2D collision)
     {
+        Debug.Log("Projectile");
         // If you hit a child collider, try parent first too
+        EnemyDragon dragon = collision.gameObject.GetComponentInParent<EnemyDragon>();
+        if (dragon != null)
+        {
+            Debug.Log("Projectile");
+            dragon.ApplyDamage(damage);
+            
+        }
+        
         Rat rat = collision.gameObject.GetComponentInParent<Rat>();
         if (rat != null)
         {
@@ -145,12 +154,6 @@ public class Projectile : MonoBehaviour
         if (enemy != null)
         {
             enemy.ApplyDamage(damage);
-        }
-
-        EnemyMarge marge = collision.gameObject.GetComponentInParent<EnemyMarge>();
-        if (marge != null)
-        {
-            marge.ApplyDamage(damage);
         }
     }
 
@@ -182,14 +185,14 @@ public class Projectile : MonoBehaviour
     }
 
     // Animation Event will call this at the end of the impact animation
-    public void DestroySelf() 
+    public void DestroySelf()
     {
         Destroy(gameObject);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        // Keep your “pass through enemies after ground hit” behavior (lifetime ON only)
+        // Keep your ï¿½pass through enemies after ground hitï¿½ behavior (lifetime ON only)
         if (!useLifetime) return;
         if (!hasHitGround) return;
         if (((1 << collision.gameObject.layer) & enemyLayer) == 0) return;

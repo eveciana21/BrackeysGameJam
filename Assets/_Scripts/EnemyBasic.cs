@@ -147,7 +147,7 @@ public class EnemyBasic : EnemyBaseClass
 
     private void CheckForFlip()
     {
-        // don't do edge/wall flipping while player is near (prevents weird “fight the player” flips)
+        // don't do edge/wall flipping while player is near (prevents weird ï¿½fight the playerï¿½ flips)
         if (playerTransform != null)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
