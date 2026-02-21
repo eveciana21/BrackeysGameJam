@@ -754,10 +754,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1402618298}
     - target: {fileID: 1964533687222141894, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
-      propertyPath: startLevel
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1964533687222141894, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
       propertyPath: travelCamera
       value: 
       objectReference: {fileID: 521189455}

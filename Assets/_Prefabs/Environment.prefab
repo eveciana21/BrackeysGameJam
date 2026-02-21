@@ -1810,7 +1810,7 @@ PrefabInstance:
       objectReference: {fileID: 2022841484525698306}
     - target: {fileID: 5994569478150524873, guid: c5012f558766c114e922c98a7041fcf7, type: 3}
       propertyPath: startLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5994569478150524873, guid: c5012f558766c114e922c98a7041fcf7, type: 3}
       propertyPath: ratHoleTrigger
