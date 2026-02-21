@@ -233,13 +233,17 @@ MonoBehaviour:
   maxFireInterval: 3
   startDelay: 5
   projectileSpeed: 8
-  maxHealth: 10
+  maxHealth: 40
   bodyRenderer: {fileID: 3648484456109952532}
   flashInterval: 0.035
   invincibilityTime: 0.15
   headRenderer: {fileID: 8194960078575136682}
   headHitSprite: {fileID: 21300000, guid: 2e4d20750d324ce40a7564b2166f2084, type: 3}
   headHitSpriteDuration: 0.5
+  contactDamage: 1
+  contactKnockbackX: 8
+  contactKnockbackY: 6
+  contactCooldown: 0.2
 --- !u!1 &6266944831208506803
 GameObject:
   m_ObjectHideFlags: 0

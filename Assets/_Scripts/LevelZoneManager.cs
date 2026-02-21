@@ -95,6 +95,12 @@ public class LevelZoneManager : MonoBehaviour
         {
             ApplyStartViewOnly();
             ApplyProjectileLoadoutOnly();
+
+            // Auto-play music for the first level without needing the entry trigger
+            if (coreManagersChannel != null && coreManagersChannel.audioManager != null && levelConfig != null)
+            {
+                coreManagersChannel.audioManager.PlayMusic(levelConfig.levelMusic);
+            }
         }
     }
 
