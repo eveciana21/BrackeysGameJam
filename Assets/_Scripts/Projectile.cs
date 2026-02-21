@@ -126,14 +126,13 @@ public class Projectile : MonoBehaviour
 
     private void ApplyDamageIfPossible(Collision2D collision)
     {
-        Debug.Log("Projectile");
         // If you hit a child collider, try parent first too
         EnemyDragon dragon = collision.gameObject.GetComponentInParent<EnemyDragon>();
         if (dragon != null)
         {
             Debug.Log("Projectile");
             dragon.ApplyDamage(damage);
-            
+           
         }
         
         Rat rat = collision.gameObject.GetComponentInParent<Rat>();
@@ -154,6 +153,12 @@ public class Projectile : MonoBehaviour
         if (enemy != null)
         {
             enemy.ApplyDamage(damage);
+        }
+
+        EnemyMarge marge = collision.gameObject.GetComponentInParent<EnemyMarge>();
+        if (marge != null)
+        {
+            marge.ApplyDamage(damage);
         }
     }
 
