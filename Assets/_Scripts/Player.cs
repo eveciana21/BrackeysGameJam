@@ -417,4 +417,17 @@ public class Player : MonoBehaviour
     {
         beltVelocityX = 0f;
     }
+
+    public void LockMovement()
+    {
+        moveInput = Vector2.zero;
+        var input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+        if (input != null) input.enabled = false;
+    }
+
+    public void UnlockMovement()
+    {
+        var input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+        if (input != null) input.enabled = true;
+    }
 }

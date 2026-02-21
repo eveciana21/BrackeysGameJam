@@ -147,6 +147,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoreManagers
       objectReference: {fileID: 0}
+    - target: {fileID: 2532029780911887554, guid: 08ae6d994889dac4ba46aef19aa04278, type: 3}
+      propertyPath: m_SceneBindings.Array.data[0].value
+      value: 
+      objectReference: {fileID: 1544176155}
+    - target: {fileID: 2532029780911887554, guid: 08ae6d994889dac4ba46aef19aa04278, type: 3}
+      propertyPath: m_SceneBindings.Array.data[1].value
+      value: 
+      objectReference: {fileID: 620543501}
+    - target: {fileID: 2532029780911887554, guid: 08ae6d994889dac4ba46aef19aa04278, type: 3}
+      propertyPath: m_SceneBindings.Array.data[2].value
+      value: 
+      objectReference: {fileID: 620543501}
+    - target: {fileID: 2532029780911887554, guid: 08ae6d994889dac4ba46aef19aa04278, type: 3}
+      propertyPath: m_SceneBindings.Array.data[3].value
+      value: 
+      objectReference: {fileID: 1544176156}
+    - target: {fileID: 2532029780911887554, guid: 08ae6d994889dac4ba46aef19aa04278, type: 3}
+      propertyPath: m_SceneBindings.Array.data[4].value
+      value: 
+      objectReference: {fileID: 620543501}
     - target: {fileID: 6575223860458258152, guid: 08ae6d994889dac4ba46aef19aa04278, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -214,6 +234,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCamera
+--- !u!95 &620543501 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7109894600239408741, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
+  m_PrefabInstance: {fileID: 6654148848729724856}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &653976158
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,7 +391,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.51731044, g: 0.6488288, b: 0.7075472, a: 0}
+  m_BackGroundColor: {r: 0.4339623, g: 0.29949778, b: 0.13305448, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -416,7 +441,7 @@ Transform:
   m_GameObject: {fileID: 1402618294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62, y: 0, z: -10}
+  m_LocalPosition: {x: 61.999977, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -485,6 +510,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1544176155 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 266339082070408872, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
+  m_PrefabInstance: {fileID: 6654148848729724856}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1544176156 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8411060267992454213, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
+  m_PrefabInstance: {fileID: 6654148848729724856}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Timeline::UnityEngine.Timeline.SignalReceiver
+--- !u!320 &1548566651 stripped
+PlayableDirector:
+  m_CorrespondingSourceObject: {fileID: 2532029780911887554, guid: 08ae6d994889dac4ba46aef19aa04278, type: 3}
+  m_PrefabInstance: {fileID: 483789485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1760225665
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,11 +585,11 @@ PrefabInstance:
       objectReference: {fileID: 225906568}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 56.1
+      value: 58.7
       objectReference: {fileID: 0}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.81
+      value: -3.2
       objectReference: {fileID: 0}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -791,6 +837,10 @@ PrefabInstance:
       propertyPath: travelConfiner
       value: 
       objectReference: {fileID: 521189454}
+    - target: {fileID: 7670379256397044406, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
+      propertyPath: director
+      value: 
+      objectReference: {fileID: 1548566651}
     - target: {fileID: 7694119535773993047, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
       propertyPath: m_Name
       value: Environment
@@ -818,11 +868,11 @@ PrefabInstance:
       objectReference: {fileID: 1826048582}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 56.1
+      value: 58.7
       objectReference: {fileID: 0}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.81
+      value: -3.2
       objectReference: {fileID: 0}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.z

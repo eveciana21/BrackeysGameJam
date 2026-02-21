@@ -15,8 +15,8 @@ MonoBehaviour:
   levelName: DrunkUncle
   enemyPrefabs:
   - {fileID: 6615540188647870126, guid: bde575374e8d4204cb840da09eae57fd, type: 3}
-  enemiesToKill: 15
+  enemiesToKill: 2
   spawnRate: 3
   projectilePrefabs:
   - {fileID: 943081113863803852, guid: 0e8b13e3c5e2bbc41a7d49a96a65a62c, type: 3}
-  levelMusic: {fileID: 8300000, guid: bce7f6a7a839d4446b7b41e3da45ad81, type: 3}
+  levelMusic: {fileID: 8300000, guid: 5278c75349abd394bb9a8bdbb2a9be66, type: 3}
