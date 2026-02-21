@@ -17,8 +17,15 @@ public class EnemyHandWeapon : MonoBehaviour
         if (hasHitThisSwing) return;
         if (((1 << other.gameObject.layer) & playerLayer) == 0) return;
 
-        // Player Damage
+        Player player = other.GetComponent<Player>();
+        if (player == null)
+        {
+            player = other.GetComponentInParent<Player>();
+        }
 
+        if (player == null) return;
+
+        player.DamagePlayer(damage); 
         hasHitThisSwing = true;
     }
 }

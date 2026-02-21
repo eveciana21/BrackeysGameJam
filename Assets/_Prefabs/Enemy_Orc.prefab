@@ -426,7 +426,7 @@ MonoBehaviour:
   animator: {fileID: 7587561462126314651}
   bodyRenderer: {fileID: 7547283639689217005}
   turkeyLeg: {fileID: 2022444379053755399}
-  maxHealth: 10
+  maxHealth: 3
   damageFlashTime: 0.08
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   damageSfx: {fileID: 0}

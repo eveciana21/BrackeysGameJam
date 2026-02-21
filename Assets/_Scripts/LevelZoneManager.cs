@@ -80,8 +80,8 @@ public class LevelZoneManager : MonoBehaviour
     {
         if (startLevel)
         {
-            ApplyStartViewOnly(); 
-            ApplyProjectileLoadoutOnly(); 
+            ApplyStartViewOnly();
+            ApplyProjectileLoadoutOnly();
         }
     }
 
@@ -250,7 +250,8 @@ public class LevelZoneManager : MonoBehaviour
     {
         isComplete = true;
 
-        arrow.SetActive(true);
+        if (arrow != null)
+            arrow.SetActive(true);
 
         // Enable the rathole cutscene trigger
         if (ratHoleTrigger != null)
