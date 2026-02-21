@@ -11,6 +11,8 @@ public class CoreManagersChannelSO : ScriptableObject
     [HideInInspector] public AudioManager audioManager;
     [HideInInspector] public LevelZoneManager levelZoneManager;
 
+    [HideInInspector] public bool isInputLocked; // used for player input locking
+
     public void SetLevelZoneManager(LevelZoneManager instance)
     {
         levelZoneManager = instance;

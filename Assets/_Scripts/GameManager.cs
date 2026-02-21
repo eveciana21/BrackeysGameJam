@@ -31,6 +31,16 @@ public class GameManager : MonoBehaviour
         coreManagersChannel?.uiManager?.HidePausePopup();
     }
 
+    private void Start()
+    {
+        // Hide cursor during gameplay by default; main menu scenes show it
+        Scene current = SceneManager.GetActiveScene();
+        if (current.buildIndex == 0)
+            coreManagersChannel?.uiManager?.SetCursorUI();
+        else
+            coreManagersChannel?.uiManager?.SetCursorGameplay();
+    }
+
     private void OnDisable()
     {
         uiInput.UI.Disable();
@@ -41,6 +51,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(mainSceneIndex);
+        // Cursor hides on scene load via Start()
     }
 
     // called by UIManager ConfirmYes()
@@ -54,6 +65,7 @@ public class GameManager : MonoBehaviour
     public void GoToMainMenu()
     {
         Time.timeScale = 1f;
+        coreManagersChannel?.uiManager?.SetCursorUI();
         SceneManager.LoadScene(mainMenuIndex);
     }
 
@@ -70,9 +82,9 @@ public class GameManager : MonoBehaviour
 
     public void OnClick_Continue()
     {
-        coreManagersChannel?.uiManager?.HidePausePopup();
         onQuitGameScreen = false;
-        Time.timeScale = 1f;
+        coreManagersChannel?.uiManager?.StartResumeCountdown();
+        // Cursor hides after countdown completes (inside CountdownRoutine)
     }
 
     private void EscapeButtonPressed(InputAction.CallbackContext context)
@@ -83,13 +95,27 @@ public class GameManager : MonoBehaviour
         if (current.buildIndex == 0)
             return;
 
+        var ui = coreManagersChannel?.uiManager;
+
+        // If a countdown is running, cancel it and re-pause
+        if (ui != null && ui.IsCountingDown)
+        {
+            ui.CancelCountdown();
+            ui.SetCursorUI();
+            onQuitGameScreen = true;
+            Time.timeScale = 0f;
+            return;
+        }
+
         if (onQuitGameScreen)
         {
+            // Pause menu is open — start the countdown resume instead
             OnClick_Continue();
             return;
         }
 
-        coreManagersChannel?.uiManager?.ShowPausePopup();
+        ui?.ShowPausePopup();
+        ui?.SetCursorUI();
         onQuitGameScreen = true;
         Time.timeScale = 0f;
     }
