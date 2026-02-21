@@ -19,4 +19,4 @@ MonoBehaviour:
   spawnRate: 1.5
   projectilePrefabs:
   - {fileID: 943081113863803852, guid: 56452cf3c3941d141bfb7270752995fe, type: 3}
-  levelMusic: {fileID: 8300000, guid: eec6cfde8d30a4740baaecfaef6bb6aa, type: 3}
+  levelMusic: {fileID: 8300000, guid: 677063c9b2819b64eb44fc04c8c5bfdf, type: 3}
