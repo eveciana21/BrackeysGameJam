@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (isDead) return;
+        if (isDead || coreManagersChannel.isInputLocked) { moveInput = Vector2.zero; return; }
 
         moveInput = context.ReadValue<Vector2>();
         FlipPlayer();
@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (isDead) return;
+        if (isDead || coreManagersChannel.isInputLocked) return;
 
         if (context.performed && isGrounded)
         {
@@ -168,7 +168,7 @@ public class Player : MonoBehaviour
 
     public void OnThrow(InputAction.CallbackContext context)
     {
-        if (isDead) return;
+        if (isDead || coreManagersChannel.isInputLocked) return;
         if (!context.performed) return;
         if (Time.time < nextThrowTime) return;
 
