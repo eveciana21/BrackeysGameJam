@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlatformDisable : MonoBehaviour
 {
+    [SerializeField] private bool isControlledByRoar = false;
+
     [Header("References")]
     [SerializeField] private Collider2D platformCollider; // Used By Effector collider (NOT trigger)
     [SerializeField] private Collider2D standTrigger;     // Trigger collider (IS trigger)
@@ -49,13 +51,13 @@ public class PlatformDisable : MonoBehaviour
             return;
         }
 
-        if (IsPlayerOnTop() && !waitingForRoar)
+        if (IsPlayerOnTop() && (!isControlledByRoar || !waitingForRoar))
         {
             standTimer += Time.deltaTime;
 
             if (standTimer >= standSeconds)
             {
-                StartCoroutine(DropAndRestoreRoutine());
+                StartCoroutine(DropAndRestoreRoutine(isControlledByRoar));
             }
         }
         else
@@ -92,12 +94,15 @@ public class PlatformDisable : MonoBehaviour
         }
     }
 
-    private IEnumerator DropAndRestoreRoutine()
+    private IEnumerator DropAndRestoreRoutine(bool isControlledByRoar)
     {
-        dragon.GetComponent<EnemyDragon>().Roar();
+        if (isControlledByRoar)
+        {
+            dragon?.GetComponent<EnemyDragon>()?.Roar();
 
-        waitingForRoar = true;
-        yield return new WaitUntil(() => !waitingForRoar);
+            waitingForRoar = true;
+            yield return new WaitUntil(() => !waitingForRoar);
+        }
 
         sequenceRunning = true;
         standTimer = 0f;
@@ -145,6 +150,9 @@ public class PlatformDisable : MonoBehaviour
 
     public void Roar()
     {
-        waitingForRoar = false;
+        if (isControlledByRoar)
+        {
+            waitingForRoar = false;
+        }
     }
 }

@@ -210,10 +210,7 @@ public class EnemyDragon : EnemyBaseClass
     {
         if (bodyRenderer == null) return;
 
-        if (flashRoutine != null)
-        {
-            StopCoroutine(flashRoutine);
-        }
+        if (flashRoutine != null) return;
 
         flashRoutine = StartCoroutine(FlashDamageRoutine());
     }

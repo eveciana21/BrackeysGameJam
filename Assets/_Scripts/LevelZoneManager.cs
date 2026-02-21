@@ -324,7 +324,7 @@ public class LevelZoneManager : MonoBehaviour
         {
             dragon.SetActive(true);
 
-            coreManagersChannel.spawnManager.StartSpawning(levelConfig.spawnRate * 3.0f, -1, levelConfig.enemyPrefabs, cachedSpawnPoints, this);
+            coreManagersChannel.spawnManager.StartSpawning(levelConfig.spawnRate * 7.0f, -1, levelConfig.enemyPrefabs, cachedSpawnPoints, this);
 
             EnemyBaseClass enemyBase = dragon.GetComponent<EnemyBaseClass>();
             if (enemyBase != null)
