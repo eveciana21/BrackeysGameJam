@@ -28,6 +28,14 @@ public class EnemyMarge : EnemyBaseClass
     [SerializeField] private Sprite headHitSprite;
     [SerializeField] private float headHitSpriteDuration = 0.35f;
 
+    [Header("Contact Damage")]
+    [SerializeField] private int contactDamage = 1;
+    [SerializeField] private float contactKnockbackX = 8f;
+    [SerializeField] private float contactKnockbackY = 6f;
+    [SerializeField] private float contactCooldown = 0.2f;
+
+    private float nextContactTime;
+
     private Sprite originalHeadSprite;
     private Coroutine headSpriteRoutine;
 
@@ -191,6 +199,34 @@ public class EnemyMarge : EnemyBaseClass
         if (headRenderer != null) headRenderer.color = originalHeadColor;
 
         flashRoutine = null;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        TryDamagePlayerOnContact(collision.collider);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        TryDamagePlayerOnContact(other);
+    }
+
+    private void TryDamagePlayerOnContact(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+        if (Time.time < nextContactTime) return;
+
+        Player player = other.GetComponent<Player>();
+        if (player == null) return;
+
+        // Knock player away from Marge (based on relative position)
+        float dirX = (player.transform.position.x >= transform.position.x) ? 1f : -1f;
+        Vector2 knockback = new Vector2(dirX * contactKnockbackX, contactKnockbackY);
+
+        player.DamagePlayer(contactDamage);
+        player.ApplyKnockback(knockback);
+
+        nextContactTime = Time.time + contactCooldown;
     }
 
     private void Die()

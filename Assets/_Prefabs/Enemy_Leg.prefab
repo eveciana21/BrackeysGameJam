@@ -135,7 +135,7 @@ MonoBehaviour:
   jumpForce: 20
   jumpInterval: 2
   horizontalJumpMultiplier: 1.2
-  maxHealth: 4
+  maxHealth: 40
   bodyRenderer: {fileID: 3512063716457378717}
   damageFlashTime: 0.05
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -159,9 +159,9 @@ MonoBehaviour:
   boundsPadding: 0.1
   flipCooldown: 0.2
   deathStompImpulse: 14
-  deathFallExtraGravity: 4
+  deathFallExtraGravity: 1.5
   fallThroughDelay: 0.08
-  destroyAfterDeathSeconds: 1.25
+  destroyAfterDeathSeconds: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 32768
