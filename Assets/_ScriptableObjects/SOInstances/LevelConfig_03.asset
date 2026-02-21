@@ -18,5 +18,5 @@ MonoBehaviour:
   enemiesToKill: 1
   spawnRate: 0
   projectilePrefabs:
-  - {fileID: 943081113863803852, guid: 0e8b13e3c5e2bbc41a7d49a96a65a62c, type: 3}
+  - {fileID: 943081113863803852, guid: ba582b022bf3ffb43aca93e358ff5ca3, type: 3}
   levelMusic: {fileID: 8300000, guid: efc30145f1683ab45a8c2e8188cbf476, type: 3}

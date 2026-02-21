@@ -188,13 +188,21 @@ public class Player : MonoBehaviour
 
         GameObject projObj = Instantiate(prefabToUse, throwPoint.position, Quaternion.identity);
 
-        Rigidbody2D projRb = projObj.GetComponent<Rigidbody2D>();
-        if (projRb == null) return;
-
         float facingDir = transform.localScale.x >= 0f ? 1f : -1f;
         Vector2 launchVelocity = new Vector2(facingDir * throwSpeed, throwUpwardBoost);
 
-        projRb.linearVelocity = launchVelocity;
+        ProjectileSpin spin = projObj.GetComponent<ProjectileSpin>();
+        if (spin != null)
+        {
+            // Convert your velocity into an impulse-like force
+            spin.Throw(launchVelocity);
+        }
+        else
+        {
+            Rigidbody2D projRb = projObj.GetComponent<Rigidbody2D>();
+            if (projRb == null) return;
+            projRb.linearVelocity = launchVelocity;
+        }
     }
 
     public void SetProjectilePrefabs(GameObject[] prefabs)
@@ -253,12 +261,6 @@ public class Player : MonoBehaviour
         Vector2 checkPosition = new Vector2(transform.position.x, playerCollider.bounds.min.y + groundCheckOffset);
         isGrounded = Physics2D.OverlapCircle(checkPosition, groundCheckRadius, groundLayer);
     }
-
-    /*    private void PlayerMovement()
-        {
-            float targetVelX = Mathf.Clamp(moveInput.x, -1f, 1f) * playerSpeed;
-            rb.linearVelocity = new Vector2(targetVelX, rb.linearVelocity.y);
-        }*/
 
     private void PlayerMovement()
     {

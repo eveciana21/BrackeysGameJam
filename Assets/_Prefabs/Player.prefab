@@ -80,7 +80,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1975597339
   m_SortingLayer: 5
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: e435f61ed5aeba146869741cf71fbf2d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -260,7 +260,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 943081113863803852, guid: 0e8b13e3c5e2bbc41a7d49a96a65a62c, type: 3}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 32768
+    m_Bits: 98304
   groundCheckRadius: 0.15
   groundCheckOffset: 0.1
   healthIndicatorUI: {fileID: 0}

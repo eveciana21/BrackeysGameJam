@@ -11,12 +11,11 @@ GameObject:
   - component: {fileID: 1092791622837611371}
   - component: {fileID: 5949420009975253335}
   - component: {fileID: 1610823854769185553}
-  - component: {fileID: 9081494255426575654}
+  - component: {fileID: 3635983496644580372}
   - component: {fileID: 6869759090427092782}
-  - component: {fileID: 1190331715679381029}
-  - component: {fileID: 5694099673678443855}
+  - component: {fileID: 136722604995630606}
   m_Layer: 20
-  m_Name: Projectile_WaterBalloon
+  m_Name: Projectile_BeerCan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -86,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7101823065482959017, guid: ca22969f50fd0674aa26dcb5e8743b42, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 76f86249163aac044b0022653a99e69e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,8 +122,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!58 &9081494255426575654
-CircleCollider2D:
+--- !u!70 &3635983496644580372
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -157,8 +156,9 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.07163817}
-  m_Radius: 0.325382
+  m_Offset: {x: 0.005754292, y: 0.011508584}
+  m_Size: {x: 0.62228394, y: 1.0128446}
+  m_Direction: 0
 --- !u!114 &6869759090427092782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,46 +171,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97b33f28af830441a752ca4faff522f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  randomizeSpriteOnSpawn: 1
+  randomizeSpriteOnSpawn: 0
   spriteRenderer: {fileID: 5949420009975253335}
-  randomSprites:
-  - {fileID: 7101823065482959017, guid: ca22969f50fd0674aa26dcb5e8743b42, type: 3}
-  - {fileID: -7514004747818894540, guid: 69dc0aad30d733745927f2d808e6328c, type: 3}
-  - {fileID: 3415256728661171064, guid: 2419990fea7beb345a9915beef1f6e4c, type: 3}
+  randomSprites: []
   damage: 1
-  useLifetime: 0
+  useLifetime: 1
   lifeTime: 5
   groundDampen: 0.3
-  animator: {fileID: 1190331715679381029}
+  animator: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 4096
   groundLayer:
     serializedVersion: 2
     m_Bits: 32768
---- !u!95 &1190331715679381029
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 943081113863803852}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4c7e879b6728a1243a674d8646b7e529, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5694099673678443855
+--- !u!114 &136722604995630606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,5 +198,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileSpin
   rb: {fileID: 1610823854769185553}
-  minSpin: -360
-  maxSpin: 360
+  minSpin: -180
+  maxSpin: 180
