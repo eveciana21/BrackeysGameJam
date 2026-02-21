@@ -50,7 +50,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_GravityScale: 1.3
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -139,8 +139,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileSpin
   rb: {fileID: 1610823854769185553}
-  minSpin: -180
-  maxSpin: 180
+  minSpin: -360
+  maxSpin: 360
 --- !u!1 &6879543314926639348
 GameObject:
   m_ObjectHideFlags: 0

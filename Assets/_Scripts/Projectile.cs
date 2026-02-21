@@ -132,9 +132,9 @@ public class Projectile : MonoBehaviour
         {
             Debug.Log("Projectile");
             dragon.ApplyDamage(damage);
-           
+
         }
-        
+
         Rat rat = collision.gameObject.GetComponentInParent<Rat>();
         if (rat != null)
         {
@@ -145,6 +145,12 @@ public class Projectile : MonoBehaviour
         EnemyLeg leg = collision.gameObject.GetComponentInParent<EnemyLeg>();
         if (leg != null)
         {
+            // Ignore physics collision so the projectile doesn't interfere with the leg's jump velocity
+            if (myCol != null && collision.collider != null)
+                Physics2D.IgnoreCollision(myCol, collision.collider, true);
+
+            // Restore the leg's velocity to undo any impulse already applied this physics frame
+            leg.RestoreVelocity();
             leg.ApplyDamage(damage);
             return;
         }

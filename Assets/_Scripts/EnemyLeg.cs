@@ -85,6 +85,7 @@ public class EnemyLeg : EnemyBaseClass
     private Coroutine flashRoutine;
 
     private float baseMoveSpeed;
+    private Vector2 lastKnownVelocity; // cached each FixedUpdate to restore if a projectile hits
 
     private void Awake()
     {
@@ -145,6 +146,9 @@ public class EnemyLeg : EnemyBaseClass
 
         MoveInAir();
         ApplyExtraFallGravity();
+
+        // Cache velocity so projectile hits can restore it without disrupting the jump
+        lastKnownVelocity = rb.linearVelocity;
     }
 
     private IEnumerator JumpCoroutine()
@@ -409,6 +413,15 @@ public class EnemyLeg : EnemyBaseClass
     {
         if (isDying) return;
         TakeDamage(amount);
+    }
+
+    // Called by Projectile to undo any physics impulse the collision applied this frame
+    public void RestoreVelocity()
+    {
+        if (rb != null && !isGrounded)
+        {
+            rb.linearVelocity = lastKnownVelocity;
+        }
     }
 
     private void TakeDamage(int amount)
