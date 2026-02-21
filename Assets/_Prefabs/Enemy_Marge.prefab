@@ -233,7 +233,7 @@ MonoBehaviour:
   maxFireInterval: 3
   startDelay: 5
   projectileSpeed: 8
-  maxHealth: 40
+  maxHealth: 1
   bodyRenderer: {fileID: 3648484456109952532}
   flashInterval: 0.035
   invincibilityTime: 0.15

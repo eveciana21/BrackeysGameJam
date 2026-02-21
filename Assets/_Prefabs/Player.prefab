@@ -256,7 +256,7 @@ MonoBehaviour:
   throwPoint: {fileID: 225043021375168071}
   throwSpeed: 10
   throwUpwardBoost: 2.5
-  throwCooldown: 0.4
+  throwCooldown: 0.2
   projectilePrefab: {fileID: 943081113863803852, guid: 0e8b13e3c5e2bbc41a7d49a96a65a62c, type: 3}
   groundLayer:
     serializedVersion: 2

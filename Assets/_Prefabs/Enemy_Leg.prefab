@@ -135,7 +135,7 @@ MonoBehaviour:
   jumpForce: 20
   jumpInterval: 2
   horizontalJumpMultiplier: 1.2
-  maxHealth: 40
+  maxHealth: 1
   bodyRenderer: {fileID: 3512063716457378717}
   damageFlashTime: 0.05
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
