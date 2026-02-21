@@ -25,7 +25,7 @@ public class DragonVision : MonoBehaviour
 
             if (player != null)
             {
-                StartCoroutine(dragon.Attack());
+                dragon.Attack();
 
                 lastFire = 0.0f;
             }

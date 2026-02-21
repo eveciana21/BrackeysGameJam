@@ -361,6 +361,8 @@ MonoBehaviour:
   travelConfiner: {fileID: 0}
   enterBlendTime: 0.45
   travelBlendTime: 0.35
+  ratHoleTrigger: {fileID: 0}
+  conveyorSpawner: {fileID: 0}
   lockedCameraBounds: {fileID: 3953763590111592524}
   peekCameraBounds: {fileID: 580216991978734711}
   spawnPointsRoot: {fileID: 8357500853415211517}
@@ -368,6 +370,7 @@ MonoBehaviour:
   exitBarrier: {fileID: 5264167843505530295}
   startLevel: 1
   firstSpawnDelay: 1
+  arrow: {fileID: 0}
 --- !u!61 &2545832867050495236
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1689,6 +1692,14 @@ PrefabInstance:
     - target: {fileID: 5348895544495439272, guid: aa3bece7f656ca9d1939c64cd3115077, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6696336764444466864, guid: aa3bece7f656ca9d1939c64cd3115077, type: 3}
+      propertyPath: m_Target
+      value: 
+      objectReference: {fileID: 4070262440460679471}
+    - target: {fileID: 6696336764444466864, guid: aa3bece7f656ca9d1939c64cd3115077, type: 3}
+      propertyPath: m_MaxSpeed
+      value: 10.612384
       objectReference: {fileID: 0}
     - target: {fileID: 7709125848630019573, guid: aa3bece7f656ca9d1939c64cd3115077, type: 3}
       propertyPath: m_Name

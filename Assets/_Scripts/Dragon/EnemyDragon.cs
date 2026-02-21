@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -13,7 +14,9 @@ public class EnemyDragon : EnemyBaseClass
     [SerializeField] private float distThreshold = 0.1f;
 
     [Header("Health")]
-    [SerializeField] private int maxHealth = 3;
+    [SerializeField] private int maxHealth = 30;
+    [SerializeField] private int hitsBeforeStun = 3;
+    [SerializeField] private float stunLength = 2.0f;
 
     [Header("Player Bounce")]
     [SerializeField] private float bounceForce = 10f;
@@ -35,6 +38,10 @@ public class EnemyDragon : EnemyBaseClass
     [Header("Detection")]
     [SerializeField] private LayerMask playerLayer;
 
+    [Header("Roar")]
+    [SerializeField] private float roarLength = 2.0f;
+    [SerializeField] private GameObject dragonPlatform;
+
     private SplineAnimate splineAnimate;
     private Spline spline;
     private SplineContainer injectedContainer;
@@ -49,7 +56,17 @@ public class EnemyDragon : EnemyBaseClass
     private float lastStompTime;
     private float stompCooldown = 0.1f;
 
+    private bool isStunned = false;
+    private int stunCounter = 0;
+    private bool isFlyingBack = false;
+
+    private bool isRoaring = false;
+
     private Coroutine flashRoutine;
+    private Coroutine waitAtTopCoroutine;
+    private Coroutine attackCoroutine;
+    private Coroutine stunCoroutine;
+    private Coroutine roarCoroutine;
 
     private void Awake()
     {
@@ -106,21 +123,44 @@ public class EnemyDragon : EnemyBaseClass
         Vector3 lastPosition = (Vector3)spline.Last().Position + splineAnimate.Container.transform.position;
         float dist = Vector3.Distance(lastPosition, transform.position);
 
+        if (isFlyingBack)
+        {
+            float speed = 3.0f;
+            Vector3 pathBack = lastPosition - transform.position;
+
+            transform.position += Vector3.Normalize(pathBack) * Math.Min(speed * Time.deltaTime, dist);
+        }
+
         if (dist <= distThreshold && !waitingAtTop)
         {
             waitingAtTop = true;
-            SplineUtility.ReverseFlow(spline);
-            StartCoroutine(WaitAtTop());
+            isFlyingBack = false;
+            hasAttacked = false;
+
+            Vector3 newScale = transform.localScale;
+            newScale.x *= -1;
+            transform.localScale = newScale;
+
+            if (isRoaring)
+            {
+                roarCoroutine = StartCoroutine(_roar());
+            }
+            else
+            {
+                waitAtTopCoroutine = StartCoroutine(WaitAtTop());
+            }
         }
+    }
+
+    public void Init()
+    {
+        Debug.Log("init");
+        splineAnimate.Play();
     }
 
     private IEnumerator WaitAtTop()
     {
-        hasAttacked = false;
-
-        Vector3 newScale = transform.localScale;
-        newScale.x *= -1;
-        transform.localScale = newScale;
+        SplineUtility.ReverseFlow(spline);
 
         splineAnimate.Pause();
 
@@ -130,9 +170,14 @@ public class EnemyDragon : EnemyBaseClass
         waitingAtTop = false;
     }
 
-    public IEnumerator Attack()
+    public void Attack()
     {
-        if (!hasAttacked && !waitingAtTop)
+        attackCoroutine = StartCoroutine(_attack());
+    }
+
+    private IEnumerator _attack()
+    {
+        if (!hasAttacked && !waitingAtTop && !isStunned)
         {
             splineAnimate.Pause();
             animator.SetTrigger("attack");
@@ -172,7 +217,7 @@ public class EnemyDragon : EnemyBaseClass
 
     private void TakeDamage(int amount)
     {
-        if (currentHealth <= 0) return;
+        if (currentHealth <= 0 || isStunned || isRoaring) return;
 
         currentHealth -= amount;
 
@@ -181,6 +226,14 @@ public class EnemyDragon : EnemyBaseClass
         if (currentHealth <= 0)
         {
             Die();
+            return;
+        }
+
+        stunCounter++;
+
+        if (stunCounter >= hitsBeforeStun && !isStunned)
+        {
+            stunCoroutine = StartCoroutine(Stun());
         }
     }
 
@@ -209,6 +262,11 @@ public class EnemyDragon : EnemyBaseClass
 
     public void Die()
     {
+        if (waitAtTopCoroutine != null) StopCoroutine(waitAtTopCoroutine);
+        if (attackCoroutine != null) StopCoroutine(attackCoroutine);
+        if (stunCoroutine != null) StopCoroutine(stunCoroutine);
+        if (roarCoroutine != null) StopCoroutine(roarCoroutine);
+
         NotifyDeath();
 
         if (rb != null)
@@ -228,5 +286,56 @@ public class EnemyDragon : EnemyBaseClass
     public void ApplyDamage(int amount)
     {
         TakeDamage(amount);
+    }
+
+    private IEnumerator Stun()
+    {
+        isStunned = true;
+        waitingAtTop = false;
+
+        if (waitAtTopCoroutine != null) StopCoroutine(waitAtTopCoroutine);
+        if (attackCoroutine != null) StopCoroutine(attackCoroutine);
+        if (roarCoroutine != null) StopCoroutine(roarCoroutine);
+
+        splineAnimate.Pause();
+        animator.SetTrigger("stun");
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
+        yield return new WaitForSeconds(stunLength);
+
+        animator.SetTrigger("idle");
+
+        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        isFlyingBack = true;
+
+        yield return new WaitUntil(() => !isFlyingBack);
+
+        isStunned = false;
+        stunCounter = 0;
+    }
+
+    public void Roar()
+    {
+        isRoaring = true;
+    }
+
+    private IEnumerator _roar()
+    {
+        isStunned = false;
+        animator.SetTrigger("roar");
+
+        yield return new WaitForSeconds(roarLength / 2.0f);
+
+        dragonPlatform.GetComponentInChildren<DragonPlatform>().PhasePlatform();
+
+        yield return new WaitForSeconds(roarLength / 2.0f);
+
+        animator.SetTrigger("idle");
+
+        isRoaring = false;
+
+        waitAtTopCoroutine = StartCoroutine(WaitAtTop());
     }
 }
