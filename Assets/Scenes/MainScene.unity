@@ -441,7 +441,7 @@ Transform:
   m_GameObject: {fileID: 1402618294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6838875, y: -0.5999975, z: -10}
+  m_LocalPosition: {x: 0.6877346, y: -3.9999976, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -585,11 +585,11 @@ PrefabInstance:
       objectReference: {fileID: 225906568}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.8
+      value: -4.8
       objectReference: {fileID: 0}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.6
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -837,18 +837,6 @@ PrefabInstance:
       propertyPath: travelConfiner
       value: 
       objectReference: {fileID: 521189454}
-    - target: {fileID: 7300611922557338997, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
-      propertyPath: m_Target
-      value: 
-      objectReference: {fileID: 6099262439565212256}
-    - target: {fileID: 7300611922557338997, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7300611922557338997, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7670379256397044406, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
       propertyPath: director
       value: 
@@ -862,17 +850,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
---- !u!114 &6099262439565212256 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3322425252190761607, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
-  m_PrefabInstance: {fileID: 6099262439565212255}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
 --- !u!1001 &6654148848729724856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -891,11 +868,11 @@ PrefabInstance:
       objectReference: {fileID: 1826048582}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.8
+      value: -4.8
       objectReference: {fileID: 0}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.6
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.z
