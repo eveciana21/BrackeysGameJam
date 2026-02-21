@@ -50,6 +50,8 @@ public class LevelZoneManager : MonoBehaviour
     [Header("Last Level Boss")]
     [SerializeField] private bool isLastLevel;
     [SerializeField] private GameObject dragon;
+    [SerializeField] private GameObject[] stage1Platforms;
+    [SerializeField] private GameObject[] stage2Platforms;
 
     private Transform[] cachedSpawnPoints;
 
@@ -63,6 +65,8 @@ public class LevelZoneManager : MonoBehaviour
     private bool hasStartedCombat;
     private bool bossPhase;
     private bool bossKilled;
+
+    private bool hasBossSpawned = false;
 
     private void Awake()
     {
@@ -252,16 +256,23 @@ public class LevelZoneManager : MonoBehaviour
         coreManagersChannel.spawnManager.StartSpawning(levelConfig.spawnRate, levelConfig.enemiesToKill, levelConfig.enemyPrefabs, cachedSpawnPoints, this);
     }
 
-    public void RegisterEnemyDeath()
+    public void RegisterEnemyDeath(bool isBoss = false)
     {
         if (!isActive || isComplete) return;
         if (!hasStartedCombat) return;
 
         // Boss phase: only the dragon dying completes the level
-        if (bossPhase)
+        if (bossPhase && isBoss)
         {
             if (!bossKilled)
             {
+                EnemyBasic[] enemies = FindObjectsByType<EnemyBasic>(FindObjectsSortMode.None);
+
+                foreach (EnemyBasic enemy in enemies)
+                {
+                    enemy.Die(false);
+                }
+
                 bossKilled = true;
                 CompleteLevel(skipPeek: true);
             }
@@ -272,18 +283,19 @@ public class LevelZoneManager : MonoBehaviour
 
         if (levelConfig != null && enemiesKilled >= levelConfig.enemiesToKill)
         {
-            if (isLastLevel)
+            if (isLastLevel && !hasBossSpawned)
             {
-                SpawnBoss();
+                hasBossSpawned = true;
+                StartCoroutine(SpawnBoss());
             }
-            else
+            else if (!hasBossSpawned)
             {
                 CompleteLevel(skipPeek: false);
             }
         }
     }
 
-    private void SpawnBoss()
+    private IEnumerator SpawnBoss()
     {
         if (coreManagersChannel != null && coreManagersChannel.spawnManager != null)
         {
@@ -292,15 +304,36 @@ public class LevelZoneManager : MonoBehaviour
 
         bossPhase = true;
 
-        if (dragon == null) return;
-
-        dragon.SetActive(true);
-
-        EnemyBaseClass enemyBase = dragon.GetComponent<EnemyBaseClass>();
-        if (enemyBase != null)
+        // Wait for platforms to disappear
+        foreach (GameObject platform in stage1Platforms)
         {
-            enemyBase.Initialize(this);
+            platform.GetComponent<Animator>().SetTrigger("disappear");
         }
+
+        yield return new WaitForSeconds(4.0f);
+
+        // Wait for platforms to appear
+        foreach (GameObject platform in stage2Platforms)
+        {
+            platform.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(3.0f);
+
+        if (dragon != null)
+        {
+            dragon.SetActive(true);
+
+            coreManagersChannel.spawnManager.StartSpawning(levelConfig.spawnRate * 3.0f, -1, levelConfig.enemyPrefabs, cachedSpawnPoints, this);
+
+            EnemyBaseClass enemyBase = dragon.GetComponent<EnemyBaseClass>();
+            if (enemyBase != null)
+            {
+                enemyBase.Initialize(this);
+            }
+        }
+
+        yield return "";
     }
 
     private void CompleteLevel(bool skipPeek = false)

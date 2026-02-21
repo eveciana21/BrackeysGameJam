@@ -40,7 +40,7 @@ public class SpawnManager : MonoBehaviour
 
     private IEnumerator SpawnRoutine()
     {
-        while (spawning && spawnedCount < maxToSpawn)
+        while (spawning && (spawnedCount < maxToSpawn || maxToSpawn < 0))
         {
             SpawnEnemy();
             spawnedCount++;

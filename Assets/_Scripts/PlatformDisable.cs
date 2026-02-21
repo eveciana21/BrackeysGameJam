@@ -102,6 +102,8 @@ public class PlatformDisable : MonoBehaviour
         sequenceRunning = true;
         standTimer = 0f;
 
+        GetComponent<Animator>().enabled = false;
+
         // Flash before disappearing
         yield return StartCoroutine(FlashRoutine());
 
@@ -116,6 +118,8 @@ public class PlatformDisable : MonoBehaviour
 
         // Flash again before becoming solid
         yield return StartCoroutine(FlashRoutine());
+
+        GetComponent<Animator>().enabled = true;
 
         // Re-enable collider (solid again)
         if (platformCollider != null) platformCollider.enabled = true;

@@ -199,9 +199,9 @@ public class EnemyBasic : EnemyBaseClass
         isAttacking = false;
     }
 
-    public void Die()
+    public void Die(bool shouldNotifyDeath = true)
     {
-        NotifyDeath();
+        if (shouldNotifyDeath) NotifyDeath();
 
         CancelInvoke(nameof(EndAttack));
         isAttacking = false;

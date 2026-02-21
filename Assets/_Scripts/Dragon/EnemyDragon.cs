@@ -236,7 +236,7 @@ public class EnemyDragon : EnemyBaseClass
         if (stunCoroutine != null) StopCoroutine(stunCoroutine);
         if (roarCoroutine != null) StopCoroutine(roarCoroutine);
 
-        NotifyDeath();
+        NotifyDeath(true);
 
         if (rb != null)
         {

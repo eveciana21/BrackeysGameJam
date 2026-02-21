@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 8839669458798134709}
   - component: {fileID: 1151533873710672122}
   - component: {fileID: 2769357895495265626}
+  - component: {fileID: 1766558857201949602}
   m_Layer: 15
   m_Name: Platform3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7188317077958962422
 Transform:
   m_ObjectHideFlags: 0
@@ -158,6 +159,28 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!95 &1766558857201949602
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507040747280154859}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e0197e71c6d9fcb02b79ddf99eb907d4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &975586101517151091
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,8 +396,12 @@ MonoBehaviour:
   firstSpawnDelay: 1
   isLastLevel: 0
   dragon: {fileID: 1479259153904375826}
-  dragonSpawnPoint: {fileID: 0}
-  dragonSplineContainer: {fileID: 0}
+  stage1Platforms:
+  - {fileID: 5843105831855107970}
+  - {fileID: 4255949087761356782}
+  - {fileID: 507040747280154859}
+  stage2Platforms:
+  - {fileID: 6000461111712853093}
   arrowShowDelay: 1
   arrow: {fileID: 0}
 --- !u!61 &2545832867050495236
@@ -838,13 +865,14 @@ GameObject:
   - component: {fileID: 6573886987310253270}
   - component: {fileID: 3540373223355244304}
   - component: {fileID: 7441744391202656456}
+  - component: {fileID: 5682367547344705939}
   m_Layer: 15
   m_Name: Platform2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4230014620922336904
 Transform:
   m_ObjectHideFlags: 0
@@ -984,6 +1012,28 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!95 &5682367547344705939
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4255949087761356782}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e0197e71c6d9fcb02b79ddf99eb907d4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4379837078593401119
 GameObject:
   m_ObjectHideFlags: 0
@@ -1290,13 +1340,14 @@ GameObject:
   - component: {fileID: 4736013697652955597}
   - component: {fileID: 5849508095847804071}
   - component: {fileID: 3812420559443454455}
+  - component: {fileID: 398884397708815539}
   m_Layer: 15
   m_Name: Platform1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3682068857683948834
 Transform:
   m_ObjectHideFlags: 0
@@ -1362,7 +1413,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 2
   m_Sprite: {fileID: -6700229176022224595, guid: 6e7d8c7deee3d5249bb07dbd39779ab1, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1436,6 +1487,28 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!95 &398884397708815539
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5843105831855107970}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e0197e71c6d9fcb02b79ddf99eb907d4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6000461111712853093
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,13 +1523,14 @@ GameObject:
   - component: {fileID: 3457969837273770595}
   - component: {fileID: 8643129441160633366}
   - component: {fileID: 5728035357789110708}
+  - component: {fileID: 2232344821150698698}
   m_Layer: 15
   m_Name: DragonPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3912122637519120199
 Transform:
   m_ObjectHideFlags: 0
@@ -1663,6 +1737,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 9, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &2232344821150698698
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6000461111712853093}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e0197e71c6d9fcb02b79ddf99eb907d4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8669319767597741856
 GameObject:
   m_ObjectHideFlags: 0

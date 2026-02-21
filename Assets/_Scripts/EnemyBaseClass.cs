@@ -9,11 +9,11 @@ public class EnemyBaseClass : MonoBehaviour
         levelZone = zone;
     }
 
-    protected void NotifyDeath()
+    protected void NotifyDeath(bool isBoss = false)
     {
         if (levelZone != null)
         {
-            levelZone.RegisterEnemyDeath();
+            levelZone.RegisterEnemyDeath(isBoss);
         }
     }
 }
