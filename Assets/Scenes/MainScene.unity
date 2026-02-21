@@ -441,7 +441,7 @@ Transform:
   m_GameObject: {fileID: 1402618294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 0, z: -10}
+  m_LocalPosition: {x: 55.15, y: -19.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -585,11 +585,11 @@ PrefabInstance:
       objectReference: {fileID: 225906568}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.9
+      value: 48.7
       objectReference: {fileID: 0}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.95
+      value: -23.4
       objectReference: {fileID: 0}
     - target: {fileID: 6720620252619866512, guid: 6daada21e41e92a4294dbcc12c00753a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -754,6 +754,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1402618298}
     - target: {fileID: 1964533687222141894, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
+      propertyPath: startLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1964533687222141894, guid: 0acd0234f6cf60f4482636a60cc13441, type: 3}
       propertyPath: travelCamera
       value: 
       objectReference: {fileID: 521189455}
@@ -868,11 +872,11 @@ PrefabInstance:
       objectReference: {fileID: 1826048582}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.9
+      value: 48.7
       objectReference: {fileID: 0}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.95
+      value: -23.4
       objectReference: {fileID: 0}
     - target: {fileID: 5078103218061538648, guid: 8512831d1a957d943a0dac3693363fe0, type: 3}
       propertyPath: m_LocalPosition.z

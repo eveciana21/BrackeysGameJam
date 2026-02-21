@@ -1513,7 +1513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2752072917322801182, guid: 53093b2a2f39f364aba94c0191d622d5, type: 3}
       propertyPath: Priority.m_Value
-      value: 0
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7943765142495755599, guid: 53093b2a2f39f364aba94c0191d622d5, type: 3}
       propertyPath: arrow
@@ -1521,7 +1521,7 @@ PrefabInstance:
       objectReference: {fileID: 3270083828525186184}
     - target: {fileID: 7943765142495755599, guid: 53093b2a2f39f364aba94c0191d622d5, type: 3}
       propertyPath: startLevel
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8805629503093430260, guid: 53093b2a2f39f364aba94c0191d622d5, type: 3}
       propertyPath: m_LocalPosition.x
