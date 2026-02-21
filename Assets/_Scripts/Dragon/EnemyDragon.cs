@@ -23,6 +23,9 @@ public class EnemyDragon : EnemyBaseClass
     [SerializeField] private float moveSpeedIncreaseOnStomp = 0.5f; // enemy gets faster per stomp
     [SerializeField] private float maxMoveSpeed = 5f;
 
+    [Header("Entry")]
+    [SerializeField] private float entrySpeed = 3f; // units per second toward spline start
+
     [Header("Damage")]
     [SerializeField] private float damageFlashTime = 0.08f;
     [SerializeField] private Color damageFlashColor = Color.red;
@@ -34,6 +37,7 @@ public class EnemyDragon : EnemyBaseClass
 
     private SplineAnimate splineAnimate;
     private Spline spline;
+    private SplineContainer injectedContainer;
 
     private Animator animator;
     private SpriteRenderer bodyRenderer;
@@ -52,6 +56,12 @@ public class EnemyDragon : EnemyBaseClass
         currentHealth = maxHealth;
     }
 
+    // Call this immediately after Instantiate, before Start() fires
+    public void SetSplineContainer(SplineContainer container)
+    {
+        injectedContainer = container;
+    }
+
     private void Start()
     {
         splineAnimate = GetComponent<SplineAnimate>();
@@ -60,9 +70,35 @@ public class EnemyDragon : EnemyBaseClass
 
         if (splineAnimate != null)
         {
+            // Use the injected scene container if provided
+            if (injectedContainer != null)
+                splineAnimate.Container = injectedContainer;
+
             spline = splineAnimate.Container.Spline;
-            splineAnimate.Play();
+
+            // Disable spline movement until the dragon reaches the spline start
+            splineAnimate.enabled = false;
+
+            StartCoroutine(ApproachSplineStart());
         }
+    }
+
+    private IEnumerator ApproachSplineStart()
+    {
+        // World-space position of the spline's first knot
+        Vector3 splineStartWorld = splineAnimate.Container.transform.TransformPoint(spline.First().Position);
+
+        while (Vector3.Distance(transform.position, splineStartWorld) > distThreshold)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, splineStartWorld, entrySpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        transform.position = splineStartWorld;
+
+        // Hand off to SplineAnimate
+        splineAnimate.enabled = true;
+        splineAnimate.Play();
     }
 
     private void FixedUpdate()
