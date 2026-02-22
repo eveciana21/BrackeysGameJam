@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     [Header("Channels")]
     [SerializeField] private CoreManagersChannelSO coreManagersChannel;
 
+    [SerializeField] private GameObject controls;
+
     private InputActions uiInput;
     private bool onQuitGameScreen;
 
@@ -93,6 +95,16 @@ public class GameManager : MonoBehaviour
         // Cursor hides after countdown completes (inside CountdownRoutine)
     }
 
+    public void OnClick_OpenControls()
+    {
+        controls.SetActive(true);
+    }
+
+    public void OnClick_CloseControls()
+    {
+        controls.SetActive(false);
+    }
+
     private void EscapeButtonPressed(InputAction.CallbackContext context)
     {
         Scene current = SceneManager.GetActiveScene();
@@ -115,7 +127,7 @@ public class GameManager : MonoBehaviour
 
         if (onQuitGameScreen)
         {
-            // Pause menu is open — start the countdown resume instead
+            // Pause menu is open ï¿½ start the countdown resume instead
             OnClick_Continue();
             return;
         }
