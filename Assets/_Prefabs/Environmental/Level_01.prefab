@@ -1052,13 +1052,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelZoneManager
   coreManagersChannel: {fileID: 11400000, guid: 927fed7eec3c86440b378baeadce6f24, type: 2}
-  levelConfig: {fileID: 11400000, guid: 8b735e7f7554f9f4996dc26324479072, type: 2}
+  levelConfig: {fileID: 11400000, guid: 17fad6682af97d942a25a9653b774346, type: 2}
   brain: {fileID: 0}
   levelCamera: {fileID: 6557115034488747307}
   travelCamera: {fileID: 0}
   travelConfiner: {fileID: 0}
   enterBlendTime: 0.45
   travelBlendTime: 0.35
+  ratHoleTrigger: {fileID: 0}
+  conveyorSpawner: {fileID: 0}
   lockedCameraBounds: {fileID: 8418617911396347099}
   peekCameraBounds: {fileID: 1934310669989476041}
   spawnPointsRoot: {fileID: 8006492942067473289}
@@ -1066,6 +1068,12 @@ MonoBehaviour:
   exitBarrier: {fileID: 4653062214021197445}
   startLevel: 0
   firstSpawnDelay: 0
+  isLastLevel: 0
+  dragon: {fileID: 0}
+  stage1Platforms: []
+  stage2Platforms: []
+  arrowShowDelay: 1
+  arrow: {fileID: 0}
 --- !u!61 &8872322117315666981
 BoxCollider2D:
   m_ObjectHideFlags: 0
