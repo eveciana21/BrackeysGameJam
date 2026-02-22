@@ -82,7 +82,7 @@ MonoBehaviour:
   jumpForce: 20
   jumpInterval: 2
   horizontalJumpMultiplier: 1.2
-  maxHealth: 5
+  maxHealth: 10
   bodyRenderer: {fileID: 3512063716457378717}
   damageFlashTime: 0.05
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -118,8 +118,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 1024
-  damageSfx: {fileID: 8300000, guid: 554379d3a3cbac745ba6f62d4f306408, type: 3}
-  stompSfx: {fileID: 8300000, guid: 029f1e89059d6234b9d54ae408e3d7a2, type: 3}
+  damageSfx: {fileID: 8300000, guid: ec781dd92e0c6174d910a6cf563b070f, type: 3}
+  stompSfx: {fileID: 8300000, guid: e38d68964c388b6429fd21ad886c25d7, type: 3}
 --- !u!61 &4168817390827364088
 BoxCollider2D:
   m_ObjectHideFlags: 0

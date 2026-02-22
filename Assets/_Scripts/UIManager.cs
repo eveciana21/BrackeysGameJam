@@ -55,6 +55,11 @@ public class UIManager : MonoBehaviour
 
         if (fadeInBlack != null) fadeInBlack.SetActive(false);
         if (fadeOutBlack != null) fadeOutBlack.SetActive(false);
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            StartCoroutine(FadeInOnLevelStart());
+        }
     }
 
     private void HideAllCountdownSprites()
@@ -237,7 +242,7 @@ public class UIManager : MonoBehaviour
     {
         // Fade OUT (to black)
         if (fadeOutBlack != null) fadeOutBlack.SetActive(true);
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(1);
 
         // Now that screen is black, show the teacher UI
         if (teacherImage != null) teacherImage.SetActive(true);
@@ -289,12 +294,25 @@ public class UIManager : MonoBehaviour
         if (menuMusicSource != null)
         {
             menuMusicSource.volume = 0f;
-            // Optional: stop it entirely (uncomment if you want)
-            // menuMusicSource.Stop();
         }
 
         // Start the game after the fade is done
         coreManagersChannel?.gameManager?.StartGameAfterFade();
+    }
+
+    private IEnumerator FadeInOnLevelStart()
+    {
+        // Make sure fade-out isn't showing
+        if (fadeOutBlack != null) fadeOutBlack.SetActive(false);
+
+        // Show fade-in overlay immediately
+        if (fadeInBlack != null) fadeInBlack.SetActive(true);
+
+        // Wait 2 seconds (real time, not affected by Time.timeScale)
+        yield return new WaitForSecondsRealtime(2f);
+
+        // Hide it
+        if (fadeInBlack != null) fadeInBlack.SetActive(false);
     }
 
     public void StartGameAfterFade()

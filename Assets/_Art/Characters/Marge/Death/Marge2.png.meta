@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: be97755acea30564da5d342a60f78b31
+guid: 02681ae42c40b49418a2fd79ab385dd0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1923490397767634971
-    second: MargDeath4_0
-  - first:
-      213: -8942422440509600934
-    second: MargDeath4_1
-  - first:
-      213: 2871229032712158775
-    second: MargDeath4_2
-  - first:
-      213: -6515942910597773086
-    second: MargDeath4_3
-  - first:
-      213: -8789777956993515257
-    second: MargDeath4_4
+      213: 4785495932697643667
+    second: Marge2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -125,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MargDeath4_0
+      name: Marge2_0
       rect:
         serializedVersion: 2
-        x: 267
-        y: 108
-        width: 335
-        height: 552
+        x: 219
+        y: 75
+        width: 205
+        height: 332
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,96 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5ef6f20aca36e45e0800000000000000
-      internalID: -1923490397767634971
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MargDeath4_1
-      rect:
-        serializedVersion: 2
-        x: 287
-        y: 656
-        width: 315
-        height: 415
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a5b81f95b2226e380800000000000000
-      internalID: -8942422440509600934
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MargDeath4_2
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 0
-        width: 157
-        height: 117
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 73eb893c797a8d720800000000000000
-      internalID: 2871229032712158775
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MargDeath4_3
-      rect:
-        serializedVersion: 2
-        x: 266
-        y: 0
-        width: 136
-        height: 124
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2e8481d1278b295a0800000000000000
-      internalID: -6515942910597773086
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MargDeath4_4
-      rect:
-        serializedVersion: 2
-        x: 557
-        y: 0
-        width: 45
-        height: 78
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 701c7d2b48f640680800000000000000
-      internalID: -8789777956993515257
+      spriteID: 39a0586323f796240800000000000000
+      internalID: 4785495932697643667
       vertices: []
       indices: 
       edges: []
@@ -248,11 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MargDeath4_0: -1923490397767634971
-      MargDeath4_1: -8942422440509600934
-      MargDeath4_2: 2871229032712158775
-      MargDeath4_3: -6515942910597773086
-      MargDeath4_4: -8789777956993515257
+      Marge2_0: 4785495932697643667
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

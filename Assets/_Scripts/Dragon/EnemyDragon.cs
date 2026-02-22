@@ -101,6 +101,9 @@ public class EnemyDragon : EnemyBaseClass
         CacheOriginalColor();
 
         spline = splineAnimate.Container.Spline;
+
+        if (coreManagersChannel != null)
+            coreManagersChannel.audioManager.PlaySFX(roarSfx);
     }
 
     private void CacheOriginalColor()
@@ -145,7 +148,7 @@ public class EnemyDragon : EnemyBaseClass
 
             if (isRoaring)
             {
-                roarCoroutine = StartCoroutine(_roar());
+                roarCoroutine = StartCoroutine(RoarCoroutine());
             }
             else
             {
@@ -173,10 +176,10 @@ public class EnemyDragon : EnemyBaseClass
 
     public void Attack()
     {
-        attackCoroutine = StartCoroutine(_attack());
+        attackCoroutine = StartCoroutine(AttackCoroutine());
     }
 
-    private IEnumerator _attack()
+    private IEnumerator AttackCoroutine()
     {
         if (!hasAttacked && !waitingAtTop && !isStunned)
         {
@@ -335,11 +338,12 @@ public class EnemyDragon : EnemyBaseClass
     public void Roar()
     {
         isRoaring = true;
+
         if (coreManagersChannel != null)
             coreManagersChannel.audioManager.PlaySFX(roarSfx);
     }
 
-    private IEnumerator _roar()
+    private IEnumerator RoarCoroutine()
     {
         isStunned = false;
         animator.SetTrigger("roar");

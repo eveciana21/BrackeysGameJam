@@ -397,7 +397,6 @@ public class Player : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
-        Debug.Log("Player died");
 
         if (animator != null)
         {
@@ -407,6 +406,16 @@ public class Player : MonoBehaviour
         }
 
         rb.linearVelocity = Vector2.zero;
+        LockMovement();  
+
+        StartCoroutine(ShowGameOverAfterDelay(1.5f));
+    }
+
+    private IEnumerator ShowGameOverAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        coreManagersChannel?.uiManager?.ShowGameOverPopup();
+        coreManagersChannel?.uiManager?.SetCursorUI();
     }
 
     // Called by MovingWalkway each FixedUpdate while player is on the belt

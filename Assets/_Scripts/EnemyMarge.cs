@@ -54,6 +54,8 @@ public class EnemyMarge : EnemyBaseClass
     private Color originalColor;
     private Coroutine flashRoutine;
 
+    private bool isDead;
+
     private Coroutine shootRoutine;
 
     private void Awake()
@@ -79,6 +81,7 @@ public class EnemyMarge : EnemyBaseClass
 
     private void OnEnable()
     {
+        isDead = false;
         shootRoutine = StartCoroutine(ShootLoop());
     }
 
@@ -99,7 +102,7 @@ public class EnemyMarge : EnemyBaseClass
             yield return new WaitForSeconds(startDelay);
         }
 
-        while (true)
+        while (!isDead)
         {
             if (projectilePrefab != null)
             {
@@ -116,12 +119,13 @@ public class EnemyMarge : EnemyBaseClass
 
     private void Shoot()
     {
+        if (isDead) return;
+
         GameObject projectileObj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
 
         EnemyProjectile projectile = projectileObj.GetComponent<EnemyProjectile>();
         if (projectile != null)
         {
-            // Use the arm’s direction (pick the sign that matches your ShootPoint)
             Vector2 direction = -firePoint.right;
             projectile.Launch(direction, projectileSpeed);
             coreManagersChannel.audioManager.PlaySFX(shootSfx);
@@ -241,6 +245,16 @@ public class EnemyMarge : EnemyBaseClass
 
     private void Die()
     {
+        if (isDead) return;
+        isDead = true;
+
+        // stop shooting immediately
+        if (shootRoutine != null)
+        {
+            StopCoroutine(shootRoutine);
+            shootRoutine = null;
+        }
+
         NotifyDeath();
         animator.SetTrigger("Death");
         Destroy(gameObject, 2f);

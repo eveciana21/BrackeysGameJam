@@ -1,22 +1,13 @@
 fileFormatVersion: 2
-guid: 06fa44568fa5f504fbb8736c667dfc51
+guid: edefa02a8944eff4b8c88008ed421ae8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3759371308399181904
-    second: MargDeath2_0
+      213: -2598523657019978137
+    second: MargDeath5_0
   - first:
-      213: -888542968569233915
-    second: MargDeath2_1
-  - first:
-      213: 8854360108694297501
-    second: MargDeath2_2
-  - first:
-      213: -3088304423592117897
-    second: MargDeath2_3
-  - first:
-      213: -6437889468945202015
-    second: MargDeath2_4
+      213: 2385366833439738521
+    second: MargDeath5_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -125,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MargDeath2_0
+      name: MargDeath5_0
       rect:
         serializedVersion: 2
-        x: 287
-        y: 658
-        width: 163
-        height: 252
+        x: 266
+        y: 0
+        width: 130
+        height: 124
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 050cde77948fb2430800000000000000
-      internalID: 3759371308399181904
+      spriteID: 76e00e2608030fbd0800000000000000
+      internalID: -2598523657019978137
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MargDeath2_1
+      name: MargDeath5_1
       rect:
         serializedVersion: 2
-        x: 333
-        y: 808
-        width: 269
-        height: 255
+        x: 267
+        y: 108
+        width: 335
+        height: 955
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,74 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 50e72c6b0e24ba3f0800000000000000
-      internalID: -888542968569233915
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MargDeath2_2
-      rect:
-        serializedVersion: 2
-        x: 435
-        y: 656
-        width: 167
-        height: 208
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d9bdc104b9101ea70800000000000000
-      internalID: 8854360108694297501
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MargDeath2_3
-      rect:
-        serializedVersion: 2
-        x: 87
-        y: 4
-        width: 515
-        height: 656
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 77936814d732425d0800000000000000
-      internalID: -3088304423592117897
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MargDeath2_4
-      rect:
-        serializedVersion: 2
-        x: 494
-        y: 636
-        width: 26
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1a40b4c23a508a6a0800000000000000
-      internalID: -6437889468945202015
+      spriteID: 99a8c2e2f768a1120800000000000000
+      internalID: 2385366833439738521
       vertices: []
       indices: 
       edges: []
@@ -248,11 +173,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MargDeath2_0: 3759371308399181904
-      MargDeath2_1: -888542968569233915
-      MargDeath2_2: 8854360108694297501
-      MargDeath2_3: -3088304423592117897
-      MargDeath2_4: -6437889468945202015
+      MargDeath5_0: -2598523657019978137
+      MargDeath5_1: 2385366833439738521
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

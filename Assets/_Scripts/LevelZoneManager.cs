@@ -53,6 +53,8 @@ public class LevelZoneManager : MonoBehaviour
     [SerializeField] private GameObject[] stage1Platforms;
     [SerializeField] private GameObject[] stage2Platforms;
 
+    [SerializeField] private AudioClip levelCompleteSfx;
+
     private Transform[] cachedSpawnPoints;
 
     [SerializeField] private float arrowShowDelay = 1f;
@@ -339,6 +341,9 @@ public class LevelZoneManager : MonoBehaviour
     private void CompleteLevel(bool skipPeek = false)
     {
         isComplete = true;
+
+        if (coreManagersChannel != null && levelCompleteSfx != null)
+            coreManagersChannel.audioManager.PlaySFX(levelCompleteSfx);
 
         TryShowArrowWithDelay();
 
