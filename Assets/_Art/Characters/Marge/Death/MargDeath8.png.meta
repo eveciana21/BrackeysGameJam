@@ -1,0 +1,598 @@
+fileFormatVersion: 2
+guid: 25da266b2324420408f87c5def4844e3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7984196399371830674
+    second: MargDeath8_0
+  - first:
+      213: -4475445215804699597
+    second: MargDeath8_1
+  - first:
+      213: -8099834306917027909
+    second: MargDeath8_2
+  - first:
+      213: 1545208220958023227
+    second: MargDeath8_3
+  - first:
+      213: -5306291725270157488
+    second: MargDeath8_4
+  - first:
+      213: 6194588905821009085
+    second: MargDeath8_5
+  - first:
+      213: -6183253294116685687
+    second: MargDeath8_6
+  - first:
+      213: 8298245480311240978
+    second: MargDeath8_7
+  - first:
+      213: -2120751826143770004
+    second: MargDeath8_8
+  - first:
+      213: -4939654777063037170
+    second: MargDeath8_9
+  - first:
+      213: 8111376198050490123
+    second: MargDeath8_10
+  - first:
+      213: 2117283076431793954
+    second: MargDeath8_11
+  - first:
+      213: -1197969719985370233
+    second: MargDeath8_12
+  - first:
+      213: -1833960331335955309
+    second: MargDeath8_13
+  - first:
+      213: 5207296231753146636
+    second: MargDeath8_14
+  - first:
+      213: -5689127393293050243
+    second: MargDeath8_15
+  - first:
+      213: 4837715768439257102
+    second: MargDeath8_16
+  - first:
+      213: -6771983230352315851
+    second: MargDeath8_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: MargDeath8_0
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 876
+        width: 98
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6a3d764daf623190800000000000000
+      internalID: -7984196399371830674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_1
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 930
+        width: 110
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33c4d34c94604e1c0800000000000000
+      internalID: -4475445215804699597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_2
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 748
+        width: 98
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbf20b4dc9b979f80800000000000000
+      internalID: -8099834306917027909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_3
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 842
+        width: 74
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3e573aa0bea17510800000000000000
+      internalID: 1545208220958023227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_4
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 811
+        width: 58
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0577da03ac34c56b0800000000000000
+      internalID: -5306291725270157488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_5
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 736
+        width: 105
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db4790d1ac997f550800000000000000
+      internalID: 6194588905821009085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_6
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 652
+        width: 106
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98839e7a3eba03aa0800000000000000
+      internalID: -6183253294116685687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_7
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 606
+        width: 133
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21931f06c4a492370800000000000000
+      internalID: 8298245480311240978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_8
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 659
+        width: 103
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6a80f943739192e0800000000000000
+      internalID: -2120751826143770004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_9
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 613
+        width: 41
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e07a814d622d27bb0800000000000000
+      internalID: -4939654777063037170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_10
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 584
+        width: 43
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b07ab5c1da5619070800000000000000
+      internalID: 8111376198050490123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_11
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 536
+        width: 98
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22fc9ab7db9126d10800000000000000
+      internalID: 2117283076431793954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_12
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 491
+        width: 96
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78b099403e4ff5fe0800000000000000
+      internalID: -1197969719985370233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_13
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 435
+        width: 106
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39c009e9bc67c86e0800000000000000
+      internalID: -1833960331335955309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_14
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 427
+        width: 86
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0160e55558044840800000000000000
+      internalID: 5207296231753146636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_15
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 390
+        width: 68
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7ed2d037c82c01b0800000000000000
+      internalID: -5689127393293050243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_16
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 0
+        width: 130
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e08b02e2cd4032340800000000000000
+      internalID: 4837715768439257102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MargDeath8_17
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 98
+        width: 335
+        height: 292
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53aa2f9a1251502a0800000000000000
+      internalID: -6771983230352315851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MargDeath8_0: -7984196399371830674
+      MargDeath8_1: -4475445215804699597
+      MargDeath8_10: 8111376198050490123
+      MargDeath8_11: 2117283076431793954
+      MargDeath8_12: -1197969719985370233
+      MargDeath8_13: -1833960331335955309
+      MargDeath8_14: 5207296231753146636
+      MargDeath8_15: -5689127393293050243
+      MargDeath8_16: 4837715768439257102
+      MargDeath8_17: -6771983230352315851
+      MargDeath8_2: -8099834306917027909
+      MargDeath8_3: 1545208220958023227
+      MargDeath8_4: -5306291725270157488
+      MargDeath8_5: 6194588905821009085
+      MargDeath8_6: -6183253294116685687
+      MargDeath8_7: 8298245480311240978
+      MargDeath8_8: -2120751826143770004
+      MargDeath8_9: -4939654777063037170
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

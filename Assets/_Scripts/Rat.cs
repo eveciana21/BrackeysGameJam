@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Rat : EnemyBaseClass
 {
+    [SerializeField] private CoreManagersChannelSO coreManagersChannel;
+
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer bodyRenderer;
@@ -44,6 +46,9 @@ public class Rat : EnemyBaseClass
     private int currentHealth;
     private float lastStompTime;
     private Coroutine flashRoutine;
+
+    [SerializeField] private AudioClip damageSfx;
+
 
     private void Awake()
     {
@@ -162,6 +167,8 @@ public class Rat : EnemyBaseClass
         currentHealth -= amount;
         FlashDamage();
 
+        coreManagersChannel.audioManager.PlaySFX(damageSfx);
+
         if (currentHealth <= 0)
         {
             Die();
@@ -188,7 +195,7 @@ public class Rat : EnemyBaseClass
         enabled = false;
         Destroy(gameObject, 1f);
     }
-
+    
     private void FlashDamage()
     {
         if (bodyRenderer == null) return;

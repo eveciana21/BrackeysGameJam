@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class EnemyBasic : EnemyBaseClass
 {
+    [Header("Channels")]
+    [SerializeField] private CoreManagersChannelSO coreManagersChannel;
+
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer bodyRenderer;
     [SerializeField] private GameObject turkeyLeg;
+
 
     [Header("Health")]
     [SerializeField] private int maxHealth = 3;
@@ -16,7 +20,6 @@ public class EnemyBasic : EnemyBaseClass
     [SerializeField] private float damageFlashTime = 0.08f;
     [SerializeField] private Color damageFlashColor = Color.red;
     [SerializeField] private AudioClip damageSfx;
-    [SerializeField] private AudioClip deathSFX;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
@@ -210,7 +213,7 @@ public class EnemyBasic : EnemyBaseClass
         {
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
-            rb.simulated = false; 
+            rb.simulated = false;
         }
 
         animator.SetBool("IsWalking", false);
@@ -239,6 +242,7 @@ public class EnemyBasic : EnemyBaseClass
         currentHealth -= amount;
 
         FlashDamage();
+        coreManagersChannel.audioManager?.PlaySFX(damageSfx);
 
         if (currentHealth <= 0)
         {

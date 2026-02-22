@@ -227,13 +227,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a5ad82eafda0d0468c8e053e13ce200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMarge
+  coreManagersChannel: {fileID: 11400000, guid: 927fed7eec3c86440b378baeadce6f24, type: 2}
+  animator: {fileID: 773598788163506845}
   projectilePrefab: {fileID: 3525289411339022731, guid: a5ba78176ed45f34db6a264f54e13457, type: 3}
   firePoint: {fileID: 7021932507828936402}
   minFireInterval: 1.5
   maxFireInterval: 3
-  startDelay: 5
+  startDelay: 2
   projectileSpeed: 8
-  maxHealth: 1
+  maxHealth: 10
   bodyRenderer: {fileID: 3648484456109952532}
   flashInterval: 0.035
   invincibilityTime: 0.15
@@ -244,6 +246,8 @@ MonoBehaviour:
   contactKnockbackX: 8
   contactKnockbackY: 6
   contactCooldown: 0.2
+  damageSfx: {fileID: 8300000, guid: 091e6d1170d40a8469c9d8965fa225db, type: 3}
+  shootSfx: {fileID: 8300000, guid: c6f360d5bdf714446a9f13cd4596dae4, type: 3}
 --- !u!1 &6266944831208506803
 GameObject:
   m_ObjectHideFlags: 0

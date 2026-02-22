@@ -6,6 +6,9 @@ using UnityEngine.Splines;
 
 public class EnemyDragon : EnemyBaseClass
 {
+    [Header("Channels")]
+    [SerializeField] private CoreManagersChannelSO coreManagersChannel;
+
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
 
@@ -22,7 +25,7 @@ public class EnemyDragon : EnemyBaseClass
     [SerializeField] private float bounceForce = 10f;
 
     [Header("Stomp Difficulty")]
-    [SerializeField] private float stompKnockbackX = 3f;          // sideways push on stomp
+    [SerializeField] private float stompKnockbackX = 3f;            // sideways push on stomp
     [SerializeField] private float moveSpeedIncreaseOnStomp = 0.5f; // enemy gets faster per stomp
     [SerializeField] private float maxMoveSpeed = 5f;
 
@@ -33,7 +36,7 @@ public class EnemyDragon : EnemyBaseClass
     [SerializeField] private float damageFlashTime = 0.08f;
     [SerializeField] private Color damageFlashColor = Color.red;
     [SerializeField] private AudioClip damageSfx;
-    [SerializeField] private AudioClip deathSFX;
+    [SerializeField] private AudioClip roarSfx;
 
     [Header("Detection")]
     [SerializeField] private LayerMask playerLayer;
@@ -68,9 +71,19 @@ public class EnemyDragon : EnemyBaseClass
     private Coroutine stunCoroutine;
     private Coroutine roarCoroutine;
 
+    //  Flash safety
+    private Color cachedOriginalColor;
+    private bool hasCachedColor;
+
     private void Awake()
     {
         currentHealth = maxHealth;
+    }
+
+    private void OnDisable()
+    {
+        // if the component gets disabled while red, force reset
+        ResetFlashColor();
     }
 
     // Call this immediately after Instantiate, before Start() fires
@@ -85,7 +98,26 @@ public class EnemyDragon : EnemyBaseClass
         animator = transform.Find("DragonSprite").GetComponent<Animator>();
         bodyRenderer = transform.Find("DragonSprite").GetComponent<SpriteRenderer>();
 
+        CacheOriginalColor();
+
         spline = splineAnimate.Container.Spline;
+    }
+
+    private void CacheOriginalColor()
+    {
+        if (bodyRenderer == null) return;
+        if (hasCachedColor) return;
+
+        cachedOriginalColor = bodyRenderer.color;
+        hasCachedColor = true;
+    }
+
+    private void ResetFlashColor()
+    {
+        if (bodyRenderer == null) return;
+
+        CacheOriginalColor();
+        bodyRenderer.color = cachedOriginalColor;
     }
 
     private void FixedUpdate()
@@ -191,6 +223,7 @@ public class EnemyDragon : EnemyBaseClass
         currentHealth -= amount;
 
         FlashDamage();
+        coreManagersChannel.audioManager.PlaySFX(damageSfx);
 
         if (currentHealth <= 0)
         {
@@ -210,24 +243,41 @@ public class EnemyDragon : EnemyBaseClass
     {
         if (bodyRenderer == null) return;
 
-        if (flashRoutine != null) return;
+        CacheOriginalColor();
+
+        // restart flash each hit (prevents “stuck red” due to overlapping timing)
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+            flashRoutine = null;
+        }
 
         flashRoutine = StartCoroutine(FlashDamageRoutine());
     }
 
     private IEnumerator FlashDamageRoutine()
     {
-        Color original = bodyRenderer.color;
+        if (bodyRenderer == null) yield break;
+
         bodyRenderer.color = damageFlashColor;
 
         yield return new WaitForSeconds(damageFlashTime);
 
-        bodyRenderer.color = original;
+        ResetFlashColor();
         flashRoutine = null;
     }
 
     public void Die()
     {
+        // ensure we never die while stuck red
+        ResetFlashColor();
+
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+            flashRoutine = null;
+        }
+
         if (waitAtTopCoroutine != null) StopCoroutine(waitAtTopCoroutine);
         if (attackCoroutine != null) StopCoroutine(attackCoroutine);
         if (stunCoroutine != null) StopCoroutine(stunCoroutine);
@@ -285,6 +335,8 @@ public class EnemyDragon : EnemyBaseClass
     public void Roar()
     {
         isRoaring = true;
+        if (coreManagersChannel != null)
+            coreManagersChannel.audioManager.PlaySFX(roarSfx);
     }
 
     private IEnumerator _roar()

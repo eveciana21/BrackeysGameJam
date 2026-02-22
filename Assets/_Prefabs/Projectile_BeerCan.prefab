@@ -176,7 +176,7 @@ MonoBehaviour:
   randomSprites: []
   damage: 1
   useLifetime: 1
-  lifeTime: 5
+  lifeTime: 4
   groundDampen: 0.3
   animator: {fileID: 0}
   enemyLayer:

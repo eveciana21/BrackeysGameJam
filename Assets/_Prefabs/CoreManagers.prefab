@@ -233,10 +233,10 @@ MonoBehaviour:
   coreManagersChannel: {fileID: 11400000, guid: 927fed7eec3c86440b378baeadce6f24, type: 2}
   musicSourceA: {fileID: 7651304500940400234}
   musicSourceB: {fileID: 5797842253451985873}
-  sfxSource: {fileID: 6604989055197147592}
+  sfxPoolSize: 5
+  sfxVolume: 1
   crossfadeDuration: 1.5
   musicVolume: 1
-  sfxClips: []
 --- !u!1 &4742561893682666443
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +280,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: ed03613a72b415b4c996615adc54faed, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1

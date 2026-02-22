@@ -422,6 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b73c679f843b4443875c6f830f92043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  coreManagersChannel: {fileID: 11400000, guid: 927fed7eec3c86440b378baeadce6f24, type: 2}
   rb: {fileID: 3819467388833298462}
   animator: {fileID: 7587561462126314651}
   bodyRenderer: {fileID: 7547283639689217005}
@@ -430,7 +431,6 @@ MonoBehaviour:
   damageFlashTime: 0.08
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   damageSfx: {fileID: 0}
-  deathSFX: {fileID: 0}
   moveSpeed: 3
   bounceForce: 20
   stompKnockbackX: 15

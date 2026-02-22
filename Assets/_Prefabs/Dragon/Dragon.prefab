@@ -1320,6 +1320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37b56048cb2c1059833880ea99c7007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDragon
+  coreManagersChannel: {fileID: 11400000, guid: 927fed7eec3c86440b378baeadce6f24, type: 2}
   rb: {fileID: 1222759146253422619}
   waitDuration: 2
   distThreshold: 0.1
@@ -1333,8 +1334,8 @@ MonoBehaviour:
   entrySpeed: 3
   damageFlashTime: 0.08
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
-  damageSfx: {fileID: 0}
-  deathSFX: {fileID: 0}
+  damageSfx: {fileID: 8300000, guid: c81d00cce37b3144db4233defd4678c4, type: 3}
+  roarSfx: {fileID: 8300000, guid: 249287dd6e07e56448c6bb1c7c933d00, type: 3}
   playerLayer:
     serializedVersion: 2
     m_Bits: 1024

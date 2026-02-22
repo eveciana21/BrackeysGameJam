@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class EnemyLeg : EnemyBaseClass
 {
+    [Header("Channels")]
+    [SerializeField] private CoreManagersChannelSO coreManagersChannel;
+
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Collider2D enemyCollider;
@@ -51,7 +54,7 @@ public class EnemyLeg : EnemyBaseClass
     [Header("Bounds (X only)")]
     [SerializeField] private bool useBounds = true;
     [SerializeField] private float edgeFlipCooldown = 0.25f;
-    [SerializeField] private float boundsPadding = 0.1f;
+    [SerializeField] private float boundsPadding = 2.5f;
 
     [Header("Flip Cooldown")]
     [SerializeField] private float flipCooldown = 0.2f;
@@ -69,6 +72,10 @@ public class EnemyLeg : EnemyBaseClass
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask playerLayer;
 
+    [SerializeField] private AudioClip damageSfx;
+    [SerializeField] private AudioClip stompSfx;
+
+
     private bool facingRight;
     private bool isGrounded;
     private bool wasGrounded;
@@ -85,7 +92,11 @@ public class EnemyLeg : EnemyBaseClass
     private Coroutine flashRoutine;
 
     private float baseMoveSpeed;
-    private Vector2 lastKnownVelocity; // cached each FixedUpdate to restore if a projectile hits
+    private Vector2 lastKnownVelocity;
+
+    // flash safety
+    private Color cachedOriginalColor;
+    private bool hasCachedColor;
 
     private void Awake()
     {
@@ -96,6 +107,8 @@ public class EnemyLeg : EnemyBaseClass
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (enemyCollider == null) enemyCollider = GetComponent<Collider2D>();
 
+        CacheOriginalColor();
+
         if (patrolBounds == null)
         {
             GameObject obj = GameObject.FindGameObjectWithTag("PatrolBounds");
@@ -104,6 +117,23 @@ public class EnemyLeg : EnemyBaseClass
                 patrolBounds = obj.GetComponent<Collider2D>();
             }
         }
+    }
+
+    private void CacheOriginalColor()
+    {
+        if (bodyRenderer == null) return;
+        if (hasCachedColor) return;
+
+        cachedOriginalColor = bodyRenderer.color;
+        hasCachedColor = true;
+    }
+
+    private void ResetFlashColor()
+    {
+        if (bodyRenderer == null) return;
+
+        CacheOriginalColor();
+        bodyRenderer.color = cachedOriginalColor;
     }
 
     private void OnEnable()
@@ -118,6 +148,14 @@ public class EnemyLeg : EnemyBaseClass
             StopCoroutine(jumpRoutine);
             jumpRoutine = null;
         }
+
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+            flashRoutine = null;
+        }
+
+        ResetFlashColor();
     }
 
     private void FixedUpdate()
@@ -132,6 +170,8 @@ public class EnemyLeg : EnemyBaseClass
         if (landedThisFrame)
         {
             TryStompShake();
+            if (coreManagersChannel != null)
+                coreManagersChannel.audioManager.PlaySFX(stompSfx);
         }
 
         if (isGrounded)
@@ -147,7 +187,6 @@ public class EnemyLeg : EnemyBaseClass
         MoveInAir();
         ApplyExtraFallGravity();
 
-        // Cache velocity so projectile hits can restore it without disrupting the jump
         lastKnownVelocity = rb.linearVelocity;
     }
 
@@ -378,7 +417,7 @@ public class EnemyLeg : EnemyBaseClass
     {
         if (enemyCollider == null) yield break;
 
-        Collider2D playerCol = player?.GetComponent<Collider2D>();
+        Collider2D playerCol = player != null ? player.GetComponent<Collider2D>() : null;
         if (playerCol == null) yield break;
 
         Physics2D.IgnoreCollision(enemyCollider, playerCol, true);
@@ -389,7 +428,6 @@ public class EnemyLeg : EnemyBaseClass
             Physics2D.IgnoreCollision(enemyCollider, playerCol, false);
         }
 
-        // Restart jump routine if it was killed
         if (jumpRoutine == null && !isDying)
         {
             jumpRoutine = StartCoroutine(JumpCoroutine());
@@ -415,7 +453,6 @@ public class EnemyLeg : EnemyBaseClass
         TakeDamage(amount);
     }
 
-    // Called by Projectile to undo any physics impulse the collision applied this frame
     public void RestoreVelocity()
     {
         if (rb != null && !isGrounded)
@@ -441,9 +478,12 @@ public class EnemyLeg : EnemyBaseClass
     {
         if (bodyRenderer == null) return;
 
+        CacheOriginalColor();
+
         if (flashRoutine != null)
         {
             StopCoroutine(flashRoutine);
+            flashRoutine = null;
         }
 
         flashRoutine = StartCoroutine(FlashDamageRoutine());
@@ -451,12 +491,12 @@ public class EnemyLeg : EnemyBaseClass
 
     private IEnumerator FlashDamageRoutine()
     {
-        Color original = bodyRenderer.color;
-        bodyRenderer.color = damageFlashColor;
+        if (bodyRenderer == null) yield break;
 
+        bodyRenderer.color = damageFlashColor;
         yield return new WaitForSeconds(damageFlashTime);
 
-        bodyRenderer.color = original;
+        ResetFlashColor();
         flashRoutine = null;
     }
 
@@ -464,6 +504,8 @@ public class EnemyLeg : EnemyBaseClass
     {
         if (isDying) return;
         isDying = true;
+
+        ResetFlashColor();
 
         NotifyDeath();
 

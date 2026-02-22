@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class EnemyMarge : EnemyBaseClass
 {
+    [SerializeField] private CoreManagersChannelSO coreManagersChannel;
+    [SerializeField] private Animator animator;
+
     [Header("Projectile")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform firePoint;
@@ -33,6 +36,9 @@ public class EnemyMarge : EnemyBaseClass
     [SerializeField] private float contactKnockbackX = 8f;
     [SerializeField] private float contactKnockbackY = 6f;
     [SerializeField] private float contactCooldown = 0.2f;
+
+    [SerializeField] private AudioClip damageSfx;
+    [SerializeField] private AudioClip shootSfx;
 
     private float nextContactTime;
 
@@ -118,6 +124,7 @@ public class EnemyMarge : EnemyBaseClass
             // Use the arm’s direction (pick the sign that matches your ShootPoint)
             Vector2 direction = -firePoint.right;
             projectile.Launch(direction, projectileSpeed);
+            coreManagersChannel.audioManager.PlaySFX(shootSfx);
         }
     }
 
@@ -132,6 +139,9 @@ public class EnemyMarge : EnemyBaseClass
         StartDamageFlash();
 
         StartHeadHitSprite();
+
+        if (coreManagersChannel != null)
+            coreManagersChannel.audioManager.PlaySFX(damageSfx);
 
         if (currentHealth == 0)
         {
@@ -232,6 +242,7 @@ public class EnemyMarge : EnemyBaseClass
     private void Die()
     {
         NotifyDeath();
-        Destroy(gameObject);
+        animator.SetTrigger("Death");
+        Destroy(gameObject, 2f);
     }
 }

@@ -183,7 +183,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.08675915}
+  m_Offset: {x: -0.0055372417, y: -0.05353567}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -193,7 +193,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.7114899, y: 0.42486668}
+  m_Size: {x: 0.8111604, y: 0.49131364}
   m_EdgeRadius: 0
 --- !u!50 &5665460355301503378
 Rigidbody2D:
@@ -234,17 +234,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3482ee5790d975d4e8def9455cb6075c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rat
+  coreManagersChannel: {fileID: 11400000, guid: 927fed7eec3c86440b378baeadce6f24, type: 2}
   rb: {fileID: 5665460355301503378}
   bodyRenderer: {fileID: 7517708011773951142}
   animator: {fileID: 4668315859603687302}
   minBaseSpeed: 2
-  maxBaseSpeed: 3
+  maxBaseSpeed: 4
   stompSpeedMultiplier: 1.5
   maxPossibleSpeed: 6
   wallCheck: {fileID: 4159706986706197881}
   wallCheckDistance: 2
   groundCheck: {fileID: 4159706986706197881}
-  groundCheckDistance: 2
+  groundCheckDistance: 4
   maxHealth: 2
   damageFlashTime: 0.08
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
@@ -261,3 +262,4 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 1024
+  damageSfx: {fileID: 8300000, guid: 17a1f6e16d9380b49a88337ebcb26223, type: 3}

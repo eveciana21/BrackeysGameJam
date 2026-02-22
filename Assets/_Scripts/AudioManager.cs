@@ -7,16 +7,19 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private CoreManagersChannelSO coreManagersChannel;
 
     [Header("Audio Sources")]
-    [SerializeField] private AudioSource musicSourceA;   // rename your existing one
-    [SerializeField] private AudioSource musicSourceB;   // new second source
-    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource musicSourceA;
+    [SerializeField] private AudioSource musicSourceB;
+
+    [Header("SFX Settings")]
+    [SerializeField] private int sfxPoolSize = 5;
+    [SerializeField] private float sfxVolume = 1f;
 
     [Header("Music Settings")]
     [SerializeField] private float crossfadeDuration = 1.5f;
     [SerializeField] private float musicVolume = 1f;
 
-    [Header("SFX Library")]
-    [SerializeField] private AudioClip[] sfxClips;
+    private AudioSource[] sfxPool;
+    private int sfxPoolIndex = 0;
 
     private AudioSource activeMusic;
     private AudioSource inactiveMusic;
@@ -27,15 +30,23 @@ public class AudioManager : MonoBehaviour
         if (coreManagersChannel != null)
             coreManagersChannel.SetAudioManager(this);
 
+        // Build SFX pool
+        sfxPool = new AudioSource[sfxPoolSize];
+        for (int i = 0; i < sfxPoolSize; i++)
+        {
+            sfxPool[i] = gameObject.AddComponent<AudioSource>();
+            sfxPool[i].playOnAwake = false;
+        }
+
         // Start with A as active
         activeMusic = musicSourceA;
         inactiveMusic = musicSourceB;
-
         musicSourceA.volume = 0f;
         musicSourceB.volume = 0f;
     }
 
-    // MUSIC
+    // MUSIC 
+
     public void PlayMusic(AudioClip clip)
     {
         if (clip == null) return;
@@ -53,14 +64,12 @@ public class AudioManager : MonoBehaviour
         float startVolume = activeMusic.volume;
         bool fadeInStarted = false;
 
-        // Fade out active track
         while (elapsed < crossfadeDuration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / crossfadeDuration);
             activeMusic.volume = Mathf.Lerp(startVolume, 0f, t);
 
-            // Start fading in new track once old track hits 50%
             if (!fadeInStarted && activeMusic.volume <= startVolume * 0.35f)
             {
                 fadeInStarted = true;
@@ -82,6 +91,8 @@ public class AudioManager : MonoBehaviour
         AudioSource temp = activeMusic;
         activeMusic = inactiveMusic;
         inactiveMusic = temp;
+
+        crossfadeRoutine = null;
     }
 
     private IEnumerator FadeIn(AudioSource source)
@@ -96,39 +107,6 @@ public class AudioManager : MonoBehaviour
         source.volume = musicVolume;
     }
 
-    /*private IEnumerator Crossfade(AudioClip newClip)
-    {
-        // Fade out active
-        float elapsed = 0f;
-        float startVolume = activeMusic.volume;
-        while (elapsed < crossfadeDuration)
-        {
-            elapsed += Time.deltaTime;
-            activeMusic.volume = Mathf.Lerp(startVolume, 0f, elapsed / crossfadeDuration);
-            yield return null;
-        }
-        activeMusic.Stop();
-        activeMusic.clip = null;
-
-        // Fade in new track
-        inactiveMusic.clip = newClip;
-        inactiveMusic.loop = true;
-        inactiveMusic.volume = 0f;
-        inactiveMusic.Play();
-
-        elapsed = 0f;
-        while (elapsed < crossfadeDuration)
-        {
-            elapsed += Time.deltaTime;
-            inactiveMusic.volume = Mathf.Lerp(0f, musicVolume, elapsed / crossfadeDuration);
-            yield return null;
-        }
-        inactiveMusic.volume = musicVolume;
-
-        activeMusic = inactiveMusic;
-        inactiveMusic = activeMusic;
-    }*/
-
     public void StopMusic()
     {
         if (crossfadeRoutine != null)
@@ -139,9 +117,14 @@ public class AudioManager : MonoBehaviour
     }
 
     // SFX
-    public void PlaySFX(AudioClip clip)
+
+    public void PlaySFX(AudioClip clip, float volume = 1f, float pitchVariance = 0.1f)
     {
         if (clip == null) return;
-        sfxSource.PlayOneShot(clip);
+        AudioSource source = sfxPool[sfxPoolIndex % sfxPoolSize];
+        sfxPoolIndex++;
+        source.pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
+        source.volume = sfxVolume * volume;
+        source.PlayOneShot(clip);
     }
 }

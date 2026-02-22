@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7665591181313955297}
   - component: {fileID: 2561200576832200649}
-  - component: {fileID: 2755897398549174816}
   - component: {fileID: 3410209155376615622}
+  - component: {fileID: 4168817390827364088}
   m_Layer: 12
   m_Name: Enemy_Leg
   m_TagString: Enemy
@@ -62,8 +62,66 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!60 &2755897398549174816
-PolygonCollider2D:
+--- !u!114 &3410209155376615622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402435362702252664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37547e86b3314c245b74eabf4e6ffa81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyLeg
+  coreManagersChannel: {fileID: 11400000, guid: 927fed7eec3c86440b378baeadce6f24, type: 2}
+  rb: {fileID: 2561200576832200649}
+  enemyCollider: {fileID: 4168817390827364088}
+  moveSpeed: 3
+  enragedSpeedMultiplier: 10
+  jumpForce: 20
+  jumpInterval: 2
+  horizontalJumpMultiplier: 1.2
+  maxHealth: 5
+  bodyRenderer: {fileID: 3512063716457378717}
+  damageFlashTime: 0.05
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  stompDamage: 1
+  stompKnockbackX: 15
+  stompKnockbackY: 10
+  stompIgnoreCollisionTime: 0.15
+  touchDamage: 1
+  touchKnockbackX: 10
+  touchKnockbackY: 8
+  touchCooldown: 0.35
+  shakeOnStomp: 1
+  stompShakeAmplitude: 0.25
+  stompShakeDuration: 0.12
+  groundCheckDistance: 4
+  wallCheckDistance: 4
+  groundCheckOffset: 0.5
+  extraFallGravity: 3
+  useBounds: 1
+  edgeFlipCooldown: 0.5
+  boundsPadding: 3.5
+  flipCooldown: 0.2
+  deathStompImpulse: 14
+  deathFallExtraGravity: 1.5
+  fallThroughDelay: 0.08
+  destroyAfterDeathSeconds: 2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 32768
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 131072
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  damageSfx: {fileID: 8300000, guid: 554379d3a3cbac745ba6f62d4f306408, type: 3}
+  stompSfx: {fileID: 8300000, guid: 029f1e89059d6234b9d54ae408e3d7a2, type: 3}
+--- !u!61 &4168817390827364088
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -96,7 +154,7 @@ PolygonCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.7491916, y: -2.9865742}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -106,71 +164,8 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -1.3696138, y: -0.7717713}
-      - {x: -1.3826747, y: -5.7672772}
-      - {x: -1.4060502, y: -6.419979}
-      - {x: 1.3251766, y: -6.417252}
-      - {x: 1.3033533, y: -5.7352057}
-      - {x: -0.40759003, y: -5.60608}
-      - {x: -0.17170429, y: -0.7657112}
-  m_UseDelaunayMesh: 1
---- !u!114 &3410209155376615622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2402435362702252664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37547e86b3314c245b74eabf4e6ffa81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyLeg
-  rb: {fileID: 2561200576832200649}
-  enemyCollider: {fileID: 2755897398549174816}
-  moveSpeed: 3
-  enragedSpeedMultiplier: 10
-  jumpForce: 20
-  jumpInterval: 2
-  horizontalJumpMultiplier: 1.2
-  maxHealth: 1
-  bodyRenderer: {fileID: 3512063716457378717}
-  damageFlashTime: 0.05
-  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
-  stompDamage: 1
-  stompKnockbackX: 15
-  stompKnockbackY: 10
-  stompIgnoreCollisionTime: 0.15
-  touchDamage: 1
-  touchKnockbackX: 10
-  touchKnockbackY: 8
-  touchCooldown: 0.35
-  shakeOnStomp: 1
-  stompShakeAmplitude: 0.25
-  stompShakeDuration: 0.12
-  groundCheckDistance: 4
-  wallCheckDistance: 4
-  groundCheckOffset: 0.5
-  extraFallGravity: 3
-  useBounds: 1
-  edgeFlipCooldown: 1
-  boundsPadding: 0.1
-  flipCooldown: 0.2
-  deathStompImpulse: 14
-  deathFallExtraGravity: 1.5
-  fallThroughDelay: 0.08
-  destroyAfterDeathSeconds: 2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 32768
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 131072
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 1024
+  m_Size: {x: 1.37806, y: 6.9731483}
+  m_EdgeRadius: 0
 --- !u!1 &2903194348175058595
 GameObject:
   m_ObjectHideFlags: 0

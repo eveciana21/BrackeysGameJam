@@ -80,7 +80,12 @@ public class Projectile : MonoBehaviour
         {
             if (hitEnemy)
             {
-                ApplyDamageIfPossible(collision);
+                bool didDamageEnemy = ApplyDamageIfPossible(collision);
+                if (didDamageEnemy)
+                {
+                    IgnoreThisCollision(collision);
+                }
+
                 Impact();
             }
             else if (hitGround)
@@ -109,8 +114,33 @@ public class Projectile : MonoBehaviour
         if (!canDamage) return;
         if (!hitEnemy) return;
 
-        ApplyDamageIfPossible(collision);
+        bool didDamage = ApplyDamageIfPossible(collision);
+        if (didDamage)
+        {
+            IgnoreThisCollision(collision); // ✅ stop the enemy from being nudged
+        }
+
         Destroy(gameObject);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // Keep your “pass through enemies after ground hit” behavior (lifetime ON only)
+        if (!useLifetime) return;
+        if (!hasHitGround) return;
+        if (((1 << collision.gameObject.layer) & enemyLayer) == 0) return;
+
+        // keep ignoring so it can't keep pushing for multiple frames
+        IgnoreThisCollision(collision);
+    }
+
+    private void IgnoreThisCollision(Collision2D collision)
+    {
+        if (myCol == null) return;
+        if (collision == null) return;
+        if (collision.collider == null) return;
+
+        Physics2D.IgnoreCollision(myCol, collision.collider, true);
     }
 
     private void ApplyRandomSprite()
@@ -124,48 +154,48 @@ public class Projectile : MonoBehaviour
         spriteRenderer.sprite = randomSprites[index];
     }
 
-    private void ApplyDamageIfPossible(Collision2D collision)
+    // returns true if we actually applied damage to something
+    private bool ApplyDamageIfPossible(Collision2D collision)
     {
+        if (collision == null) return false;
+
         // If you hit a child collider, try parent first too
         EnemyDragon dragon = collision.gameObject.GetComponentInParent<EnemyDragon>();
         if (dragon != null)
         {
-            Debug.Log("Projectile");
             dragon.ApplyDamage(damage);
-
+            return true;
         }
 
         Rat rat = collision.gameObject.GetComponentInParent<Rat>();
         if (rat != null)
         {
             rat.ApplyDamage(damage);
-            return;
+            return true;
         }
 
         EnemyLeg leg = collision.gameObject.GetComponentInParent<EnemyLeg>();
         if (leg != null)
         {
-            // Ignore physics collision so the projectile doesn't interfere with the leg's jump velocity
-            if (myCol != null && collision.collider != null)
-                Physics2D.IgnoreCollision(myCol, collision.collider, true);
-
-            // Restore the leg's velocity to undo any impulse already applied this physics frame
-            leg.RestoreVelocity();
             leg.ApplyDamage(damage);
-            return;
+            return true;
         }
 
         EnemyBasic enemy = collision.gameObject.GetComponentInParent<EnemyBasic>();
         if (enemy != null)
         {
             enemy.ApplyDamage(damage);
+            return true;
         }
 
         EnemyMarge marge = collision.gameObject.GetComponentInParent<EnemyMarge>();
         if (marge != null)
         {
             marge.ApplyDamage(damage);
+            return true;
         }
+
+        return false;
     }
 
     private void Impact()
@@ -199,19 +229,5 @@ public class Projectile : MonoBehaviour
     public void DestroySelf()
     {
         Destroy(gameObject);
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        // Keep your �pass through enemies after ground hit� behavior (lifetime ON only)
-        if (!useLifetime) return;
-        if (!hasHitGround) return;
-        if (((1 << collision.gameObject.layer) & enemyLayer) == 0) return;
-
-        Collider2D enemyCol = collision.collider;
-        if (enemyCol != null && myCol != null)
-        {
-            Physics2D.IgnoreCollision(myCol, enemyCol, true);
-        }
     }
 }
