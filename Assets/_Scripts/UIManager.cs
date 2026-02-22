@@ -322,17 +322,21 @@ public class UIManager : MonoBehaviour
         StartCoroutine(EndCreditsRoutine());
     }
 
+    public bool IsInCredits { get; private set; }
+
     private IEnumerator EndCreditsRoutine()
     {
         Time.timeScale = 1f;
+        IsInCredits = true;  // add this
 
         if (endCredits != null) endCredits.SetActive(true);
 
         if (coreManagersChannel != null)
             coreManagersChannel.isInputLocked = true;
 
-        yield return new WaitForSeconds(33f);
+        yield return new WaitForSeconds(48f);
 
+        IsInCredits = false;  // add this
         coreManagersChannel?.gameManager?.GoToMainMenu();
     }
 

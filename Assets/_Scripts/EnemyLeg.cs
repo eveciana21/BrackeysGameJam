@@ -468,6 +468,9 @@ public class EnemyLeg : EnemyBaseClass
         currentHealth -= amount;
         FlashDamage();
 
+        if (coreManagersChannel != null)
+            coreManagersChannel.audioManager.PlaySFX(damageSfx);
+
         if (currentHealth <= 0)
         {
             Die();

@@ -49,13 +49,6 @@ public class GameManager : MonoBehaviour
         uiInput.UI.Cancel.performed -= EscapeButtonPressed;
     }
 
-    /*    public void OnClick_StartGame()
-        {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(mainSceneIndex);
-            // Cursor hides on scene load via Start()
-        }*/
-
     public void OnClick_StartGame()
     {
         Time.timeScale = 1f;
@@ -114,6 +107,9 @@ public class GameManager : MonoBehaviour
             return;
 
         var ui = coreManagersChannel?.uiManager;
+
+        if (ui != null && ui.IsInCredits)
+            return;
 
         // If a countdown is running, cancel it and re-pause
         if (ui != null && ui.IsCountingDown)
