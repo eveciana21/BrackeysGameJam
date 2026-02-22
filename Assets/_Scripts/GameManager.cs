@@ -47,11 +47,17 @@ public class GameManager : MonoBehaviour
         uiInput.UI.Cancel.performed -= EscapeButtonPressed;
     }
 
+    /*    public void OnClick_StartGame()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(mainSceneIndex);
+            // Cursor hides on scene load via Start()
+        }*/
+
     public void OnClick_StartGame()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(mainSceneIndex);
-        // Cursor hides on scene load via Start()
+        coreManagersChannel?.uiManager?.StartIntroSequence();
     }
 
     // called by UIManager ConfirmYes()
@@ -118,6 +124,18 @@ public class GameManager : MonoBehaviour
         ui?.SetCursorUI();
         onQuitGameScreen = true;
         Time.timeScale = 0f;
+    }
+
+    public void ContinueButton()
+    {
+        Time.timeScale = 1f;
+        coreManagersChannel?.uiManager?.FadeOutThenStartGame();
+    }
+
+    public void StartGameAfterFade()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainSceneIndex); // scene 1
     }
 
     public void OnClick_QuitGame()

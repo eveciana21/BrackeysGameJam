@@ -798,6 +798,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 383240810}
+    - target: {fileID: 2316016164776283013, guid: b851f7bc1f3f3964ca4f625689fd6b4e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 383240810}
+    - target: {fileID: 3417357062480015277, guid: b851f7bc1f3f3964ca4f625689fd6b4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3806868017615018845, guid: b851f7bc1f3f3964ca4f625689fd6b4e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -882,6 +890,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 383240810}
+    - target: {fileID: 5458086707048883322, guid: b851f7bc1f3f3964ca4f625689fd6b4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6824860261181847893, guid: b851f7bc1f3f3964ca4f625689fd6b4e, type: 3}
       propertyPath: m_Name
       value: Canvas

@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -23,6 +24,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject countdown2;   // Image showing sprite "2"
     [SerializeField] private GameObject countdown1;   // Image showing sprite "1"
 
+    [SerializeField] private GameObject fadeInBlack;
+    [SerializeField] private GameObject fadeOutBlack;
+    [SerializeField] private GameObject teacherImage;
+    [SerializeField] private GameObject continueButton;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource menuMusicSource;
+    [SerializeField] private float menuMusicFadeOutTime = 2f;
+
     // 0 = Main Menu, 1 = Restart, -1 = None
     private int confirmType = -1;
 
@@ -39,6 +49,12 @@ public class UIManager : MonoBehaviour
         if (gameOverPopup != null) gameOverPopup.SetActive(false);
         HideAllCountdownSprites();
         HidePausePopup();
+
+        if (teacherImage != null) teacherImage.SetActive(false);
+        if (continueButton != null) continueButton.SetActive(false);
+
+        if (fadeInBlack != null) fadeInBlack.SetActive(false);
+        if (fadeOutBlack != null) fadeOutBlack.SetActive(false);
     }
 
     private void HideAllCountdownSprites()
@@ -204,5 +220,86 @@ public class UIManager : MonoBehaviour
         if (pauseButtonsContainer != null) pauseButtonsContainer.SetActive(true);
 
         if (pauseText != null) pauseText.text = "Paused... better be gud";
+    }
+
+    public void StartIntroSequence()
+    {
+        if (teacherImage != null) teacherImage.SetActive(false);
+        if (continueButton != null) continueButton.SetActive(false);
+
+        if (fadeInBlack != null) fadeInBlack.SetActive(false);
+        if (fadeOutBlack != null) fadeOutBlack.SetActive(false);
+
+        StartCoroutine(StartIntroCoroutine());
+    }
+
+    private IEnumerator StartIntroCoroutine()
+    {
+        // Fade OUT (to black)
+        if (fadeOutBlack != null) fadeOutBlack.SetActive(true);
+        yield return new WaitForSecondsRealtime(2);
+
+        // Now that screen is black, show the teacher UI
+        if (teacherImage != null) teacherImage.SetActive(true);
+        if (continueButton != null) continueButton.SetActive(true);
+
+        // Fade IN (back to visible) so player can see teacher/continue
+        if (fadeInBlack != null) fadeInBlack.SetActive(true);
+        if (fadeOutBlack != null) fadeOutBlack.SetActive(false);
+
+        // Optional: disable fade-in object after it finishes so it doesn't block clicks
+        yield return new WaitForSecondsRealtime(2);
+        if (fadeInBlack != null) fadeInBlack.SetActive(false);
+    }
+
+    public void FadeOutThenStartGame()
+    {
+        StartCoroutine(FadeOutThenStartGameCoroutine());
+    }
+
+    private IEnumerator FadeOutThenStartGameCoroutine()
+    {
+        // Fade OUT (to black)
+        if (fadeInBlack != null) fadeInBlack.SetActive(false);
+        if (fadeOutBlack != null) fadeOutBlack.SetActive(true);
+
+        // Fade audio while we fade to black
+        float fadeTime = menuMusicFadeOutTime;
+        float t = 0f;
+
+        float startVolume = 0f;
+        if (menuMusicSource != null)
+        {
+            startVolume = menuMusicSource.volume;
+        }
+
+        while (t < fadeTime)
+        {
+            t += Time.unscaledDeltaTime;
+
+            if (menuMusicSource != null)
+            {
+                float normalized = Mathf.Clamp01(t / fadeTime);
+                menuMusicSource.volume = Mathf.Lerp(startVolume, 0f, normalized);
+            }
+
+            yield return null;
+        }
+
+        if (menuMusicSource != null)
+        {
+            menuMusicSource.volume = 0f;
+            // Optional: stop it entirely (uncomment if you want)
+            // menuMusicSource.Stop();
+        }
+
+        // Start the game after the fade is done
+        coreManagersChannel?.gameManager?.StartGameAfterFade();
+    }
+
+    public void StartGameAfterFade()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(1); // scene 1
     }
 }
