@@ -257,6 +257,6 @@ public class EnemyMarge : EnemyBaseClass
 
         NotifyDeath();
         animator.SetTrigger("Death");
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 1.3f);
     }
 }

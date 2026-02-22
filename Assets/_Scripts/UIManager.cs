@@ -33,6 +33,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private AudioSource menuMusicSource;
     [SerializeField] private float menuMusicFadeOutTime = 2f;
 
+    [SerializeField] private GameObject endCredits;
+
     // 0 = Main Menu, 1 = Restart, -1 = None
     private int confirmType = -1;
 
@@ -313,6 +315,25 @@ public class UIManager : MonoBehaviour
 
         // Hide it
         if (fadeInBlack != null) fadeInBlack.SetActive(false);
+    }
+
+    public void StartEndCredits()
+    {
+        StartCoroutine(EndCreditsRoutine());
+    }
+
+    private IEnumerator EndCreditsRoutine()
+    {
+        Time.timeScale = 1f;
+
+        if (endCredits != null) endCredits.SetActive(true);
+
+        if (coreManagersChannel != null)
+            coreManagersChannel.isInputLocked = true;
+
+        yield return new WaitForSeconds(33f);
+
+        coreManagersChannel?.gameManager?.GoToMainMenu();
     }
 
     public void StartGameAfterFade()

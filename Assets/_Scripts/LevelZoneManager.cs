@@ -317,7 +317,8 @@ public class LevelZoneManager : MonoBehaviour
         // Wait for platforms to appear
         foreach (GameObject platform in stage2Platforms)
         {
-            platform.SetActive(true);
+            if (platform != null)
+                platform.SetActive(true);
         }
 
         yield return new WaitForSeconds(3.0f);
@@ -389,6 +390,11 @@ public class LevelZoneManager : MonoBehaviour
         if (!skipPeek)
         {
             StartCoroutine(EnablePeekBoundsAfterDelay());
+        }
+
+        if (isLastLevel && skipPeek)
+        {
+            coreManagersChannel?.uiManager?.StartEndCredits();
         }
 
         // Prevent re-triggering this level trigger

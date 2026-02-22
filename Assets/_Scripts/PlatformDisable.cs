@@ -98,7 +98,8 @@ public class PlatformDisable : MonoBehaviour
     {
         if (isControlledByRoar)
         {
-            dragon?.GetComponent<EnemyDragon>()?.Roar();
+            if (dragon != null)
+                dragon.GetComponent<EnemyDragon>()?.Roar();
 
             waitingForRoar = true;
             yield return new WaitUntil(() => !waitingForRoar);
