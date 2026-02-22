@@ -35,12 +35,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // Hide cursor during gameplay by default; main menu scenes show it
-        Scene current = SceneManager.GetActiveScene();
-        if (current.buildIndex == 0)
-            coreManagersChannel?.uiManager?.SetCursorUI();
-        else
-            coreManagersChannel?.uiManager?.SetCursorGameplay();
+        coreManagersChannel?.uiManager?.SetCursorUI();
     }
 
     private void OnDisable()

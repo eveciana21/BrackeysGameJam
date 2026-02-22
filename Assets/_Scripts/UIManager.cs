@@ -140,13 +140,8 @@ public class UIManager : MonoBehaviour
 
     public void SetCursorGameplay()
     {
-#if UNITY_EDITOR
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-#else
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-#endif
     }
 
     public void ShowPausePopup()
@@ -327,7 +322,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator EndCreditsRoutine()
     {
         Time.timeScale = 1f;
-        IsInCredits = true;  // add this
+        IsInCredits = true; 
 
         if (endCredits != null) endCredits.SetActive(true);
 
@@ -336,7 +331,7 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(48f);
 
-        IsInCredits = false;  // add this
+        IsInCredits = false;  
         coreManagersChannel?.gameManager?.GoToMainMenu();
     }
 
