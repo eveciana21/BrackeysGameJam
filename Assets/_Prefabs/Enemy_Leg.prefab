@@ -99,11 +99,11 @@ MonoBehaviour:
   stompShakeDuration: 0.12
   groundCheckDistance: 4
   wallCheckDistance: 4
-  groundCheckOffset: 0.5
+  groundCheckOffset: 2
   extraFallGravity: 3
   useBounds: 1
   edgeFlipCooldown: 0.5
-  boundsPadding: 3.5
+  boundsPadding: 4
   flipCooldown: 0.2
   deathStompImpulse: 14
   deathFallExtraGravity: 1.5

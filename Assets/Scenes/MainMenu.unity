@@ -354,6 +354,7 @@ MonoBehaviour:
   continueButton: {fileID: 332586241}
   menuMusicSource: {fileID: 1864403596}
   menuMusicFadeOutTime: 2
+  endCredits: {fileID: 0}
 --- !u!1 &302472136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1921,7 +1922,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A & D Key - Move Character Forwards and Backwards
+  m_text: A & D Key - Move Forwards and Backwards
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4502b47b88f9fa6428c27e78c8aa5204, type: 2}
   m_sharedMaterial: {fileID: -8430252198993473157, guid: 4502b47b88f9fa6428c27e78c8aa5204, type: 2}
